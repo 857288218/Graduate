@@ -92,11 +92,7 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     protected void onRestart() {
         super.onRestart();
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
+    
 
     @Override
     public void onClick(View v) {
