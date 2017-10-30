@@ -89,6 +89,11 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
 
