@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_marginTop="15px"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:src="@mipmap/fruit"
+        android:layout_width="match_parent"
+        android:layout_height="350px" />
+
+    <TextView
+        android:id="@+id/item_pin_duo_title"
+        android:layout_marginRight="30px"
+        android:layout_marginLeft="20px"
+        android:textColor="#000"
+        android:textSize="30px"
+        android:text=" 【新品首发】 iphone X 256GB手机 5.8 英寸显示屏 银色/深空灰色 2色可选"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_marginBottom="25px"
+        android:layout_marginTop="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="20px"
+                android:layout_gravity="bottom"
+                android:textSize="40px"
+                android:textColor="#ff3c32"
+                android:text="￥0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="12px"
+                android:layout_centerVertical="true"
+                android:text="10人拼单 单买价9688元"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_marginRight="25px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:background="@drawable/red_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/autoLinearLayout">
+
+            <TextView
+                android:layout_marginLeft="20px"
+                android:layout_gravity="center"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:text="去拼单"
+                android:layout_width="wrap_content"
+                android:layout_height="60px" />
+
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@mipmap/right_white"
+                android:layout_width="40px"
+                android:layout_height="40px"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/autoLinearLayout"
+                android:id="@+id/imageView" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+</com.zhy.autolayout.AutoLinearLayout>

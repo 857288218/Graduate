@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="multiple_order">综合排序</string>
+    <string name="select_classify">选择分类</string>
+    <string name="change_look">切换浏览</string>
+    <string name="filter">筛选</string>
+    <string name="goods_describe">农家现挖红心红薯地瓜小香薯粉糯香甜5斤</string>
+    <string name="limit_num_eat">限量尝鲜</string>
+    <string name="all_classify">全部分类</string>
+    <string name="daily_good_select">每日优选</string>
+    <string name="often_use_list">常用清单</string>
+    <string name="change_enjoy">充值专享</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

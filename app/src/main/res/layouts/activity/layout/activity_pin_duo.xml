@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_pin_duo"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.rjq.myapplication.PinDuoActivity">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#fff"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        app:contentInsetStartWithNavigation="0dp"
+        app:navigationIcon="@mipmap/back"
+        app:titleTextAppearance="@style/toolbar_textAppearance"
+        app:titleTextColor="#000"
+        tools:targetApi="lollipop">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:text="团购"
+            android:textColor="#000"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/toolbar_title_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.design.widget.TabLayout
+        android:elevation="1dp"
+        android:id="@+id/pin_duo_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabIndicatorColor="#ff3c32"
+        app:tabSelectedTextColor="#ff3c32"
+        app:tabTextColor="#353535"
+        app:tabMode="scrollable"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pin_duo_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</com.zhy.autolayout.AutoLinearLayout>

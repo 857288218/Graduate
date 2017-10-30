@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SliderLayout">
+        <attr name="sl_arc_shape" format="enum">
+            <enum name="inSide" value="0" />
+            <enum name="outSide" value="1" />
+        </attr>
+        <attr name="sl_arc_position" format="enum">
+            <enum name="top" value="0" />
+            <enum name="bottom" value="1" />
+            <enum name="left" value="2" />
+            <enum name="right" value="3" />
+        </attr>
+        <attr name="sl_arc_height" format="dimension|reference" />
+    </declare-styleable>
+</resources>

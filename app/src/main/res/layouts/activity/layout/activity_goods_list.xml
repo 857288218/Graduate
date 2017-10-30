@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_goods_list"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context="com.example.rjq.myapplication.activity.GoodsListActivity">
+
+    <include layout="@layout/common_toolbar_shop_car"/>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/goods_list_title_ll"
+        android:layout_below="@+id/toolBar"
+        android:background="@color/grey_background"
+        android:padding="@dimen/space_20px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="1.0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="@dimen/space_25px"
+                android:textColor="@color/black"
+                android:text="@string/multiple_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="1.0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="@dimen/space_25px"
+                android:textColor="@color/black"
+                android:text="@string/select_classify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="1.0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="@dimen/space_25px"
+                android:textColor="@color/black"
+                android:text="@string/change_look"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="1.0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="@dimen/space_25px"
+                android:textColor="@color/black"
+                android:text="@string/filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/goods_list_title_ll"
+        android:layout_above="@+id/grey_line"
+        android:id="@+id/goods_list"
+        android:layout_marginLeft="@dimen/space_20px"
+        android:layout_marginRight="@dimen/space_20px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/grey_line"
+        android:layout_above="@+id/goods_list_navigate_bar"
+        android:background="@color/grey_background"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_1px"/>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/goods_list_navigate_bar"
+        android:paddingTop="@dimen/space_5px"
+        android:paddingBottom="@dimen/space_5px"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/rice"
+                android:layout_width="@dimen/space_50px"
+                android:layout_height="@dimen/space_50px" />
+            <TextView
+                android:layout_marginTop="@dimen/space_10px"
+                android:textSize="@dimen/space_25px"
+                android:textColor="@color/black"
+                android:text="@string/all_classify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/rice"
+                android:layout_width="@dimen/space_50px"
+                android:layout_height="@dimen/space_50px" />
+            <TextView
+                android:layout_marginTop="@dimen/space_10px"
+                android:textSize="@dimen/space_25px"
+                android:textColor="@color/black"
+                android:text="@string/daily_good_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/rice"
+                android:layout_width="@dimen/space_50px"
+                android:layout_height="@dimen/space_50px" />
+            <TextView
+                android:layout_marginTop="@dimen/space_10px"
+                android:textSize="@dimen/space_25px"
+                android:textColor="@color/black"
+                android:text="@string/often_use_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:gravity="center_horizontal"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@mipmap/rice"
+                android:layout_width="@dimen/space_50px"
+                android:layout_height="@dimen/space_50px" />
+            <TextView
+                android:layout_marginTop="@dimen/space_10px"
+                android:textSize="@dimen/space_25px"
+                android:textColor="@color/black"
+                android:text="@string/change_enjoy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+
+</com.zhy.autolayout.AutoRelativeLayout>

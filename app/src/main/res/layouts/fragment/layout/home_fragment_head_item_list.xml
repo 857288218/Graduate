@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.example.rjq.myapplication.View.SliderLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="240px"
+        android:background="@android:color/white">
+
+        <com.bigkoo.convenientbanner.ConvenientBanner
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/convenientBanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:canLoop="true"
+        />
+
+    </com.example.rjq.myapplication.View.SliderLayout>
+
+
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:paddingTop="10px"
+        android:paddingBottom="10px"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/home_fragment_new_food"
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="75px"
+                    android:layout_height="75px" />
+                <TextView
+                    android:textSize="20px"
+                    android:textColor="#000000"
+                    android:text="新品上市"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="75px"
+                    android:layout_height="75px" />
+                <TextView
+                    android:textSize="20px"
+                    android:textColor="#000000"
+                    android:text="新品上市"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="75px"
+                    android:layout_height="75px" />
+                <TextView
+                    android:textSize="20px"
+                    android:textColor="#000000"
+                    android:text="新品上市"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="75px"
+                    android:layout_height="75px" />
+                <TextView
+                    android:textSize="20px"
+                    android:textColor="#000000"
+                    android:text="新品上市"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_marginTop="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="75px"
+                    android:layout_height="75px" />
+                <TextView
+                    android:textSize="20px"
+                    android:textColor="#000000"
+                    android:text="新品上市"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="75px"
+                    android:layout_height="75px" />
+                <TextView
+                    android:textSize="20px"
+                    android:textColor="#000000"
+                    android:text="新品上市"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="75px"
+                    android:layout_height="75px" />
+                <TextView
+                    android:textSize="20px"
+                    android:textColor="#000000"
+                    android:text="新品上市"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="75px"
+                    android:layout_height="75px" />
+                <TextView
+                    android:textSize="20px"
+                    android:textColor="#000000"
+                    android:text="新品上市"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_marginTop="5px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginLeft="7px"
+            android:scaleType="fitXY"
+            android:id="@+id/home_fragment_often_use_list"
+            android:src="@mipmap/fruit"
+            android:layout_width="350px"
+            android:layout_height="165px" />
+        <TextView
+            android:textColor="#191516"
+            android:textSize="25px"
+            android:layout_marginTop="15px"
+            android:layout_marginLeft="20px"
+            android:text="常用清单"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginLeft="5px"
+            android:layout_toRightOf="@+id/home_fragment_often_use_list"
+            android:scaleType="fitXY"
+            android:id="@+id/home_fragment_day_select"
+            android:src="@mipmap/fruit"
+            android:layout_width="350px"
+            android:layout_height="165px" />
+        <TextView
+            android:layout_toRightOf="@+id/home_fragment_often_use_list"
+            android:textColor="#191516"
+            android:textSize="25px"
+            android:layout_marginTop="15px"
+            android:layout_marginLeft="20px"
+            android:text="每日优选"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_marginTop="5px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginLeft="7px"
+            android:scaleType="fitXY"
+            android:id="@+id/home_fragment_shop_in_shop"
+            android:src="@mipmap/fruit"
+            android:layout_width="350px"
+            android:layout_height="165px" />
+        <TextView
+            android:textColor="#191516"
+            android:textSize="25px"
+            android:layout_marginTop="15px"
+            android:layout_marginLeft="20px"
+            android:text="店中店"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginLeft="5px"
+            android:layout_toRightOf="@+id/home_fragment_shop_in_shop"
+            android:scaleType="fitXY"
+            android:id="@+id/home_fragment_buy_list"
+            android:src="@mipmap/fruit"
+            android:layout_width="350px"
+            android:layout_height="165px" />
+        <TextView
+            android:layout_toRightOf="@+id/home_fragment_shop_in_shop"
+            android:textColor="#191516"
+            android:textSize="25px"
+            android:layout_marginTop="15px"
+            android:layout_marginLeft="20px"
+            android:text="必买清单"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:paddingTop="10px"
+        android:paddingBottom="10px"
+        android:paddingLeft="20px"
+        android:background="#ffffff"
+        android:layout_marginTop="5px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="23px"
+            android:textColor="#191516"
+            android:text="精选分类"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:background="#ffffff"
+        android:id="@+id/home_fragment_inner_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</com.zhy.autolayout.AutoLinearLayout>

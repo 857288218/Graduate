@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_toolbar_transparent"/>
+
+    <android.support.design.widget.TabLayout
+        android:elevation="2dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/classify_fragment_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/text_select_color"
+        app:tabSelectedTextColor="@color/text_select_color"
+        app:tabTextColor="@color/black"
+        app:tabMode="scrollable"
+        />
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ListView
+                android:divider="@null"
+                android:background="@color/grey_background_f3"
+                android:id="@+id/list_left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"/>
+
+        </LinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:orientation="vertical"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="100px">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:gravity="center"
+                    android:layout_weight="1.0"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:gravity="center"
+                        android:layout_weight="1.0"
+                        android:text="只看促销"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_marginTop="20px"
+                    android:layout_marginBottom="20px"
+                    android:background="@color/grey_divider"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"/>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:gravity="center"
+                    android:layout_weight="1.0"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:gravity="center"
+                        android:layout_weight="1.0"
+                        android:text="促销"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_marginTop="20px"
+                    android:layout_marginBottom="20px"
+                    android:background="@color/grey_divider"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"/>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:gravity="center"
+                    android:layout_weight="1.0"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="筛选"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:layout_marginLeft="10px"
+                        android:src="@mipmap/filter"
+                        android:layout_width="25px"
+                        android:layout_height="25px" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <View
+                android:layout_marginLeft="30px"
+                android:background="@color/grey_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
+
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/classify_fragment_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srlEnablePreviewInEditMode="false">
+
+                <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="200px" />
+
+                <ListView
+                    android:id="@+id/list_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:divider="@null"
+                    android:scrollbars="none"/>
+
+                <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:gravity="center_horizontal"
+    android:padding="5px"
+    android:background="#ffffff"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/inner_item_title_tv"
+        android:textColor="#191516"
+        android:text="食肉系列"
+        android:textSize="22px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/inner_item_title_iv"
+        android:scaleType="fitXY"
+        android:src="@mipmap/fruit"
+        android:layout_width="135px"
+        android:layout_height="135px" />
+
+</com.zhy.autolayout.AutoLinearLayout>

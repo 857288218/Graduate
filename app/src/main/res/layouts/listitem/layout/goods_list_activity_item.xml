@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_marginTop="@dimen/space_30px"
+    android:layout_marginBottom="@dimen/space_50px"
+    android:layout_marginRight="@dimen/space_5px"
+    android:layout_marginLeft="@dimen/space_5px"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/goods_list_item_img"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/fruit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_305px" />
+    <TextView
+        android:id="@+id/goods_list_item_describe_tv"
+        android:lineSpacingExtra="@dimen/space_15px"
+        android:text="@string/goods_describe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/goods_list_item_price_tv"
+            android:textColor="@color/text_price_color"
+            android:textSize="@dimen/space_35px"
+            android:text="9.9元"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/limit_num_eat"
+            android:textColor="@color/text_price_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+
+</com.zhy.autolayout.AutoLinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black">#000000</color>
+    <color name="grey_background">#f0f2f1</color>
+    <color name="grey_divider">#e2e2e2</color>
+    <color name="grey_background_f3">#f3f3f3</color>
+    <color name="grey_background_e">#eeeeee</color>
+    <color name="white">#ffffff</color>
+    <color name="text_color_grey">#989898</color>
+    <color name="text_price_color">#ad5f59</color>
+    <color name="text_select_color">#24c720</color>
+
+    <color name="bottom_tab_text_selected_color">#05c0ab</color>
+    <color name="bottom_tab_text_normal_color">#636363</color>
+
+</resources>

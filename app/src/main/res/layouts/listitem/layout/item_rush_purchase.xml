@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_marginTop="10px"
+    android:background="#fff"
+    android:layout_height="wrap_content">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@mipmap/fruit"
+            android:layout_width="280px"
+            android:layout_height="270px" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:orientation="vertical"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="35px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/item_title_tv"
+                android:textColor="#000"
+                android:textSize="35px"
+                android:text="的路宝原装进口儿童"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_marginTop="20px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:textSize="23px"
+                    android:paddingTop="2px"
+                    android:paddingBottom="2px"
+                    android:paddingLeft="10px"
+                    android:paddingRight="10px"
+                    android:background="@drawable/match_border"
+                    android:text="抢洋货"
+                    android:textColor="#9239d9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:textSize="30px"
+                    android:layout_marginLeft="5px"
+                    android:text="前一小时拍下14.9元"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:layout_marginTop="50px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:textSize="40px"
+                    android:textColor="#ff3c32"
+                    android:text="￥24.9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_marginRight="25px"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/red_border"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/autoLinearLayout">
+
+                    <TextView
+                        android:layout_marginLeft="20px"
+                        android:layout_gravity="center"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:text="马上抢"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60px" />
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:src="@mipmap/right_white"
+                        android:layout_width="40px"
+                        android:layout_height="40px"
+                        android:layout_centerVertical="true"
+                        android:layout_alignEnd="@+id/autoLinearLayout"
+                        android:id="@+id/imageView" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</com.zhy.autolayout.AutoLinearLayout>
