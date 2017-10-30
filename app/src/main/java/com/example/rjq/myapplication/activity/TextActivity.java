@@ -77,15 +77,7 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         });
         mRadioButtonHome.setChecked(true);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-
     
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
