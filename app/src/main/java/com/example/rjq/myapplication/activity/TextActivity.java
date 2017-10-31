@@ -83,6 +83,8 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case 1:
                 break;
+            case 2:
+                break;
         }
     }
 
