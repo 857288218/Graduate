@@ -103,7 +103,5 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
             finish();
         }
     }
-
-
-
+    
 }
