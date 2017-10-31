@@ -81,12 +81,7 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
+
         }
     }
 
