@@ -81,7 +81,8 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-
+            case 1:
+                break;
         }
     }
 
@@ -104,8 +105,4 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
 }
