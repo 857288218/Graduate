@@ -112,14 +112,14 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("1","1");
+        Log.d("version1.1","onResume");
     }
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("1","1");
+        Log.d("version1.1","onResume");
     }
 
 }
