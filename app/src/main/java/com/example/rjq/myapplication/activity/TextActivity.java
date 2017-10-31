@@ -117,5 +117,6 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("1","1");
     }
 }
