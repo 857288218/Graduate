@@ -111,9 +111,5 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
             finish();
         }
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+    
 }
