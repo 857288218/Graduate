@@ -85,6 +85,8 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 2:
                 break;
+            case 3:
+                break;
         }
     }
 
@@ -107,6 +109,7 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
