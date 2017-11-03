@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,9 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.adapter.FragAdapter;
 import com.example.rjq.myapplication.fragment.OneFragment;
 import com.example.rjq.myapplication.fragment.ThreeFragment;
 import com.example.rjq.myapplication.fragment.TwoFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,9 +36,15 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     RadioGroup mRadioGroup;
     @BindView(R.id.radio_button_home)
     RadioButton mRadioButtonHome;
+    @BindView(R.id.radio_button_order)
+    RadioButton mRadioBtnOrder;
+    @BindView(R.id.radio_button_my)
+    RadioButton mRadioBtnMy;
+    @BindView(R.id.fragment_vp)
+    ViewPager fragmentVp;
 
-    private Fragment []mFragments;
-    private int tabsNum = 3;
+    private List<Fragment> mFragments;
+    FragAdapter fragAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,36 +57,15 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initData(){
         ButterKnife.bind(this);
-        mFragments = new Fragment [tabsNum];
-        mFragments[0] = new OneFragment();
-        mFragments[1] = new TwoFragment();
-        mFragments[2] = new ThreeFragment();
+        mFragments = new ArrayList<Fragment>();
+        mFragments.add(new OneFragment());
+        mFragments.add(new TwoFragment());
+        mFragments.add(new ThreeFragment());
+        fragAdapter = new FragAdapter(getSupportFragmentManager(), mFragments);
     }
 
     private void initView(){
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Fragment mFragment = null;
-                switch (checkedId){
-                    case R.id.radio_button_home:
-                        mFragment = mFragments[0];
-                        break;
-                    case R.id.radio_button_discovery:
-                        mFragment = mFragments[1];
-                        break;
-                    case R.id.radio_button_attention:
-                        mFragment = mFragments[2];
-                        break;
-                }
-
-                if(mFragments!=null){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container,mFragment).commit();
-                }
-
-            }
-        });
-        mRadioButtonHome.setChecked(true);
+        initBottomTab();
     }
 
     @Override
@@ -84,6 +74,66 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+    private void initBottomTab(){
+        fragmentVp.setAdapter(fragAdapter);
+        fragmentVp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch(position){
+                    case 0:
+                        mRadioButtonHome.setChecked(true);
+                        break;
+                    case 1:
+                        mRadioBtnOrder.setChecked(true);
+                        break;
+                    case 2:
+                        mRadioBtnMy.setChecked(true);
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Fragment mFragment = null;
+                switch (checkedId){
+                    case R.id.radio_button_home:
+                        mFragment = mFragments.get(0);
+                        fragmentVp.setCurrentItem(0);
+                        break;
+                    case R.id.radio_button_order:
+                        mFragment = mFragments.get(1);
+                        fragmentVp.setCurrentItem(1);
+                        break;
+                    case R.id.radio_button_my:
+                        mFragment = mFragments.get(2);
+                        fragmentVp.setCurrentItem(2);
+                        break;
+                }
+
+//                if(mFragments!=null){
+//                    getSupportFragmentManager().beginTransaction().replace();
+//                }
+
+            }
+        });
+        mRadioButtonHome.setChecked(true);
+    }
+
+
+
 
     //对返回键进行监听
     @Override
@@ -102,24 +152,6 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             finish();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("true version1.1","onResume");
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("true version1.1","onResume");
     }
 
 }

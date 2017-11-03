@@ -29,7 +29,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">11sp</item>
-        <item name="android:textColor">@drawable/bottom_tab_text_color_selector</item>
+        <item name="android:textColor">@drawable/selector_bottom_tab_text</item>
     </style>
 
 </resources>

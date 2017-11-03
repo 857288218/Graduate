@@ -41,7 +41,6 @@
                     android:paddingBottom="2px"
                     android:paddingLeft="10px"
                     android:paddingRight="10px"
-                    android:background="@drawable/match_border"
                     android:text="抢洋货"
                     android:textColor="#9239d9"
                     android:layout_width="wrap_content"
@@ -77,7 +76,6 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="center"
-                    android:background="@drawable/red_border"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/autoLinearLayout">

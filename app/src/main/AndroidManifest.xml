@@ -34,16 +34,6 @@
             android:value="1280" />
         <!-- </>autolayout -->
 
-        <activity
-            android:name=".activity.SearchActivity"
-            android:theme="@style/SearchTheme"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".activity.GoodsListActivity" />
-
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="20e35e180efc327e0de05eeb16670ddb" />
-
         <activity android:name=".activity.TextActivity">
 
             <intent-filter>
