@@ -7,19 +7,13 @@
     android:orientation="vertical"
     tools:context="com.example.rjq.myapplication.activity.TextActivity">
 
-    <!--<FrameLayout-->
-        <!--android:id="@+id/home_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--&gt;-->
-    <!--</FrameLayout>-->
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/fragment_vp"
+    <FrameLayout
+        android:id="@+id/tab_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"></android.support.v4.view.ViewPager>
+        android:layout_weight="1"
+        >
+    </FrameLayout>
 
     <RadioGroup
         android:id="@+id/radio_group_button"
@@ -31,24 +25,18 @@
         >
         <RadioButton
             android:id="@+id/radio_button_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="首页"
             android:drawableTop="@drawable/selector_bottom_tab_home"
             style="@style/RadioGroupButtonStyle"
             />
         <RadioButton
             android:id="@+id/radio_button_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="订单"
             android:drawableTop="@drawable/selector_bottom_tab_order"
             style="@style/RadioGroupButtonStyle"
             />
         <RadioButton
             android:id="@+id/radio_button_my"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="我的"
             android:drawableTop="@drawable/selector_bottom_tab_my"
             style="@style/RadioGroupButtonStyle"

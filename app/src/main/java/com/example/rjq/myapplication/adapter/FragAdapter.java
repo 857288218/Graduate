@@ -4,11 +4,10 @@ package com.example.rjq.myapplication.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/11/3 0003.
+ * Created by rjq on 2017/11/3 0003.
  */
 
 public class FragAdapter extends FragmentPagerAdapter {

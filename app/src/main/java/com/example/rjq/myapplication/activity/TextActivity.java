@@ -40,8 +40,8 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     RadioButton mRadioBtnOrder;
     @BindView(R.id.radio_button_my)
     RadioButton mRadioBtnMy;
-    @BindView(R.id.fragment_vp)
-    ViewPager fragmentVp;
+//    @BindView(R.id.fragment_vp)
+//    ViewPager fragmentVp;
 
     private List<Fragment> mFragments;
     FragAdapter fragAdapter;
@@ -57,11 +57,11 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initData(){
         ButterKnife.bind(this);
-        mFragments = new ArrayList<Fragment>();
+        mFragments = new ArrayList<>();
         mFragments.add(new OneFragment());
         mFragments.add(new TwoFragment());
         mFragments.add(new ThreeFragment());
-        fragAdapter = new FragAdapter(getSupportFragmentManager(), mFragments);
+
     }
 
     private void initView(){
@@ -76,34 +76,6 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initBottomTab(){
-        fragmentVp.setAdapter(fragAdapter);
-        fragmentVp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                switch(position){
-                    case 0:
-                        mRadioButtonHome.setChecked(true);
-                        break;
-                    case 1:
-                        mRadioBtnOrder.setChecked(true);
-                        break;
-                    case 2:
-                        mRadioBtnMy.setChecked(true);
-                        break;
-
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -111,28 +83,21 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
                 switch (checkedId){
                     case R.id.radio_button_home:
                         mFragment = mFragments.get(0);
-                        fragmentVp.setCurrentItem(0);
                         break;
                     case R.id.radio_button_order:
                         mFragment = mFragments.get(1);
-                        fragmentVp.setCurrentItem(1);
                         break;
                     case R.id.radio_button_my:
                         mFragment = mFragments.get(2);
-                        fragmentVp.setCurrentItem(2);
                         break;
                 }
-
-//                if(mFragments!=null){
-//                    getSupportFragmentManager().beginTransaction().replace();
-//                }
-
+                if(mFragments!=null){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.tab_fragment_container,mFragment).commit();
+                }
             }
         });
         mRadioButtonHome.setChecked(true);
     }
-
-
 
 
     //对返回键进行监听
