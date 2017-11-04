@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+    <!--tab图片-->
+    <ImageView
+        android:background="@drawable/selector_bottom_tab_home"
+        android:id="@+id/iv_tab"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        />
+    <!--tab名字-->
+    <TextView
+        android:text="首页"
+        android:textColor="@drawable/selector_bottom_tab_text"
+        android:id="@+id/tv_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_7px"
+        android:textSize="11sp"/>
+</com.zhy.autolayout.AutoLinearLayout>

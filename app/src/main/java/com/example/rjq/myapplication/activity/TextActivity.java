@@ -1,8 +1,13 @@
 package com.example.rjq.myapplication.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +18,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.FragAdapter;
+import com.example.rjq.myapplication.bottomTab.BottomTabItem;
 import com.example.rjq.myapplication.fragment.OneFragment;
 import com.example.rjq.myapplication.fragment.ThreeFragment;
 import com.example.rjq.myapplication.fragment.TwoFragment;
@@ -30,21 +37,9 @@ import butterknife.ButterKnife;
 
 public class TextActivity extends AppCompatActivity implements View.OnClickListener{
     private long mExitTime = 0;
-    private static final String TAG = "life";
-
-    @BindView(R.id.radio_group_button)
-    RadioGroup mRadioGroup;
-    @BindView(R.id.radio_button_home)
-    RadioButton mRadioButtonHome;
-    @BindView(R.id.radio_button_order)
-    RadioButton mRadioBtnOrder;
-    @BindView(R.id.radio_button_my)
-    RadioButton mRadioBtnMy;
-//    @BindView(R.id.fragment_vp)
-//    ViewPager fragmentVp;
-
-    private List<Fragment> mFragments;
-    FragAdapter fragAdapter;
+    private static final String TAG = "Text";
+    @BindView(android.R.id.tabhost)
+    FragmentTabHost tabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +52,63 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initData(){
         ButterKnife.bind(this);
-        mFragments = new ArrayList<>();
-        mFragments.add(new OneFragment());
-        mFragments.add(new TwoFragment());
-        mFragments.add(new ThreeFragment());
 
     }
 
     private void initView(){
-        initBottomTab();
+        initBottomTabHost();
+    }
+
+    private void initBottomTabHost(){
+        //绑定tabContent
+        tabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
+        List<BottomTabItem> bottomTabItemList = getBottomTabItemList(this);
+        for (BottomTabItem item : bottomTabItemList){
+            TabHost.TabSpec tabSpec = tabHost.
+                    newTabSpec(item.getTag()).
+                    setIndicator(item.getView());
+            Bundle bundle = new Bundle();
+            bundle.putString("tag", item.getTag());
+            //添加tab和关联对应的fragment
+            tabHost.addTab(tabSpec, item.getFragmentClass(), bundle);
+        }
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+
+            }
+        });
+    }
+
+    public List<BottomTabItem> getBottomTabItemList(Context context) {
+        List<BottomTabItem> list = new ArrayList<>();
+        TypedArray tab_item_tags = context.getResources().obtainTypedArray(R.array.bottom_tab_item_tags);
+        String[] tab_item_fragments = context.getResources().getStringArray(R.array.bottom_tab_item_fragment);
+        TypedArray tab_item_names = context.getResources().obtainTypedArray(R.array.bottom_tab_item_names);
+        TypedArray tab_item_drawables = context.getResources().obtainTypedArray(R.array.bottom_tab_item_drawables);
+        for (int i =0;i<tab_item_tags.length();i++) {
+            BottomTabItem tabItem  = getBottomTabItem(tab_item_tags.getResourceId(i, -1), tab_item_fragments[i], tab_item_names.getResourceId(i, -1), tab_item_drawables.getResourceId(i, -1));
+            list.add(tabItem);
+        }
+        return list;
+    }
+
+    private BottomTabItem getBottomTabItem(int client_tab_item_id, String client_tab_item_launcher, int client_tab_item_name, int client_tab_item_drawable) {
+        String  tag = getResources().getString( client_tab_item_id);
+        String fragment = client_tab_item_launcher;
+        String name = getResources().getString(client_tab_item_name);
+        Drawable icon = getResources().getDrawable(client_tab_item_drawable);
+
+        Class<?> c = null;
+        try {
+            if ((fragment != null) && !("".equals(fragment))) {
+                c = Class.forName(fragment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        BottomTabItem tabItem = new BottomTabItem(this, tag, c, icon, name);
+        return tabItem;
     }
 
     @Override
@@ -74,31 +117,6 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-
-    private void initBottomTab(){
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Fragment mFragment = null;
-                switch (checkedId){
-                    case R.id.radio_button_home:
-                        mFragment = mFragments.get(0);
-                        break;
-                    case R.id.radio_button_order:
-                        mFragment = mFragments.get(1);
-                        break;
-                    case R.id.radio_button_my:
-                        mFragment = mFragments.get(2);
-                        break;
-                }
-                if(mFragments!=null){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.tab_fragment_container,mFragment).commit();
-                }
-            }
-        });
-        mRadioButtonHome.setChecked(true);
-    }
-
 
     //对返回键进行监听
     @Override

@@ -7,40 +7,38 @@
     android:orientation="vertical"
     tools:context="com.example.rjq.myapplication.activity.TextActivity">
 
-    <FrameLayout
-        android:id="@+id/tab_fragment_container"
+    <!--tabhost,必须使用系统的id-->
+    <android.support.v4.app.FragmentTabHost
+        android:id="@android:id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         >
-    </FrameLayout>
 
-    <RadioGroup
-        android:id="@+id/radio_group_button"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/space_110px"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="@drawable/bg_bottombar"
-        >
-        <RadioButton
-            android:id="@+id/radio_button_home"
-            android:text="首页"
-            android:drawableTop="@drawable/selector_bottom_tab_home"
-            style="@style/RadioGroupButtonStyle"
-            />
-        <RadioButton
-            android:id="@+id/radio_button_order"
-            android:text="订单"
-            android:drawableTop="@drawable/selector_bottom_tab_order"
-            style="@style/RadioGroupButtonStyle"
-            />
-        <RadioButton
-            android:id="@+id/radio_button_my"
-            android:text="我的"
-            android:drawableTop="@drawable/selector_bottom_tab_my"
-            style="@style/RadioGroupButtonStyle"
-            />
-    </RadioGroup>
+        <com.zhy.autolayout.AutoLinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--tabcontent,放fragment的,必须使用系统的id-->
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <!--tab页签,必须使用系统的id-->
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_54dp"
+                android:requiresFadingEdge="none"
+                android:tabStripEnabled="false"
+                android:background="@drawable/bg_bottombar"
+                android:showDividers="none" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+    </android.support.v4.app.FragmentTabHost>
 
 </com.zhy.autolayout.AutoLinearLayout>

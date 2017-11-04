@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Tab 页签唯一标识-->
+    <string-array name="bottom_tab_item_tags">
+        <item>@string/tab_item_tag_home</item>
+        <item>@string/tab_item_tag_order</item>
+        <item>@string/tab_item_tag_my</item>
+    </string-array>
+
+    <!--  Tab 页签对应地址-->
+    <string-array name="bottom_tab_item_fragment">
+        <item>com.example.rjq.myapplication.fragment.OneFragment</item>
+        <item>com.example.rjq.myapplication.fragment.TwoFragment</item>
+        <item>com.example.rjq.myapplication.fragment.ThreeFragment</item>
+    </string-array>
+
+    <!--  Tab 页签底部菜单显示名称 -->
+    <string-array name="bottom_tab_item_names">
+        <item>@string/bottom_tab_home</item>
+        <item>@string/bottom_tab_order</item>
+        <item>@string/bottom_tab_my</item>
+    </string-array>
+
+    <!--  Tab 页签底部菜单图片资源-->
+    <string-array name="bottom_tab_item_drawables">
+        <item>@drawable/selector_bottom_tab_home</item>
+        <item>@drawable/selector_bottom_tab_order</item>
+        <item>@drawable/selector_bottom_tab_my</item>
+    </string-array>
+
+
+    <string name="tab_item_tag_home">home</string>
+    <string name="tab_item_tag_order">order</string>
+    <string name="tab_item_tag_my">my</string>
+
+</resources>
