@@ -67,10 +67,8 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
             TabHost.TabSpec tabSpec = tabHost.
                     newTabSpec(item.getTag()).
                     setIndicator(item.getView());
-            Bundle bundle = new Bundle();
-            bundle.putString("tag", item.getTag());
             //添加tab和关联对应的fragment
-            tabHost.addTab(tabSpec, item.getFragmentClass(), bundle);
+            tabHost.addTab(tabSpec, item.getFragmentClass(), null);
         }
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
@@ -94,7 +92,7 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private BottomTabItem getBottomTabItem(int client_tab_item_id, String client_tab_item_launcher, int client_tab_item_name, int client_tab_item_drawable) {
-        String  tag = getResources().getString( client_tab_item_id);
+        String  tag = getResources().getString(client_tab_item_id);
         String fragment = client_tab_item_launcher;
         String name = getResources().getString(client_tab_item_name);
         Drawable icon = getResources().getDrawable(client_tab_item_drawable);
