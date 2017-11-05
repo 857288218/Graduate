@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -45,6 +48,7 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text);
+        handleStateBar();
         initData();
         initView();
 
@@ -132,6 +136,13 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
             mExitTime = System.currentTimeMillis();
         } else {
             finish();
+        }
+    }
+
+    private void handleStateBar(){
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.bottom_tab_text_normal_color));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.bottom_tab_text_normal_color));
         }
     }
 
