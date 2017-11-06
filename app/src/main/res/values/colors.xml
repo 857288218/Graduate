@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#636363</color>
+    <color name="colorPrimaryDark">#636363</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="black">#000000</color>
@@ -16,5 +16,6 @@
 
     <color name="bottom_tab_text_selected_color">#05c0ab</color>
     <color name="bottom_tab_text_normal_color">#636363</color>
-
+    <color name="colorLineGray">#F3F1F4</color><!--下划线灰色-->
+    <color name="colorTransGrey">#8f000000</color>
 </resources>

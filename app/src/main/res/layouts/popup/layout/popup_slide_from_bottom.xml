@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/click_to_dismiss"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#8f000000"-->
+        <!--&gt;-->
+
+    <!--android:layout_alignParentBottom="true"-->
+        <LinearLayout
+            android:id="@+id/popup_anima"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            >
+            <TextView
+                android:id="@+id/tx_1"
+               style="@style/my_popup_item"
+                android:text="拍照"/>
+            <View
+                style="@style/LineOneTheme"/>
+            <TextView
+                android:id="@+id/tx_2"
+                style="@style/my_popup_item"
+                android:text="从相册选择"/>
+            <View
+                style="@style/LineOneTheme"/>
+            <TextView
+                android:id="@+id/tx_3"
+                style="@style/my_popup_item"
+                android:text="取消"/>
+
+        </LinearLayout>
+    <!--</RelativeLayout>-->
+
+</RelativeLayout>
