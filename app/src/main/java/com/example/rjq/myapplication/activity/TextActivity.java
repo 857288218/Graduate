@@ -53,7 +53,6 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         initData();
         initView();
 
-
     }
 
     private void initData(){

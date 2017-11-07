@@ -3,6 +3,7 @@ package com.example.rjq.myapplication.fragment;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,10 +20,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -61,6 +64,9 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     private TextView tv3;
     private TextView tv1;
     private TextView tv2;
+
+    private Dialog dialog;
+    private AlertDialog alertDialog;
 
     @Nullable
     @Override
@@ -125,6 +131,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         picPopWindow.setFocusable(true);
         picPopWindow.showAtLocation(picPopRootLL,Gravity.BOTTOM,0,0);
         setBackgroundAlpha(0.7f);
+
     }
 
     /**
