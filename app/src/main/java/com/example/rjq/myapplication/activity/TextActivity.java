@@ -40,8 +40,9 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     RadioButton mRadioBtnOrder;
     @BindView(R.id.radio_button_my)
     RadioButton mRadioBtnMy;
-//    @BindView(R.id.fragment_vp)
-//    ViewPager fragmentVp;
+    @BindView(R.id.tab_fragment_container)
+    ViewPager fragmentVp;
+
 
     private List<Fragment> mFragments;
     FragAdapter fragAdapter;
@@ -61,6 +62,8 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         mFragments.add(new OneFragment());
         mFragments.add(new TwoFragment());
         mFragments.add(new ThreeFragment());
+        fragAdapter = new FragAdapter(getSupportFragmentManager(),mFragments);
+        fragmentVp.setAdapter(fragAdapter);
 
     }
 
@@ -82,21 +85,51 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
                 Fragment mFragment = null;
                 switch (checkedId){
                     case R.id.radio_button_home:
-                        mFragment = mFragments.get(0);
+                        //mFragment = mFragments.get(0);
+                        fragmentVp.setCurrentItem(0);
                         break;
                     case R.id.radio_button_order:
-                        mFragment = mFragments.get(1);
+//                        mFragment = mFragments.get(1);
+                        fragmentVp.setCurrentItem(1);
                         break;
                     case R.id.radio_button_my:
-                        mFragment = mFragments.get(2);
+//                        mFragment = mFragments.get(2);
+                        fragmentVp.setCurrentItem(2);
                         break;
                 }
-                if(mFragments!=null){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.tab_fragment_container,mFragment).commit();
-                }
+//                if(mFragments!=null){
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.tab_fragment_container,mFragment).commit();
+//                }
             }
         });
         mRadioButtonHome.setChecked(true);
+
+        fragmentVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position){
+                    case 0:
+                        mRadioButtonHome.setChecked(true);
+                        break;
+                    case 1:
+                        mRadioBtnOrder.setChecked(true);
+                        break;
+                    case 2:
+                        mRadioBtnMy.setChecked(true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 
