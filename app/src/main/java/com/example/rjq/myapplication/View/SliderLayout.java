@@ -1,4 +1,4 @@
-package com.example.rjq.myapplication.View;
+package com.example.rjq.myapplication.view;
 
 
 import android.content.Context;

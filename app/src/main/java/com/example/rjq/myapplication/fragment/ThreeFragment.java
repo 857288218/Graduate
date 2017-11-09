@@ -25,7 +25,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -34,7 +33,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.rjq.myapplication.R;
-import com.example.rjq.myapplication.View.RoundAngleImageView;
+import com.example.rjq.myapplication.view.CommonPopupWindow;
+import com.example.rjq.myapplication.view.RoundAngleImageView;
 import com.example.rjq.myapplication.util.FileStorage;
 import com.example.rjq.myapplication.util.lubanimage.Luban;
 import com.example.rjq.myapplication.util.lubanimage.OnCompressListener;
@@ -58,36 +58,25 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     private Uri outputUri;//剪切的地址
     private File lubanFile;
     private String imagePath;
-    private PopupWindow picPopWindow;
-    private View picPopWinView;    //popwindow弹出的布局
-    private AutoLinearLayout picPopRootLL; //设置弹出布局的跟布局
+
+    private CommonPopupWindow commonPopupWindow;
     private TextView tv3;
     private TextView tv1;
     private TextView tv2;
 
-    private Dialog dialog;
-    private AlertDialog alertDialog;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.three_fragment,container,false);
-        initView();
+        if (rootView == null){
+            rootView = inflater.inflate(R.layout.three_fragment,container,false);
+            initView();
+        }
         return rootView;
     }
 
     private void initView(){
         myHeadPhotoIV = (RoundAngleImageView) rootView.findViewById(R.id.fragment_main_my_head_photo_iv);
         myHeadPhotoRL = (AutoRelativeLayout) rootView.findViewById(R.id.fragment_main_my_head_photo_rl);
-        picPopRootLL = (AutoLinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.activity_text,null);
-        picPopWinView = LayoutInflater.from(getActivity()).inflate(R.layout.popup_slide_from_bottom,null);
-        tv3 = (TextView)  picPopWinView.findViewById(R.id.tx_3);
-        tv1 = (TextView) picPopWinView.findViewById(R.id.tx_1);
-        tv2 = (TextView) picPopWinView.findViewById(R.id.tx_2);
-
-        tv1.setOnClickListener(this);
-        tv2.setOnClickListener(this);
-        tv3.setOnClickListener(this);
         myHeadPhotoRL.setOnClickListener(this);
 
     }
@@ -96,17 +85,17 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fragment_main_my_head_photo_rl:
-                showPicPopWindow();
+                initPicPopWindow();
                 break;
             case R.id.tx_3:
-                picPopWindow.dismiss();
+                commonPopupWindow.dismiss();
                 break;
             case R.id.tx_1:
-                picPopWindow.dismiss();
+                commonPopupWindow.dismiss();
                 openCamera();
                 break;
             case R.id.tx_2:
-                picPopWindow.dismiss();
+                commonPopupWindow.dismiss();
                 //检查权限(6.0以上做权限判断)
                 if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION);
@@ -117,21 +106,29 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void showPicPopWindow(){
-        picPopWindow = new PopupWindow(picPopWinView,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        picPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+    private void initPicPopWindow(){
+        commonPopupWindow = new CommonPopupWindow.Builder(getActivity())
+                .setContentView(R.layout.popup_slide_from_bottom)
+                .setwidth(ViewGroup.LayoutParams.MATCH_PARENT)
+                .setheight(ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setAnimationStyle(R.style.popAnim)
+                .setOutSideCancel(true)
+                .setFouse(true)
+                .setBackgroundAlpha(0.7f)
+                .builder()
+                .showAtLocation(R.layout.activity_text,Gravity.BOTTOM,0,0);
+        commonPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                setBackgroundAlpha(1.0f);
+                commonPopupWindow.setBackgroundAlpha(1.0f);
             }
         });
-        picPopWindow.setAnimationStyle(R.style.popAnim);
-        picPopWindow.setBackgroundDrawable(new BitmapDrawable());
-        picPopWindow.setOutsideTouchable(true);
-        picPopWindow.setFocusable(true);
-        picPopWindow.showAtLocation(picPopRootLL,Gravity.BOTTOM,0,0);
-        setBackgroundAlpha(0.7f);
-
+        tv1 = (TextView)commonPopupWindow.getItemView(R.id.tx_1);
+        tv2 = (TextView)commonPopupWindow.getItemView(R.id.tx_2);
+        tv3 = (TextView)commonPopupWindow.getItemView(R.id.tx_3);
+        tv1.setOnClickListener(this);
+        tv2.setOnClickListener(this);
+        tv3.setOnClickListener(this);
     }
 
     /**
@@ -301,12 +298,6 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                         Toast.makeText(getActivity(), "压缩失败", Toast.LENGTH_SHORT).show();
                     }
                 }).launch();    //启动压缩
-    }
-
-    public void setBackgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = (getActivity()).getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        getActivity().getWindow().setAttributes(lp);
     }
 
 }

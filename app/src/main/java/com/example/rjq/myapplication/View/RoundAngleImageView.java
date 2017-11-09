@@ -1,4 +1,4 @@
-package com.example.rjq.myapplication.View;
+package com.example.rjq.myapplication.view;
 
 /**
  * Created by 1 on 2017/4/24.

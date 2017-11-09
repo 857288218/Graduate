@@ -60,6 +60,7 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
     private void initView(){
         initBottomTabHost();
     }

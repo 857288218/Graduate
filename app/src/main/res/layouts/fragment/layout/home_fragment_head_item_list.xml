@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.example.rjq.myapplication.View.SliderLayout
+    <com.example.rjq.myapplication.view.SliderLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="240px"
@@ -20,7 +20,7 @@
             app:canLoop="true"
         />
 
-    </com.example.rjq.myapplication.View.SliderLayout>
+    </com.example.rjq.myapplication.view.SliderLayout>
 
 
 

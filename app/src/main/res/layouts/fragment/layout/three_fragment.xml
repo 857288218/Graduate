@@ -11,7 +11,7 @@
         android:padding="6dp"
         android:background="@color/white">
 
-        <com.example.rjq.myapplication.View.RoundAngleImageView
+        <com.example.rjq.myapplication.view.RoundAngleImageView
             android:id="@+id/fragment_main_my_head_photo_iv"
             android:layout_width="80dp"
             android:layout_height="80dp"
