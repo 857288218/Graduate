@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -126,9 +127,12 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         tv1 = (TextView)commonPopupWindow.getItemView(R.id.tx_1);
         tv2 = (TextView)commonPopupWindow.getItemView(R.id.tx_2);
         tv3 = (TextView)commonPopupWindow.getItemView(R.id.tx_3);
+
         tv1.setOnClickListener(this);
         tv2.setOnClickListener(this);
         tv3.setOnClickListener(this);
+
+
     }
 
     /**

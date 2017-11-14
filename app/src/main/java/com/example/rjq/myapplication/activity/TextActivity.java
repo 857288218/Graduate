@@ -52,14 +52,11 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         handleStateBar();
         initData();
         initView();
-
     }
 
     private void initData(){
         ButterKnife.bind(this);
-
     }
-
 
     private void initView(){
         initBottomTabHost();

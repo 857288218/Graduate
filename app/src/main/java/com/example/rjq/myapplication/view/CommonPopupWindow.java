@@ -22,11 +22,10 @@ public class CommonPopupWindow {
         contentview = LayoutInflater.from(mContext).inflate(builder.contentviewid,null);
         mPopupWindow = new PopupWindow(contentview,builder.width,builder.height);
 
+        mPopupWindow.setAnimationStyle(builder.animstyle);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setOutsideTouchable(builder.outsidecancel);
         mPopupWindow.setFocusable(builder.fouse);
-
-        mPopupWindow.setAnimationStyle(builder.animstyle);
         setBackgroundAlpha(builder.alpha);
     }
 

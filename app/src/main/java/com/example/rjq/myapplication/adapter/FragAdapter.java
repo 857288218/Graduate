@@ -28,4 +28,6 @@ public class FragAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         return mFragments.get(position);
     }
+
+
 }

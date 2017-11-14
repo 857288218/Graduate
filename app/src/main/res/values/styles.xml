@@ -71,13 +71,27 @@
         <!-- 半透明 -->
         <item name="android:windowIsTranslucent">true</item>
         <!-- Dialog进入及退出动画 -->
-        <item name="android:windowAnimationStyle">@style/popAnim</item>
+        <item name="android:windowAnimationStyle">@style/dialogAnim</item>
     </style>
 
     <!--popupWindow从底部弹出消失动画-->
     <style name="dialogAnim" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
         <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
+    </style>
+
+    <!--  switch 控件标准样式  -->
+    <style name="mx_switch_custom_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:thumbTextPadding">18dip</item>
+        <item name="android:switchMinWidth">36dip</item>
+        <item name="android:track">@drawable/mx_switch_track</item>
+        <item name="android:thumb">@drawable/mx_switch_thumb_normal</item>
+    </style>
+
+    <style name="switchTheme">
+        <item name="colorAccent">@color/text_select_color</item>
     </style>
 
 </resources>
