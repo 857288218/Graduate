@@ -67,12 +67,13 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
         tabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
         List<BottomTabItem> bottomTabItemList = getBottomTabItemList(this);
         for (BottomTabItem item : bottomTabItemList){
-            TabHost.TabSpec tabSpec = tabHost.
-                    newTabSpec(item.getTag()).
-                    setIndicator(item.getView());
+            TabHost.TabSpec tabSpec = tabHost
+                    .newTabSpec(item.getTag())
+                    .setIndicator(item.getView());
             //添加tab和关联对应的fragment
             tabHost.addTab(tabSpec, item.getFragmentClass(), null);
         }
+
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
