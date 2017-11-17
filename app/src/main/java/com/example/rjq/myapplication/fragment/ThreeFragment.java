@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     private File lubanFile;
     private String imagePath;
 
+    private Dialog dialog;
     private CommonPopupWindow commonPopupWindow;
     private TextView tv3;
     private TextView tv1;
@@ -89,14 +91,17 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                 initPicPopWindow();
                 break;
             case R.id.tx_3:
-                commonPopupWindow.dismiss();
+                //commonPopupWindow.dismiss();
+                dialog.dismiss();
                 break;
             case R.id.tx_1:
-                commonPopupWindow.dismiss();
+                //commonPopupWindow.dismiss();
+                dialog.dismiss();
                 openCamera();
                 break;
             case R.id.tx_2:
-                commonPopupWindow.dismiss();
+                //commonPopupWindow.dismiss();
+                dialog.dismiss();
                 //检查权限(6.0以上做权限判断)
                 if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION);
@@ -108,31 +113,32 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initPicPopWindow(){
-        commonPopupWindow = new CommonPopupWindow.Builder(getActivity())
-                .setContentView(R.layout.popup_slide_from_bottom)
-                .setwidth(ViewGroup.LayoutParams.MATCH_PARENT)
-                .setheight(ViewGroup.LayoutParams.WRAP_CONTENT)
-                .setAnimationStyle(R.style.popAnim)
-                .setOutSideCancel(true)
-                .setFouse(true)
-                .setBackgroundAlpha(0.7f)
-                .builder()
-                .showAtLocation(R.layout.activity_text,Gravity.BOTTOM,0,0);
-        commonPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                commonPopupWindow.setBackgroundAlpha(1.0f);
-            }
-        });
-        tv1 = (TextView)commonPopupWindow.getItemView(R.id.tx_1);
-        tv2 = (TextView)commonPopupWindow.getItemView(R.id.tx_2);
-        tv3 = (TextView)commonPopupWindow.getItemView(R.id.tx_3);
-
+        dialog = new Dialog(getActivity(),R.style.ActionSheetDialogStyle);
+        //填充对话框的布局
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_slide_from_bottom, null);
+        tv1 = (TextView)view.findViewById(R.id.tx_1);
+        tv2 = (TextView)view.findViewById(R.id.tx_2);
+        tv3 = (TextView)view.findViewById(R.id.tx_3);
         tv1.setOnClickListener(this);
         tv2.setOnClickListener(this);
         tv3.setOnClickListener(this);
 
+        //将布局设置给Dialog
+        dialog.setContentView(view);
+        //获取当前Activity所在的窗体
+        Window dialogWindow = dialog.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.y = 0;//设置Dialog距离底部的距离
+        //设置dialog宽度满屏
+        WindowManager m = dialogWindow.getWindowManager();
+        Display d = m.getDefaultDisplay();
+        lp.width = d.getWidth();
 
+        //将属性设置给窗体
+        dialogWindow.setAttributes(lp);
+        //设置Dialog从窗体底部弹出
+        dialogWindow.setGravity( Gravity.BOTTOM);
+        dialog.show();//显示对话框
     }
 
     /**

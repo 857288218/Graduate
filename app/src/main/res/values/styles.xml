@@ -49,12 +49,6 @@
         <item name="android:background">@color/colorLineGray</item>
     </style>
 
-    <!--popupWindow从底部弹出消失动画-->
-    <style name="popAnim" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
-        <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
-    </style>
-
     <!--dialog属性自定义-->
     <style name="ActionSheetDialogStyle" parent="@android:style/Theme.Dialog">
         <!-- 背景透明 -->
@@ -74,8 +68,14 @@
         <item name="android:windowAnimationStyle">@style/dialogAnim</item>
     </style>
 
-    <!--popupWindow从底部弹出消失动画-->
+    <!--Dialog从底部弹出消失动画-->
     <style name="dialogAnim" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
+    </style>
+
+    <!--popupWindow从底部弹出消失动画-->
+    <style name="popAnim" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
         <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
     </style>
