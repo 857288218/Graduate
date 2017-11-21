@@ -122,22 +122,20 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         tv1.setOnClickListener(this);
         tv2.setOnClickListener(this);
         tv3.setOnClickListener(this);
-
         //将布局设置给Dialog
         dialog.setContentView(view);
         //获取当前Activity所在的窗体
         Window dialogWindow = dialog.getWindow();
+        //设置Dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.BOTTOM);
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.y = 0;//设置Dialog距离底部的距离
         //设置dialog宽度满屏
         WindowManager m = dialogWindow.getWindowManager();
         Display d = m.getDefaultDisplay();
         lp.width = d.getWidth();
-
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
-        //设置Dialog从窗体底部弹出
-        dialogWindow.setGravity( Gravity.BOTTOM);
         dialog.show();//显示对话框
     }
 
