@@ -39,7 +39,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             initData();
             initView();
         }
-        Log.d("two","onCreateView one");
+        Log.d(TAG,"onCreateView one");
         return rootView;
     }
 
@@ -68,61 +68,61 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d("two","onAttach one");
+        Log.d(TAG,"onAttach one");
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("two","onCreate one");
+        Log.d(TAG,"onCreate one");
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("two","onActivityCreated one");
+        Log.d(TAG,"onActivityCreated one");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("two","onStart one");
+        Log.d(TAG,"onStart one");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("two","onResume one");
+        Log.d(TAG,"onResume one");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("two","onPause one");
+        Log.d(TAG,"onPause one");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d("two","onStop one");
+        Log.d(TAG,"onStop one");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d("two","onDestroyView one");
+        Log.d(TAG,"onDestroyView one");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("two","onDestroy one");
+        Log.d(TAG,"onDestroy one");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d("two","onDetach one");
+        Log.d(TAG,"onDetach one");
     }
 
 

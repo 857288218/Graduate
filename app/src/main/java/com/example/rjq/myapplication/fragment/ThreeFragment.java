@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -21,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -48,6 +50,7 @@ import java.io.File;
  * Created by rjq on 2017/10/28 0028.
  */
 public class ThreeFragment extends Fragment implements View.OnClickListener{
+    private static final String TAG = "life";
     private View rootView;
     private RoundAngleImageView myHeadPhotoIV;
     private AutoRelativeLayout myHeadPhotoRL;
@@ -74,6 +77,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             rootView = inflater.inflate(R.layout.three_fragment,container,false);
             initView();
         }
+        Log.d(TAG,"onCreateView three");
         return rootView;
     }
 
@@ -306,6 +310,66 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                         Toast.makeText(getActivity(), "压缩失败", Toast.LENGTH_SHORT).show();
                     }
                 }).launch();    //启动压缩
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG,"onAttach three");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate three");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG,"onActivityCreated three");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart three");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume three");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG,"onPause three");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG,"onStop three");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG,"onDestroyView three");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"onDestroy three");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG,"onDetach three");
     }
 
 }
