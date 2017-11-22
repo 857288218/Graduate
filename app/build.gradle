@@ -58,6 +58,8 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.7.0'
     compile 'com.github.baserecycleradapter:library:1.1.0'
 
+    compile 'com.youth.banner:banner:1.4.10'
+
     //rxjava retrofit - okhttp
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'

@@ -13,10 +13,6 @@
         <item name="colorPrimaryDark">#c1c1c1</item>
     </style>
 
-    <style name="MainTheme" parent="AppTheme">
-
-    </style>
-
     <style name="toolbar_textAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">32px</item>
     </style>

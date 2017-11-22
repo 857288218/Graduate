@@ -2,14 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/click_to_dismiss"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="#8f000000"-->
-        <!--&gt;-->
-
-    <!--android:layout_alignParentBottom="true"-->
         <LinearLayout
             android:id="@+id/popup_anima"
             android:layout_width="match_parent"
@@ -35,6 +27,5 @@
                 android:text="取消"/>
 
         </LinearLayout>
-    <!--</RelativeLayout>-->
 
 </RelativeLayout>

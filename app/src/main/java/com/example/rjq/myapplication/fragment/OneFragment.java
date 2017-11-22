@@ -1,23 +1,32 @@
 package com.example.rjq.myapplication.fragment;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
+
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.util.GlideImageLoader;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by rjq on 2017/10/28 0028.
@@ -26,10 +35,11 @@ import java.util.List;
 public class OneFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "life";
     private View rootView;
-    private ImageView oneIV;
-    private TextView oneTV;
+    @BindView(R.id.banner)
+    Banner mBanner;
 
-    private List<String> list;
+    private List<String> imageUrl;
+    private List<String> bannerTitle;
 
     @Nullable
     @Override
@@ -44,25 +54,58 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initView(){
-        oneIV = (ImageView) rootView.findViewById(R.id.one);
-        oneTV = (TextView) rootView.findViewById(R.id.one2);
-        oneTV.setText(list.get(0));
-        oneIV.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.anim_scale));
-        oneIV.setOnClickListener(this);
+        initBanner();
     }
 
     private void initData(){
-        list = new ArrayList<>();
-        list.add("rjq");
+        ButterKnife.bind(this,rootView);
+        //图片地址
+        imageUrl = new ArrayList<>();
+        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg");
+        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
+        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
+        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
+
+        //Title名称
+        bannerTitle = new ArrayList<>();
+        bannerTitle.add("一");
+        bannerTitle.add("二");
+        bannerTitle.add("三");
+        bannerTitle.add("四");
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.one:
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                break;
+
         }
+    }
+
+    private void initBanner(){
+        //设置样式,默认为:Banner.NOT_INDICATOR(不显示指示器和标题)
+        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+        //设置轮播样式（没有标题默认为右边,有标题时默认左边）
+        mBanner.setIndicatorGravity(BannerConfig.RIGHT);
+        //设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
+        mBanner.setBannerTitles(bannerTitle);
+        //设置是否自动轮播（不设置则默认自动）
+        mBanner.isAutoPlay(true);
+        //设置轮播图片间隔时间（不设置默认为2000）
+        mBanner.setDelayTime(3000);
+        //设置图片加载器
+        mBanner.setImageLoader(new GlideImageLoader());
+        //设置图片集合
+        mBanner.setImages(imageUrl);
+        //设置banner动画效果(为ViewPager的滑动动画)
+        mBanner.setBannerAnimation(Transformer.Default);
+        //设置点击事件，下标是从0开始
+        mBanner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Toast.makeText(getActivity(), "您点击了："+position, Toast.LENGTH_SHORT).show();
+            }
+        });
+        mBanner.start();
     }
 
     @Override
@@ -86,6 +129,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
+        mBanner.startAutoPlay();
         Log.d(TAG,"onStart one");
     }
 
@@ -104,6 +148,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStop() {
         super.onStop();
+        mBanner.stopAutoPlay();
         Log.d(TAG,"onStop one");
     }
 

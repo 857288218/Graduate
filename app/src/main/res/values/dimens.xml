@@ -17,6 +17,7 @@
     <dimen name="space_8px">8px</dimen>
     <dimen name="space_10px">10px</dimen>
     <dimen name="space_15px">15px</dimen>
+    <dimen name="space_18px">18px</dimen>
     <dimen name="space_20px">20px</dimen>
     <dimen name="space_25px">25px</dimen>
     <dimen name="space_305px">305px</dimen>
@@ -29,6 +30,8 @@
     <dimen name="space_80px">80px</dimen>
     <dimen name="space_100px">100px</dimen>
     <dimen name="space_110px">110px</dimen>
+    <dimen name="space_220px">220px</dimen>
+    <dimen name="space_300px">300px</dimen>
 
     <dimen name="sl_arc_height">6.5dp</dimen>
 
