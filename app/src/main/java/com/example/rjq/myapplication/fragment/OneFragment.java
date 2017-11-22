@@ -2,6 +2,8 @@ package com.example.rjq.myapplication.fragment;
 
 import android.content.Context;
 
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -39,6 +42,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     Banner mBanner;
 
     private List<String> imageUrl;
+    private List<Integer> imageLocal;
     private List<String> bannerTitle;
 
     @Nullable
@@ -65,6 +69,13 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
+
+        //本地图片
+        imageLocal = new ArrayList<>();
+        imageLocal.add(R.drawable.b1);
+        imageLocal.add(R.drawable.b2);
+        imageLocal.add(R.drawable.b3);
+        imageLocal.add(R.drawable.b2);
 
         //Title名称
         bannerTitle = new ArrayList<>();
