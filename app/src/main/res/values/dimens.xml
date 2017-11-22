@@ -24,6 +24,7 @@
     <dimen name="space_30px">30px</dimen>
     <dimen name="space_35px">35px</dimen>
     <dimen name="space_32px">32px</dimen>
+    <dimen name="space_40px">40px</dimen>
     <dimen name="space_50px">50px</dimen>
     <dimen name="space_60px">60px</dimen>
     <dimen name="space_54dp">54dp</dimen>

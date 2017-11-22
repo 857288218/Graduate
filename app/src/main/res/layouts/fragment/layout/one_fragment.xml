@@ -15,10 +15,11 @@
         app:indicator_width="@dimen/space_18px"
         app:indicator_height="@dimen/space_18px"
         app:indicator_margin="@dimen/space_15px"
-        app:title_height="@dimen/space_80px"
+        app:title_height="@dimen/space_60px"
+        app:title_textsize="@dimen/space_40px"
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/space_300px"/>
+        android:layout_height="@dimen/space_220px"/>
 
 
 </com.zhy.autolayout.AutoRelativeLayout>

@@ -96,7 +96,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         //设置样式,默认为:Banner.NOT_INDICATOR(不显示指示器和标题)
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置轮播样式（没有标题默认为右边,有标题时默认左边）
-        mBanner.setIndicatorGravity(BannerConfig.RIGHT);
+        mBanner.setIndicatorGravity(BannerConfig.CENTER);
         //设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
         mBanner.setBannerTitles(bannerTitle);
         //设置是否自动轮播（不设置则默认自动）

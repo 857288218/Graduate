@@ -16,7 +16,7 @@
 
     <color name="bottom_tab_text_selected_color">#05c0ab</color>
     <color name="bottom_tab_text_normal_color">#636363</color>
-    <color name="indicator_unselected_color">#737473</color>
+    <color name="indicator_unselected_color">#88737473</color>
     <color name="indicator_selected_color">#fff</color>
     <color name="colorLineGray">#F3F1F4</color><!--下划线灰色-->
     <color name="colorTransGrey">#8f000000</color>
