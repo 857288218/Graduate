@@ -79,4 +79,10 @@ public class ThreeFragment extends Fragment {
         super.onDetach();
         Log.d(TAG,"three onDetach");
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG,"three onStop");
+    }
 }

@@ -79,4 +79,10 @@ public class OneFragment extends Fragment {
         super.onDetach();
         Log.d(TAG,"one onDetach");
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG,"one onStop");
+    }
 }
