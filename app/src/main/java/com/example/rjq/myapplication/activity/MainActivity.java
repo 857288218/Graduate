@@ -1,37 +1,19 @@
 package com.example.rjq.myapplication.activity;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
-import com.example.rjq.myapplication.adapter.FragAdapter;
 import com.example.rjq.myapplication.bottomTab.BottomTabItem;
-import com.example.rjq.myapplication.fragment.OneFragment;
-import com.example.rjq.myapplication.fragment.ThreeFragment;
-import com.example.rjq.myapplication.fragment.TwoFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TextActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private long mExitTime = 0;
     private static final String TAG = "Text";
     @BindView(android.R.id.tabhost)
@@ -48,7 +30,7 @@ public class TextActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text);
+        setContentView(R.layout.activity_main);
         handleStateBar();
         initData();
         initView();

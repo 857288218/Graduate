@@ -33,7 +33,7 @@
             android:value="1280" />
         <!-- </>autolayout -->
 
-        <activity android:name=".activity.TextActivity">
+        <activity android:name=".activity.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
