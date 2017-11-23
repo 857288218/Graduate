@@ -32,7 +32,10 @@
     <dimen name="space_100px">100px</dimen>
     <dimen name="space_110px">110px</dimen>
     <dimen name="space_220px">220px</dimen>
+    <dimen name="space_240px">240px</dimen>
+    <dimen name="space_250px">250px</dimen>
     <dimen name="space_300px">300px</dimen>
+    <dimen name="space_500px">500px</dimen>
 
     <dimen name="sl_arc_height">6.5dp</dimen>
 

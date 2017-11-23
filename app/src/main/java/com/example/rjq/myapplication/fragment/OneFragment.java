@@ -94,21 +94,13 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 
     private void initBanner(){
         //设置样式,默认为:Banner.NOT_INDICATOR(不显示指示器和标题)
-        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         //设置轮播样式（没有标题默认为右边,有标题时默认左边）
         mBanner.setIndicatorGravity(BannerConfig.CENTER);
-        //设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
-        mBanner.setBannerTitles(bannerTitle);
-        //设置是否自动轮播（不设置则默认自动）
-        mBanner.isAutoPlay(true);
-        //设置轮播图片间隔时间（不设置默认为2000）
-        mBanner.setDelayTime(3000);
         //设置图片加载器
         mBanner.setImageLoader(new GlideImageLoader());
         //设置图片集合
-        mBanner.setImages(imageUrl);
-        //设置banner动画效果(为ViewPager的滑动动画)
-        mBanner.setBannerAnimation(Transformer.Default);
+        mBanner.setImages(imageLocal);
         //设置点击事件，下标是从0开始
         mBanner.setOnBannerListener(new OnBannerListener() {
             @Override

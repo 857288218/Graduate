@@ -1,6 +1,4 @@
 package com.example.rjq.myapplication.view;
-
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -27,19 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 
 import com.example.rjq.myapplication.R;
-
-/**
- * Package:com.liuting.imageswitcher
- * author:liuting
- * Date:2017/3/29
- * Desc:the custom widget of slider image
- */
-
 public class SliderLayout extends RelativeLayout implements View.OnTouchListener, ViewSwitcher.ViewFactory {
-    private int pictureIndex = 0;//index
-    private static final int START_AUTO_PLAY = 0;
-    private Context context;//context
-
+    private Context context;
     private ArcShape arcShape = ArcShape.inSide;
     private float arcHeight = getResources().getDimension(R.dimen.sl_arc_height);
     private ArcPosition arcPosition = ArcPosition.bottom;
@@ -64,7 +51,6 @@ public class SliderLayout extends RelativeLayout implements View.OnTouchListener
         left,
         right
     }
-
 
     public SliderLayout(Context context) {
         super(context);
