@@ -8,6 +8,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by Fsh on 2016/12/28.
@@ -50,7 +53,6 @@ public class FileStorage {
         return new File(iconDir, fileName);
     }
 
-
     public static String getRealFilePath(final Context context, final Uri uri ) {
         if ( null == uri ) return null;
         final String scheme = uri.getScheme();
@@ -73,4 +75,36 @@ public class FileStorage {
         }
         return data;
     }
+
+    public static void saveDataToFile(File fileToWrite, String data, boolean appand) {
+        FileOutputStream fOut = null;
+        OutputStreamWriter myOutWriter = null;
+        try {
+            if (!fileToWrite.exists()) {
+                File parentFile = fileToWrite.getParentFile();
+                parentFile.mkdirs();
+                fileToWrite.createNewFile();
+            }
+            fOut = new FileOutputStream(fileToWrite, appand);
+            myOutWriter = new OutputStreamWriter(fOut);
+            myOutWriter.append(data);
+            myOutWriter.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fOut != null) {
+                try {
+                    fOut.close();
+                } catch (IOException e) {
+                }
+            }
+            if (myOutWriter != null) {
+                try {
+                    myOutWriter.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+    }
+
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:paddingLeft="@dimen/dimen_10dp"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/one_content_item_iv"
+        android:scaleType="centerCrop"
+        android:src="@drawable/b1"
+        android:layout_width="@dimen/space_300px"
+        android:layout_height="@dimen/space_300px" />
+
+    <TextView
+        android:id="@+id/one_content_item_tv"
+        android:layout_marginLeft="@dimen/space_40px"
+        android:layout_gravity="center"
+        android:text="一分钟轻响五折优惠"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

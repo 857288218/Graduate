@@ -8,6 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--欢迎页面主题-->
+    <style name="ThemeWelcome" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/start_img</item>
+    </style>
+
     <style name="SearchTheme" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">#c1c1c1</item>
