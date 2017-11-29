@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +22,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener{
     private long mExitTime = 0;
     private static final String TAG = "Text";
+
     @BindView(android.R.id.tabhost)
     FragmentTabHost tabHost;
 
@@ -31,16 +33,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        handleStateBar();
-        initData();
-        initView();
     }
 
-    private void initData(){
-        ButterKnife.bind(this);
+    @Override
+    protected void initData() {
+        super.initData();
     }
 
-    private void initView(){
+    @Override
+    protected void initView() {
+        super.initView();
         initBottomTabHost();
     }
 
@@ -121,11 +123,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void handleStateBar(){
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.bottom_tab_text_normal_color));
-            getWindow().setStatusBarColor(getResources().getColor(R.color.bottom_tab_text_normal_color));
-        }
-    }
 
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
@@ -27,7 +29,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.OneFragmentAdapter;
-import com.example.rjq.myapplication.util.GlideImageLoader;
+
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -37,6 +39,7 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
 import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +64,8 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     private List<String> imageUrl;
     private List<Integer> imageLocal;
     private List<String> bannerTitle;
+
+    private BaseQuickAdapter adapter;
 
     @Nullable
     @Override
@@ -112,7 +117,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         initBanner();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         oneRecyclerView.setLayoutManager(linearLayoutManager);
-        final BaseQuickAdapter adapter = new BaseQuickAdapter<String,BaseViewHolder>(R.layout.one_fragment_content_item,imageUrl) {
+        adapter = new BaseQuickAdapter<String,BaseViewHolder>(R.layout.one_fragment_content_item,imageUrl) {
             @Override
             protected void convert(BaseViewHolder helper, String item) {
                 helper.addOnClickListener(R.id.one_content_item_iv)
@@ -146,25 +151,30 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         oneRecyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()){
-
-        }
-    }
-
     private void initRefresh(){
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
+                mBanner.stopAutoPlay();
+                //在这里进行网络请求，更新数据
+
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mBanner.update(imageUrl);
+                        mBanner.startAutoPlay();
+                    }
+                },1000);
+                refreshlayout.finishRefresh(1000);
             }
+
         });
 
         smartRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
-                refreshlayout.finishLoadmore(2000);
+                refreshlayout.finishLoadmore();
             }
         });
     }
@@ -175,7 +185,15 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         //设置轮播样式（没有标题默认为右边,有标题时默认左边）
         mBanner.setIndicatorGravity(BannerConfig.CENTER);
         //设置图片加载器
-        mBanner.setImageLoader(new GlideImageLoader());
+        mBanner.setImageLoader(new ImageLoader() {
+            @Override
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                Glide.with(context.getApplicationContext())
+                        .load(path)
+                        .crossFade()
+                        .into(imageView);
+            }
+        });
         //设置图片集合
         mBanner.setImages(imageLocal);
         mBanner.setBannerAnimation(Transformer.Default);
@@ -187,6 +205,13 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             }
         });
         mBanner.start();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+
+        }
     }
 
     @Override

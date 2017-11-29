@@ -9,11 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.rjq.myapplication.R;
-import com.example.rjq.myapplication.util.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.loader.ImageLoader;
 
 import java.util.List;
 
@@ -110,7 +111,15 @@ public class OneFragmentAdapter extends RecyclerView.Adapter<OneFragmentAdapter.
             //设置轮播样式（没有标题默认为右边,有标题时默认左边）
             holder.banner.setIndicatorGravity(BannerConfig.CENTER);
             //设置图片加载器
-            holder.banner.setImageLoader(new GlideImageLoader());
+            holder.banner.setImageLoader(new ImageLoader() {
+                @Override
+                public void displayImage(Context context, Object path, ImageView imageView) {
+                    Glide.with(context.getApplicationContext())
+                            .load(path)
+                            .crossFade()
+                            .into(imageView);
+                }
+            });
             //设置图片集合
             holder.banner.setImages(imageLocal);
             //设置点击事件，下标是从0开始
