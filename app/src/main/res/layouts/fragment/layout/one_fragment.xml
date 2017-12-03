@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,17 +14,33 @@
 
                 <com.scwang.smartrefresh.layout.header.ClassicsHeader
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="60dp"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/one_fragment_rv"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent">
+
+                        <TextView
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:text="我是标题栏"
+                            android:background="@color/bottom_tab_text_selected_color"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/space_80px"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/one_fragment_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                </LinearLayout>
 
                 <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+                    android:id="@+id/one_fragment_refresh_footer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="60dp"/>
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-</com.zhy.autolayout.AutoRelativeLayout>
+</com.zhy.autolayout.AutoLinearLayout>

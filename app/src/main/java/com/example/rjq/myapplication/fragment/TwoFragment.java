@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +36,11 @@ public class TwoFragment extends Fragment implements View.OnClickListener{
             initView();
         }
         Log.d(TAG,"onCreateView two");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.common_status_bar_color));
+        }
         return rootView;
     }
 

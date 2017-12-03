@@ -5,7 +5,6 @@
     android:layout_height="wrap_content">
 
     <com.youth.banner.Banner
-        app:banner_default_image="@drawable/default_photo"
         app:indicator_drawable_unselected="@drawable/indicator_drawable_unselected"
         app:indicator_drawable_selected="@drawable/indicator_drawable_selected"
         app:delay_time="3000"

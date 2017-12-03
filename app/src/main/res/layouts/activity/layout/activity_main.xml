@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context="com.example.rjq.myapplication.activity.MainActivity">
 
+
     <!--tabhost,必须使用系统的id-->
     <android.support.v4.app.FragmentTabHost
         android:id="@android:id/tabhost"

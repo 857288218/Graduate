@@ -31,6 +31,7 @@
     <dimen name="space_80px">80px</dimen>
     <dimen name="space_100px">100px</dimen>
     <dimen name="space_110px">110px</dimen>
+    <dimen name="space_180px">180px</dimen>
     <dimen name="space_220px">220px</dimen>
     <dimen name="space_240px">240px</dimen>
     <dimen name="space_250px">250px</dimen>

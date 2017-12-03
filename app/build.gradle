@@ -54,8 +54,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.7.0'
     apt 'com.jakewharton:butterknife-compiler:8.7.0'
-    compile 'com.youth.banner:banner:1.4.10'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+//    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'//一个开源gif控件
+    compile project(':banner')
 
     //rxjava retrofit - okhttp
     compile 'io.reactivex:rxjava:1.1.0'

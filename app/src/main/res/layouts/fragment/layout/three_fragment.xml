@@ -6,23 +6,61 @@
     android:id="@+id/three_fragment_root"
     android:layout_height="match_parent">
 
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:id="@+id/fragment_main_my_head_photo_rl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="6dp"
-        android:background="@color/white">
+    <TextView
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="我是标题栏"
+        android:background="@color/bottom_tab_text_selected_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_80px"/>
 
-        <com.example.rjq.myapplication.view.RoundAngleImageView
-            android:id="@+id/fragment_main_my_head_photo_iv"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="30dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/default_photo" />
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    </com.zhy.autolayout.AutoRelativeLayout>
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:background="@color/bottom_tab_text_selected_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_300px">
+
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:id="@+id/fragment_main_my_head_photo_rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:background="@color/white">
+
+                    <com.example.rjq.myapplication.view.RoundAngleImageView
+                        android:id="@+id/fragment_main_my_head_photo_iv"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="30dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/default_photo" />
+
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </ScrollView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </com.zhy.autolayout.AutoLinearLayout>

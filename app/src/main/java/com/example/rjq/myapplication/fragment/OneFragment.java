@@ -4,6 +4,7 @@ import android.content.Context;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,8 +19,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ import com.youth.banner.Transformer;
 
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
+import com.zhy.autolayout.AutoLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +57,7 @@ import butterknife.ButterKnife;
 
 public class OneFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "life";
-    private View rootView;
+    private AutoLinearLayout rootView;
     private View headItemView;
     private Banner mBanner;
     @BindView(R.id.one_fragment_rv)
@@ -71,11 +75,16 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null){
-            rootView = inflater.inflate(R.layout.one_fragment,container,false);
+            rootView = (AutoLinearLayout) inflater.inflate(R.layout.one_fragment,container,false);
             initData();
             initView();
         }
         Log.d(TAG,"onCreateView one");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.common_status_bar_color));
+        }
         return rootView;
     }
 
@@ -88,11 +97,12 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 
     private void initData(){
         ButterKnife.bind(this,rootView);
-        //图片地址
+//        图片地址
         imageUrl = new ArrayList<>();
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg");
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
+        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
         imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
@@ -146,9 +156,11 @@ public class OneFragment extends Fragment implements View.OnClickListener{
                 }
             }
         });
+        adapter.setEmptyView(LayoutInflater.from(getActivity()).inflate(R.layout.one_fragment_empty_view,null));
         adapter.addHeaderView(headItemView);
         adapter.setHeaderFooterEmpty(true,true);
         oneRecyclerView.setAdapter(adapter);
+
     }
 
     private void initRefresh(){
@@ -205,6 +217,14 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             }
         });
         mBanner.start();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (imageUrl.isEmpty()){
+            smartRefreshLayout.setEnableLoadmore(false);
+        }
     }
 
     @Override

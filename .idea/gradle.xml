@@ -8,9 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/MXKit" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/sliderlayout" />
+            <option value="$PROJECT_DIR$/banner" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

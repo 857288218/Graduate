@@ -3,9 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Graduate.iml" filepath="$PROJECT_DIR$/Graduate.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MXKit/MXKit.iml" filepath="$PROJECT_DIR$/MXKit/MXKit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sliderlayout/sliderlayout.iml" filepath="$PROJECT_DIR$/sliderlayout/sliderlayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/banner/banner.iml" filepath="$PROJECT_DIR$/banner/banner.iml" />
     </modules>
   </component>
 </project>
