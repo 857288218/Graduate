@@ -118,14 +118,19 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             case R.id.tx_1:
                 //commonPopupWindow.dismiss();
                 dialog.dismiss();
-                openCamera();
+                if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(new String[]{Manifest.permission.CAMERA},5);
+                }else{
+                    openCamera();
+                }
+
                 break;
             case R.id.tx_2:
                 //commonPopupWindow.dismiss();
                 dialog.dismiss();
                 //检查权限(6.0以上做权限判断)
-                if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION);
+                if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(new String[]{Manifest.permission.CAMERA},REQUEST_PERMISSION);
                 }else{
                     selectFromAlbum();
                 }
@@ -221,7 +226,14 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                 if (grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
                     selectFromAlbum();
                 }else{
-                    Toast.makeText(getActivity(),"you denied the permission",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"you denied the permission!",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 5:
+                if (grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                    openCamera();
+                }else{
+                    Toast.makeText(getActivity(),"you denied the permission!",Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

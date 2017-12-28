@@ -55,7 +55,7 @@
                         android:layout_height="80dp"
                         android:layout_marginLeft="30dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/mx_image_placeholder" />
+                        android:src="@mipmap/mx_image_placeholder" />
 
                     <FrameLayout
                         android:padding="@dimen/dimen_10dp"
@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content">
 
                         <ImageView
-                            android:src="@drawable/mx_image_placeholder"
+                            android:src="@mipmap/mx_image_placeholder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
@@ -73,7 +73,7 @@
 
 
                     <ImageButton
-                        android:src="@drawable/mx_image_placeholder"
+                        android:src="@mipmap/mx_image_placeholder"
                         android:layout_marginLeft="30dp"
                         android:background="@drawable/image_selector"
                         android:layout_width="90dp"
