@@ -89,7 +89,7 @@
         <item name="android:thumbTextPadding">18dip</item>
         <item name="android:switchMinWidth">36dip</item>
         <item name="android:track">@drawable/mx_switch_track</item>
-        <item name="android:thumb">@drawable/mx_switch_thumb_normal</item>
+        <!--<item name="android:thumb">@drawable/mx_switch_thumb_normal</item>-->
     </style>
 
     <style name="switchTheme">

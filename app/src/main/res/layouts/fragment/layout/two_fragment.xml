@@ -5,29 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:fitsSystemWindows="true"
-        android:id="@+id/two"
-        android:layout_centerInParent="true"
-        android:src="@drawable/default_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<Switch-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--android:id="@+id/my_switch"-->
+        <!--android:thumb="@drawable/mx_switch_thumb"-->
+        <!--android:track="@drawable/mx_switch_track"-->
+        <!--android:switchMinWidth="50dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
-    <Switch
-        android:fitsSystemWindows="true"
-        android:id="@+id/my_switch"
-        android:theme="@style/switchTheme"
-        android:switchMinWidth="200px"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
+    <!--<android.support.v7.widget.SwitchCompat-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_below="@+id/my_switch"-->
+        <!--app:theme="@style/switchTheme"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
-    <android.support.v7.widget.SwitchCompat
-        android:fitsSystemWindows="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/my_switch"
-        app:theme="@style/switchTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/two_fragment_rv"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+
 
 </com.zhy.autolayout.AutoRelativeLayout>

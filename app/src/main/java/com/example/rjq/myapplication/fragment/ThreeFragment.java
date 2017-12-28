@@ -28,12 +28,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.view.CommonPopupWindow;
 import com.example.rjq.myapplication.view.RoundAngleImageView;
 import com.example.rjq.myapplication.util.FileStorage;
@@ -67,6 +70,8 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     private TextView tv1;
     private TextView tv2;
 
+    private TextView threetv;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,6 +92,16 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         myHeadPhotoIV = (RoundAngleImageView) rootView.findViewById(R.id.fragment_main_my_head_photo_iv);
         myHeadPhotoRL = (AutoRelativeLayout) rootView.findViewById(R.id.fragment_main_my_head_photo_rl);
         myHeadPhotoRL.setOnClickListener(this);
+        threetv = (TextView) rootView.findViewById(R.id.three_tv);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        lp.setMargins((int)getActivity().getResources().getDimensionPixelSize(R.dimen.dimen_10dp),0,0,0);
+//        threetv.setLayoutParams(lp);
+        Log.d("dimen",getActivity().getResources().getDimension(R.dimen.dimen_171dp)+"");
+        Log.d("dimen",getActivity().getResources().getDimension(R.dimen.space_171px)+"");
+        Log.d("dimen",getActivity().getResources().getDimensionPixelSize(R.dimen.dimen_171dp)+"");
+        Log.d("dimen",getActivity().getResources().getDimensionPixelSize(R.dimen.space_171px)+"");
+        Log.d("dimen",getActivity().getResources().getDimensionPixelOffset(R.dimen.dimen_171dp)+"");
+        Log.d("dimen",getActivity().getResources().getDimensionPixelOffset(R.dimen.space_171px)+"");
 
     }
 
@@ -275,12 +290,11 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                 }
                 break;
             case REQUEST_PICTURE_CUT://裁剪完成
-                Glide.with(this)
-                        .load(outputUri)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                RequestOptions requestOptions = new RequestOptions()
                         .placeholder(R.drawable.default_photo)
-                        .dontAnimate()
-                        .into(myHeadPhotoIV);
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontAnimate();
+                GlideUtil.load(getActivity(),outputUri,myHeadPhotoIV,requestOptions);
                 luBanCompress();
                 break;
         }
@@ -373,5 +387,6 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         super.onDetach();
         Log.d(TAG,"onDetach three");
     }
+
 
 }

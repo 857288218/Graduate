@@ -8,8 +8,10 @@
     <dimen name="dimen_6dp">6dp</dimen>
     <dimen name="dimen_7dp">7dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_171dp">171dp</dimen>
 
     <dimen name="space_0.5px">0.5px</dimen>
+    <dimen name="space_171px">171px</dimen>
     <dimen name="space_1px">1px</dimen>
     <dimen name="space_5px">5px</dimen>
     <dimen name="space_6px">6px</dimen>

@@ -47,15 +47,47 @@
                     android:background="@color/white">
 
                     <com.example.rjq.myapplication.view.RoundAngleImageView
+                        app:roundWidth="@dimen/dimen_9dp"
+                        app:roundHeight="@dimen/dimen_9dp"
+                        android:layout_alignParentRight="true"
                         android:id="@+id/fragment_main_my_head_photo_iv"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:layout_centerInParent="true"
                         android:layout_marginLeft="30dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/default_photo" />
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/mx_image_placeholder" />
+
+                    <FrameLayout
+                        android:padding="@dimen/dimen_10dp"
+                        android:background="@drawable/image_selector"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:src="@drawable/mx_image_placeholder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </FrameLayout>
+
+
+                    <ImageButton
+                        android:src="@drawable/mx_image_placeholder"
+                        android:layout_marginLeft="30dp"
+                        android:background="@drawable/image_selector"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp" />
 
                 </com.zhy.autolayout.AutoRelativeLayout>
+
+                <TextView
+                    android:includeFontPadding="false"
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/three_tv"
+                    android:text="asdfghjkl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             </com.zhy.autolayout.AutoLinearLayout>
 

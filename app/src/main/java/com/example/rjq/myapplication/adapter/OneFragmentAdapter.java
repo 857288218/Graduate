@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.util.GlideUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -114,10 +115,7 @@ public class OneFragmentAdapter extends RecyclerView.Adapter<OneFragmentAdapter.
             holder.banner.setImageLoader(new ImageLoader() {
                 @Override
                 public void displayImage(Context context, Object path, ImageView imageView) {
-                    Glide.with(context.getApplicationContext())
-                            .load(path)
-                            .crossFade()
-                            .into(imageView);
+                    GlideUtil.load(context,path,imageView);
                 }
             });
             //设置图片集合

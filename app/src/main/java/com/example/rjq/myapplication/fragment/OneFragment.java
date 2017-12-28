@@ -1,5 +1,6 @@
 package com.example.rjq.myapplication.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 
 import android.graphics.drawable.BitmapDrawable;
@@ -33,6 +34,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.OneFragmentAdapter;
 
+import com.example.rjq.myapplication.util.GlideUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -200,10 +202,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         mBanner.setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
-                Glide.with(context.getApplicationContext())
-                        .load(path)
-                        .crossFade()
-                        .into(imageView);
+                GlideUtil.load(context,path,imageView);
             }
         });
         //设置图片集合
@@ -217,14 +216,6 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             }
         });
         mBanner.start();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (imageUrl.isEmpty()){
-            smartRefreshLayout.setEnableLoadmore(false);
-        }
     }
 
     @Override
@@ -248,4 +239,55 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         Log.d(TAG,"onStop one");
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (imageUrl.isEmpty()){
+            smartRefreshLayout.setEnableLoadmore(false);
+        }
+        Log.d(TAG,"onResume one");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG,"onAttach one");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate one");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG,"onDestroy one");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG,"onActivityCreated one");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG,"onDestroyView one");
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG,"onDetach one");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG,"onPause one");
+    }
 }

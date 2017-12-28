@@ -68,8 +68,11 @@ public class RoundAngleImageView extends ImageView {
         }
 
         paint = new Paint();
+        //设置画笔颜色
         paint.setColor(Color.WHITE);
+        //设置抗锯齿，如果不设置，加载位图的时候可能会出现锯齿状的边界，如果设置，边界就会变的稍微有点模糊，锯齿就看不到了。
         paint.setAntiAlias(true);
+        //设置图形重叠时的显示方式
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
 
         paint2 = new Paint();
