@@ -31,18 +31,15 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.rjq.myapplication.view.RoundAngleImageView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.util.GlideUtil;
-import com.example.rjq.myapplication.view.CommonPopupWindow;
-import com.example.rjq.myapplication.view.RoundAngleImageView;
 import com.example.rjq.myapplication.util.FileStorage;
 import com.example.rjq.myapplication.util.lubanimage.Luban;
 import com.example.rjq.myapplication.util.lubanimage.OnCompressListener;
-import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.io.File;
@@ -52,7 +49,7 @@ import java.io.File;
 public class ThreeFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "life";
     private View rootView;
-    private RoundAngleImageView myHeadPhotoIV;
+    private com.example.rjq.myapplication.view.RoundAngleImageView myHeadPhotoIV;
     private AutoRelativeLayout myHeadPhotoRL;
 
     private static final int REQUEST_PICK_IMAGE = 1; //相册选取
@@ -65,7 +62,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     private String imagePath;
 
     private Dialog dialog;
-    private CommonPopupWindow commonPopupWindow;
+    private com.example.rjq.myapplication.view.CommonPopupWindow commonPopupWindow;
     private TextView tv3;
     private TextView tv1;
     private TextView tv2;
@@ -89,7 +86,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initView(){
-        myHeadPhotoIV = (RoundAngleImageView) rootView.findViewById(R.id.fragment_main_my_head_photo_iv);
+        myHeadPhotoIV = (com.example.rjq.myapplication.view.RoundAngleImageView) rootView.findViewById(R.id.fragment_main_my_head_photo_iv);
         myHeadPhotoRL = (AutoRelativeLayout) rootView.findViewById(R.id.fragment_main_my_head_photo_rl);
         myHeadPhotoRL.setOnClickListener(this);
         threetv = (TextView) rootView.findViewById(R.id.three_tv);
@@ -118,7 +115,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             case R.id.tx_1:
                 //commonPopupWindow.dismiss();
                 dialog.dismiss();
-                if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+                if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED){
                     requestPermissions(new String[]{Manifest.permission.CAMERA},5);
                 }else{
                     openCamera();
@@ -129,8 +126,8 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                 //commonPopupWindow.dismiss();
                 dialog.dismiss();
                 //检查权限(6.0以上做权限判断)
-                if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED){
-                    requestPermissions(new String[]{Manifest.permission.CAMERA},REQUEST_PERMISSION);
+                if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION);
                 }else{
                     selectFromAlbum();
                 }
