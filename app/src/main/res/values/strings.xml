@@ -13,6 +13,7 @@
     <string name="change_enjoy">充值专享</string>
 
     <string name="bottom_tab_home">首页</string>
+    <string name="bottom_tab_cart">购物车</string>
     <string name="bottom_tab_order">订单</string>
     <string name="bottom_tab_my">我的</string>
 </resources>

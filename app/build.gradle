@@ -45,11 +45,10 @@ dependencies {
 
     compile 'com.zhy:autolayout:1.4.3'
     compile 'com.android.support:recyclerview-v7:25.3.1'
-//    compile 'com.github.bumptech.glide:glide:3.7.0'
+    //compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:glide:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -58,7 +57,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.7.0'
     apt 'com.jakewharton:butterknife-compiler:8.7.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-
     compile project(':banner')
 
     //rxjava retrofit - okhttp
