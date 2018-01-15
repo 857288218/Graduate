@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/one_content_item_iv"
         android:scaleType="centerCrop"
-        android:src="@drawable/b1"
+        android:src="@mipmap/b1"
         android:layout_width="@dimen/space_300px"
         android:layout_height="@dimen/space_300px" />
 

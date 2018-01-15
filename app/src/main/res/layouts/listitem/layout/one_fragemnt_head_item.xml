@@ -17,4 +17,211 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/space_300px"/>
 
+    <com.zhy.autolayout.AutoLinearLayout
+        android:paddingBottom="@dimen/space_40px"
+        android:paddingTop="@dimen/space_40px"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_food"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_food" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_mon"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_mon" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_noon"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_noon" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_dinner"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_dinner" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_sweet"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_sweet" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_marginTop="@dimen/space_30px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_deliver"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_deliver" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_simple"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_simple" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_prefer"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_prefer" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_fruit"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_fruit" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_weight="1.0"
+                android:id="@+id/head_icon_cook"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@mipmap/hotel"
+                    android:layout_width="@dimen/space_90px"
+                    android:layout_height="@dimen/space_90px" />
+                <TextView
+                    style="@style/head_icon_text_style"
+                    android:text="@string/head_icon_cook" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+
+
+
+
 </LinearLayout>

@@ -1,10 +1,9 @@
 package com.example.rjq.myapplication.fragment;
 
-import android.app.Activity;
+
 import android.content.Context;
 
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,15 +14,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.Window;
+
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,10 +111,10 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 
         //本地图片
         imageLocal = new ArrayList<>();
-        imageLocal.add(R.drawable.b1);
-        imageLocal.add(R.drawable.b2);
-        imageLocal.add(R.drawable.b3);
-        imageLocal.add(R.drawable.b2);
+        imageLocal.add(R.mipmap.b1);
+        imageLocal.add(R.mipmap.b2);
+        imageLocal.add(R.mipmap.b3);
+        imageLocal.add(R.mipmap.b2);
 
         //Title名称
         bannerTitle = new ArrayList<>();
@@ -153,7 +152,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
                         break;
                     case R.id.one_content_item_tv:
                         ImageView iv = (ImageView) adapter.getViewByPosition(oneRecyclerView,position+1,R.id.one_content_item_iv);
-                        Glide.with(getActivity()).load(R.drawable.b2).into(iv);
+                        Glide.with(getActivity()).load(R.mipmap.b2).into(iv);
                         break;
                 }
             }

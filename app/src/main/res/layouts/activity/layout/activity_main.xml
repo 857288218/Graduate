@@ -34,7 +34,7 @@
                 android:layout_height="@dimen/space_54dp"
                 android:requiresFadingEdge="none"
                 android:tabStripEnabled="false"
-                android:background="@drawable/bg_bottombar"
+                android:background="@mipmap/bg_bottombar"
                 android:showDividers="none" />
 
         </com.zhy.autolayout.AutoLinearLayout>

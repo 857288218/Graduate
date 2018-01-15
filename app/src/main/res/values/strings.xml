@@ -16,4 +16,19 @@
     <string name="bottom_tab_cart">购物车</string>
     <string name="bottom_tab_order">订单</string>
     <string name="bottom_tab_my">我的</string>
+
+    <string name="head_icon_food">美食</string>
+    <string name="head_icon_mon">早餐</string>
+    <string name="head_icon_noon">中餐</string>
+    <string name="head_icon_dinner">晚餐</string>
+
+    <string name="search_flag">搜索商家、商品名称</string>
+
+    <string name="head_icon_deliver">众包专送</string>
+    <string name="head_icon_sweet">甜品饮品</string>
+    <string name="head_icon_prefer">新店特惠</string>
+    <string name="head_icon_simple">大牌简餐</string>
+    <string name="head_icon_fruit">水果生鲜</string>
+    <string name="head_icon_cook">家常菜</string>
+
 </resources>

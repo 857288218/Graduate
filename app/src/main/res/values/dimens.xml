@@ -22,6 +22,7 @@
     <dimen name="space_18px">18px</dimen>
     <dimen name="space_20px">20px</dimen>
     <dimen name="space_25px">25px</dimen>
+    <dimen name="space_27px">27px</dimen>
     <dimen name="space_305px">305px</dimen>
     <dimen name="space_30px">30px</dimen>
     <dimen name="space_35px">35px</dimen>
@@ -29,8 +30,10 @@
     <dimen name="space_40px">40px</dimen>
     <dimen name="space_50px">50px</dimen>
     <dimen name="space_60px">60px</dimen>
+    <dimen name="space_70px">70px</dimen>
     <dimen name="space_54dp">54dp</dimen>
     <dimen name="space_80px">80px</dimen>
+    <dimen name="space_90px">90px</dimen>
     <dimen name="space_100px">100px</dimen>
     <dimen name="space_110px">110px</dimen>
     <dimen name="space_180px">180px</dimen>

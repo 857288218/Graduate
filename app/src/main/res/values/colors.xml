@@ -15,7 +15,7 @@
     <color name="text_select_color">#24c720</color>
 
     <color name="bottom_tab_text_selected_color">#05c0ab</color>
-    <color name="bottom_tab_text_normal_color">#636363</color>
+    <color name="bottom_tab_text_normal_color">#676767</color>
     <color name="common_status_bar_color">#5c5c5c</color>
     <color name="my_fragment_status_bar_color">#017465</color>
     <color name="indicator_unselected_color">#88737473</color>

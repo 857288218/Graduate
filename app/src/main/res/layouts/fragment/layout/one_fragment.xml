@@ -2,7 +2,6 @@
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,25 +15,66 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"/>
 
-                <LinearLayout
+                <com.zhy.autolayout.AutoLinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                        <TextView
+                        <com.zhy.autolayout.AutoLinearLayout
                             android:gravity="center"
-                            android:textColor="@color/white"
-                            android:text="我是标题栏"
-                            android:background="@color/bottom_tab_text_selected_color"
+                            android:background="@color/white"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/space_80px"/>
+                            android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/home_address"
+                                    android:drawableRight="@mipmap/down"
+                                    android:textSize="@dimen/space_30px"
+                                    android:layout_marginLeft="@dimen/space_20px"
+                                    android:gravity="center"
+                                    android:textColor="@color/bottom_tab_text_normal_color"
+                                    android:text="送至: 天津财经大学"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/space_100px"/>
+
+                                <com.zhy.autolayout.AutoLinearLayout
+                                    android:id="@+id/home_search"
+                                    android:gravity="center"
+                                    android:layout_marginRight="@dimen/space_20px"
+                                    android:layout_marginLeft="@dimen/space_10px"
+                                    android:background="@drawable/grey_radius"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/space_60px">
+
+                                        <ImageButton
+                                            android:layout_marginRight="@dimen/space_20px"
+                                            android:background="@null"
+                                            android:src="@mipmap/search"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content" />
+                                        <TextView
+                                            android:textSize="@dimen/space_27px"
+                                            android:textColor="@color/bottom_tab_text_normal_color"
+                                            android:text="@string/search_flag"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content" />
+
+                                </com.zhy.autolayout.AutoLinearLayout>
+
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <View
+                            android:background="@color/grey_divider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"/>
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/one_fragment_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
 
-                </LinearLayout>
+                </com.zhy.autolayout.AutoLinearLayout>
 
                 <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                     android:id="@+id/one_fragment_refresh_footer"

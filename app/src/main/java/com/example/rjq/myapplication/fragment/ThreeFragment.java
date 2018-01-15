@@ -306,7 +306,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             case REQUEST_PICTURE_CUT://裁剪完成
                 if (resultCode == Activity.RESULT_OK){
                     RequestOptions requestOptions = new RequestOptions()
-                            .placeholder(R.drawable.default_photo)
+                            .placeholder(R.mipmap.default_photo)
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .dontAnimate();
                     GlideUtil.load(getActivity(),outputUri,myHeadPhotoIV,requestOptions);
