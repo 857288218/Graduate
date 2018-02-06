@@ -13,13 +13,24 @@
     <color name="text_color_grey">#989898</color>
     <color name="text_price_color">#ad5f59</color>
     <color name="text_select_color">#24c720</color>
+    <color name="start_golden">#fed100</color>
+    <color name="colorRed">#ff0000</color>
+
+    <color name="res_detail_month_order">#444444</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="goods_category_bg">#F2F2F2</color>
+    <color name="color_666">#666666</color>
 
     <color name="bottom_tab_text_selected_color">#05c0ab</color>
     <color name="bottom_tab_text_normal_color">#676767</color>
+    <color name="one_fragment_location">#a9a9a9</color>
+    <color name="text_hint_color">#989898</color>
     <color name="common_status_bar_color">#5c5c5c</color>
     <color name="my_fragment_status_bar_color">#017465</color>
     <color name="indicator_unselected_color">#88737473</color>
     <color name="indicator_selected_color">#fff</color>
     <color name="colorLineGray">#F3F1F4</color><!--下划线灰色-->
     <color name="colorTransGrey">#8f000000</color>
+    <color name="shop_cart_bg">#f8444547</color>
 </resources>

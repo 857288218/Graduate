@@ -7,7 +7,6 @@
     tools:context="com.example.rjq.myapplication.activity.WelcomeActivity">
 
     <ImageView
-        android:src="@mipmap/start_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

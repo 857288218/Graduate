@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:fitsSystemWindows="true"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@mipmap/background"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@color/transparent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7">
+
+                <ImageView
+                    android:id="@+id/res_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@mipmap/background"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:id="@+id/res_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/res_img"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="台滋味(天津南站店)"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/ll_detail"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/res_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp">
+
+                    <RatingBar
+                        android:id="@+id/res_star"
+                        android:numStars="5"
+                        style="@style/one_fragment_rating_style"
+                        android:rating="4.5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/res_score"
+                        android:textColor="@color/res_detail_month_order"
+                        android:layout_marginLeft="@dimen/space_10px"
+                        android:textSize="@dimen/one_fragment_score_num"
+                        android:text="4.8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:textColor="@color/res_detail_month_order"
+                        android:textSize="@dimen/one_fragment_score_num"
+                        android:layout_marginLeft="15dp"
+                        android:id="@+id/res_order_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/res_month_sell_order" />
+
+                    <TextView
+                        android:id="@+id/res_deliver_time"
+                        android:textColor="@color/res_detail_month_order"
+                        android:textSize="@dimen/one_fragment_score_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/res_business_deliver_time" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:textColor="#999999"
+                    android:layout_marginLeft="90dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:id="@+id/res_description"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@+id/ll_detail"
+                    android:textSize="@dimen/one_fragment_score_num"
+                    android:text="@string/res_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:paddingLeft="35dp"
+                    android:paddingRight="35dp"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@+id/res_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_toLeftOf="@+id/res_special_num"
+                        android:layout_alignParentLeft="true"
+                        android:id="@+id/res_favour"
+                        android:visibility="visible"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:id="@+id/res_reduce_container"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/space_15px"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:includeFontPadding="false"
+                                android:gravity="center"
+                                android:background="@drawable/one_fragment_item_reduce"
+                                android:textSize="@dimen/one_fragment_item_reduce"
+                                android:textColor="@color/white"
+                                android:text="@string/reduce"
+                                android:layout_width="@dimen/space_30px"
+                                android:layout_height="@dimen/space_30px" />
+
+                            <TextView
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:id="@+id/res_reduce"
+                                android:layout_marginLeft="@dimen/space_8px"
+                                style="@style/one_fragment_num_style"
+                                android:text="满22减17，满35减23，满55减"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:id="@+id/res_special_container"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/space_15px"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:includeFontPadding="false"
+                                android:gravity="center"
+                                android:background="@drawable/one_fragment_item_special"
+                                android:textSize="@dimen/one_fragment_item_reduce"
+                                android:textColor="@color/white"
+                                android:text="@string/special"
+                                android:layout_width="@dimen/space_30px"
+                                android:layout_height="@dimen/space_30px" />
+
+                            <TextView
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:id="@+id/res_special"
+                                android:layout_marginLeft="@dimen/space_8px"
+                                style="@style/one_fragment_num_style"
+                                android:text="暖心三人餐A"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:id="@+id/res_new_container"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/space_15px"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:includeFontPadding="false"
+                                android:gravity="center"
+                                android:background="@drawable/one_fragment_item_new"
+                                android:textSize="@dimen/one_fragment_item_reduce"
+                                android:textColor="@color/white"
+                                android:text="@string/first"
+                                android:layout_width="@dimen/space_30px"
+                                android:layout_height="@dimen/space_30px" />
+
+                            <TextView
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:id="@+id/res_new"
+                                android:layout_marginLeft="@dimen/space_8px"
+                                style="@style/one_fragment_num_style"
+                                android:text="新用户下单立减19"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:id="@+id/res_give_container"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/space_15px"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:includeFontPadding="false"
+                                android:gravity="center"
+                                android:background="@drawable/one_fragment_item_give"
+                                android:textSize="@dimen/one_fragment_item_reduce"
+                                android:textColor="@color/white"
+                                android:text="@string/give"
+                                android:layout_width="@dimen/space_30px"
+                                android:layout_height="@dimen/space_30px" />
+
+                            <TextView
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:id="@+id/res_give"
+                                android:layout_marginLeft="@dimen/space_8px"
+                                style="@style/one_fragment_num_style"
+                                android:text="满23赠送鸡蛋汤一份"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <TextView
+                        android:id="@+id/res_special_num"
+                        android:includeFontPadding="false"
+                        android:visibility="gone"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="16px"
+                        android:text="3个优惠"
+                        android:textSize="@dimen/special_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetStart="0dp"
+                app:layout_collapseMode="pin">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/return_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="10dp"
+                        android:src="@mipmap/ic_action_return_white_png" />
+
+                    <LinearLayout
+                        android:id="@+id/search_ll"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:padding="8dp"
+                            android:text="想吃什么搜一搜" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/more_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="10dp"
+                        android:src="@mipmap/mx_btn_webview_operation" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom"
+            android:background="@android:color/white"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed"
+            app:tabIndicatorColor="@color/bottom_tab_text_selected_color"
+            app:tabTextColor="@color/black"
+            />
+        <View
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_marginRight="@dimen/dimen_20dp"
+            style="@style/grey_divider" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:layout_marginBottom="@dimen/dimen_50dp"
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <include
+        layout="@layout/shop_cart"/>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,9 @@ import com.zhy.autolayout.AutoRelativeLayout;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by rjq on 2017/10/28 0028.
@@ -89,6 +93,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         Log.d(TAG,"onCreateView three");
         if (rootView == null){
             rootView = inflater.inflate(R.layout.three_fragment,container,false);
+            initData();
             initView();
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -97,6 +102,10 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.my_fragment_status_bar_color));
         }
         return rootView;
+    }
+
+    private void initData(){
+        ButterKnife.bind(this,rootView);
     }
 
     private void initView(){
@@ -133,7 +142,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void onShouldShowRationale(List<String> deniedPermission) {
                         String msg = PermissionUtil.deniedPermissionToMsg(deniedPermission);
-                        PermissionUtil.showDialog(getActivity(),"在设置-应用-食堂订餐-权限中开启 或 安全管家-应用管理-敏行中开启"+msg+"权限，以正常使用相机、录像等功能");
+                        PermissionUtil.showDialog(getActivity(),"在设置-应用-食堂订餐-权限中开启 或 安全管家-应用管理-食堂订餐中开启"+msg+"权限，以正常使用相机、录像等功能");
                     }
                 });
 
@@ -154,7 +163,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                     @Override
                     public void onShouldShowRationale(List<String> deniedPermission) {
                         String msg = PermissionUtil.deniedPermissionToMsg(deniedPermission);
-                        PermissionUtil.showDialog(getActivity(),"在设置-应用-敏行-权限中开启 或 安全管家-应用管理-敏行中开启"+msg+"权限,以正常使用相册");
+                        PermissionUtil.showDialog(getActivity(),"在设置-应用-食堂订餐-权限中开启 或 安全管家-应用管理-食堂订餐中开启"+msg+"权限,以正常使用相册");
                     }
                 });
                 break;

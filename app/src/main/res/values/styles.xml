@@ -44,6 +44,12 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="one_fragment_num_style">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/bottom_tab_text_normal_color</item>
+        <item name="android:textSize">@dimen/one_fragment_score_num</item>
+    </style>
+
     <!--下划线设置-->
     <style name="LineOneTheme">
         <item name="android:layout_width">match_parent</item>
@@ -86,9 +92,9 @@
     <style name="mx_switch_custom_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:thumbTextPadding">18dip</item>
+        <item name="android:showText">false</item>
         <item name="android:switchMinWidth">36dip</item>
-        <item name="android:track">@drawable/mx_switch_track</item>
+        <!--<item name="android:track">@drawable/mx_switch_track</item>-->
         <!--<item name="android:thumb">@drawable/mx_switch_thumb_normal</item>-->
     </style>
 
@@ -102,6 +108,39 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/space_25px</item>
+    </style>
+
+    <style name="one_fragment_rating_style" parent="@android:style/Widget.RatingBar">
+        <!-- 定义星星图片 -->
+        <item name="android:isIndicator">true</item>
+        <item name="android:progressDrawable">@drawable/one_fragment_ratingbar</item>
+        <item name="android:indeterminateDrawable">@drawable/one_fragment_ratingbar</item>
+        <item name="android:minHeight">30px</item>
+        <item name="android:maxHeight">30px</item>
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="grey_divider">
+        <item name="android:background">@color/grey_divider</item>
+        <item name="android:layout_height">0.3dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="bold_text_style">
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="red_radius_num_text" parent="bold_text_style">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:background">@drawable/shop_cart_num_bg</item>
     </style>
 
 </resources>

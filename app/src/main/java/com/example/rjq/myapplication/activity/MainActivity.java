@@ -18,6 +18,7 @@ import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.bean.HomeDataBean;
 import com.example.rjq.myapplication.bottomTab.BottomTabItem;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
     private long mExitTime = 0;
-    private static final String TAG = "Text";
+    private static final String TAG = "MainActivity";
+    private HomeDataBean homeDataBean;
 
     @BindView(android.R.id.tabhost)
     FragmentTabHost tabHost;
@@ -42,6 +44,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        //得到welcome页请求的数据
+//        homeDataBean = (HomeDataBean) getIntent().getSerializableExtra("home_data");
+
     }
 
     @Override
@@ -101,6 +106,10 @@ public class MainActivity extends BaseActivity {
         return tabItem;
     }
 
+    public HomeDataBean getHomeData(){
+        return homeDataBean;
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -119,12 +128,11 @@ public class MainActivity extends BaseActivity {
 
     public void exit() {
         if ((System.currentTimeMillis() - mExitTime) > 2000) {
-            Toast.makeText(this, "再按一次退出食堂订餐", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.app_exit_notice), Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
         } else {
             finish();
         }
     }
-
 
 }

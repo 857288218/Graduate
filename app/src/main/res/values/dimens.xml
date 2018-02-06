@@ -4,10 +4,14 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="dimen_9dp">9dp</dimen>
+    <dimen name="dimen_2dp">2dp</dimen>
     <dimen name="dimen_5dp">5dp</dimen>
     <dimen name="dimen_6dp">6dp</dimen>
     <dimen name="dimen_7dp">7dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
+    <dimen name="dimen_36dp">36dp</dimen>
+    <dimen name="dimen_50dp">50dp</dimen>
     <dimen name="dimen_171dp">171dp</dimen>
 
     <dimen name="space_0.5px">0.5px</dimen>
@@ -28,15 +32,19 @@
     <dimen name="space_35px">35px</dimen>
     <dimen name="space_32px">32px</dimen>
     <dimen name="space_40px">40px</dimen>
+    <dimen name="space_45px">45px</dimen>
     <dimen name="space_50px">50px</dimen>
     <dimen name="space_60px">60px</dimen>
     <dimen name="space_70px">70px</dimen>
-    <dimen name="space_54dp">54dp</dimen>
+    <dimen name="dimen_54dp">54dp</dimen>
     <dimen name="space_80px">80px</dimen>
     <dimen name="space_90px">90px</dimen>
     <dimen name="space_100px">100px</dimen>
     <dimen name="space_110px">110px</dimen>
+    <dimen name="space_120px">120px</dimen>
+    <dimen name="space_130px">130px</dimen>
     <dimen name="space_180px">180px</dimen>
+    <dimen name="space_200px">200px</dimen>
     <dimen name="space_220px">220px</dimen>
     <dimen name="space_240px">240px</dimen>
     <dimen name="space_250px">250px</dimen>
@@ -44,5 +52,9 @@
     <dimen name="space_500px">500px</dimen>
 
     <dimen name="sl_arc_height">6.5dp</dimen>
+    <dimen name="one_fragment_score_num">11sp</dimen>
+    <dimen name="special_num">9sp</dimen>
+    <dimen name="one_fragment_location">10sp</dimen>
+    <dimen name="one_fragment_item_reduce">12sp</dimen>
 
 </resources>

@@ -20,7 +20,7 @@ import com.youth.banner.loader.ImageLoader;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/11/28 0028.
+ * Created by rjq on 2017/11/28 0028.
  */
 
 public class OneFragmentAdapter extends RecyclerView.Adapter<OneFragmentAdapter.ViewHolder> {
@@ -39,17 +39,15 @@ public class OneFragmentAdapter extends RecyclerView.Adapter<OneFragmentAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
-        TextView text;
         Banner banner;
         public ViewHolder(View view) {
             super(view);
-            if (view.getTag().equals("0")){
+            if (view.getTag().equals(ITEM_TYPE_HEADER)){
                 //初始化头部数据
                 banner = (Banner) view.findViewById(R.id.banner);
             }else{
                 //初始化内容数据
                 img = (ImageView)view.findViewById(R.id.one_content_item_iv);
-                text = (TextView)view.findViewById(R.id.one_content_item_tv);
             }
 
         }
@@ -89,16 +87,16 @@ public class OneFragmentAdapter extends RecyclerView.Adapter<OneFragmentAdapter.
         if (viewType == ITEM_TYPE_HEADER){
             view = LayoutInflater.from(mContext).inflate(R.layout.one_fragemnt_head_item,parent,false);
             //头部标志
-            view.setTag("0");
+            view.setTag(ITEM_TYPE_HEADER);
             return new ViewHolder(view);
         }else if(viewType == ITEM_TYPE_CONTENT){
             view = LayoutInflater.from(mContext).inflate(R.layout.one_fragment_content_item,parent,false);
             //内容标志
-            view.setTag("1");
+            view.setTag(ITEM_TYPE_CONTENT);
             return new ViewHolder(view);
         }else{
             //尾部标志
-            view.setTag("2");
+            view.setTag(ITEM_TYPE_BOTTOM);
             return new ViewHolder(view);
         }
 

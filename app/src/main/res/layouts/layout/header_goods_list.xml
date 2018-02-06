@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:text="水果"
+        android:layout_marginLeft="3dp"
+        android:background="@color/white"
+        android:id="@+id/goods_category_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="7dp"
+        android:textColor="@color/bottom_tab_text_normal_color"
+        android:gravity="left|center_vertical"
+        android:textAppearance="?android:textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/goods_category_description"
+        android:textColor="#999999"
+        android:textSize="10sp"
+        android:text="新鲜才好吃呢,欢迎品尝"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/goods_category_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_below="@+id/goods_category_title"
+        android:layout_marginLeft="13dp"
+        android:background="@color/grey_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"/>
+
+</RelativeLayout>
