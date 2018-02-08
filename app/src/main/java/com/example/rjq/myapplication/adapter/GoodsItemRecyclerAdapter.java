@@ -42,7 +42,7 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
     private Context mContext;
     private int[] goodsNum;       //各个商品的购买数量,goodsNum中的数据也要存入本地数据库中,下次进入该商店界面加载每个物品数量
     private int buyNum;           //buyNum和totalPrice要存到本地数据库中，作为购物车中的信息
-    private float totalPrice;
+    private double totalPrice;
     private int[] mSectionIndices;
     private int[]  mGoodsCategoryBuyNums;
     private TextView shopCart;
@@ -179,8 +179,10 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final int resId = ((ResActivity)mContext).getResDetailBean().getId();
+        final int resId = ((ResActivity)mContext).getResDetailBean().getResId();
         final String resName = ((ResActivity)mContext).getResDetailBean().getResName();
+        final int resDeliverMoney = ((ResActivity)mContext).getResDetailBean().getResDeliverMoney();
+        final int resExtraMoney = ((ResActivity)mContext).getResDetailBean().getResExtraMoney();
         //设置名
         holder.goodName.setText(dataList.get(position).getName());
         //设置说明描述
@@ -242,7 +244,8 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
                     }
 
                     ResBuyItemNum.add(String.valueOf(resId),String.valueOf(dataList.get(position).getCategoryId()),String.valueOf(dataList.get(position).getGoodId()),
-                            goodsNum[position],dataList.get(position).getName(),dataList.get(position).getPrice(),dataList.get(position).getGoodsImgUrl(),resName);
+                            goodsNum[position],dataList.get(position).getName(),dataList.get(position).getPrice(),dataList.get(position).getGoodsImgUrl(),
+                            resName,resDeliverMoney,resExtraMoney);
 
                 }else if (goodsNum[position] > 1){
                     ResBuyItemNum resBuyItemNum = new ResBuyItemNum();

@@ -17,6 +17,20 @@
         android:layout_width="@dimen/space_130px"
         android:layout_height="@dimen/space_130px" />
 
+    <TextView
+        android:includeFontPadding="false"
+        android:id="@+id/one_content_item_buy_num"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/space_10px"
+        android:layout_marginLeft="@dimen/space_130px"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:background="@drawable/shop_cart_num_bg"
+        android:layout_width="@dimen/space_40px"
+        android:layout_height="@dimen/space_40px" />
+
     <com.zhy.autolayout.AutoLinearLayout
         android:id="@+id/one_content_item_content"
         android:layout_toRightOf="@+id/one_content_item_iv"

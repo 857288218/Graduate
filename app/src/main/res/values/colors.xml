@@ -21,6 +21,11 @@
     <color name="transparent">#00000000</color>
     <color name="goods_category_bg">#F2F2F2</color>
     <color name="color_666">#666666</color>
+    <color name="color_999">#999999</color>
+    <color name="color_f9">#f9f9f9</color>
+    <color name="color_56">#565656</color>
+    <color name="black_2e">#2e2e2e</color>
+    <color name="account_bg">#58D178</color>
 
     <color name="bottom_tab_text_selected_color">#05c0ab</color>
     <color name="bottom_tab_text_normal_color">#676767</color>

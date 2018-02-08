@@ -10,9 +10,9 @@
         app:delay_time="3000"
         app:is_auto_play="true"
         app:image_scale_type="center_crop"
-        app:indicator_width="@dimen/space_18px"
-        app:indicator_height="@dimen/space_18px"
-        app:indicator_margin="@dimen/space_15px"
+        app:indicator_width="@dimen/dimen_7dp"
+        app:indicator_height="@dimen/dimen_7dp"
+        app:indicator_margin="@dimen/dimen_6dp"
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="@dimen/space_200px"/>

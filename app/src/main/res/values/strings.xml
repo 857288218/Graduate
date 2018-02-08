@@ -41,6 +41,7 @@
     <string name="give">赠</string>
     <string name="recommend_res">推荐商家</string>
     <string name="go_to_account">去结算</string>
+    <string name="go_to_buy">去凑单</string>
     <string name="no_select_goods">未选购商品</string>
     <string name="evaluate">评价</string>
     <string name="order">点餐</string>
@@ -50,6 +51,9 @@
     <string name="res_deliver_money">￥%1$d起送</string>
     <string name="res_extra_money">配送费￥%1$d</string>
     <string name="res_deliver_time">%1$d分钟</string>
+    <string name="res_item_num">×%1$d</string>
     <string name="res_business_deliver_time">商家配送约%1$d分钟</string>
     <string name="res_description">欢迎光临，用餐高峰请提前下单，谢谢!</string>
+    <string name="cart">购物车</string>
+    <string name="list">订单</string>
 </resources>

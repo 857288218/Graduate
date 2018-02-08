@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_marginTop="@dimen/space_20px"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/res_name_cart_fragment_item"
+        style="@style/grey_divider"
+        android:layout_width="match_parent"/>
+
+    <TextView
+        android:layout_marginTop="@dimen/space_25px"
+        android:textColor="@color/black_2e"
+        android:paddingLeft="@dimen/space_25px"
+        android:id="@+id/res_name_cart_fragment_item"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:drawableRight="@mipmap/icon_right"
+        android:text="汉堡王(天津小白楼21797)"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <View
+        android:id="@+id/divider_one"
+        android:layout_marginTop="@dimen/space_25px"
+        android:layout_below="@+id/res_name_cart_fragment_item"
+        style="@style/grey_divider" 
+        android:layout_width="match_parent"/>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:orientation="vertical"
+        android:id="@+id/res_item_container"
+        android:layout_below="@+id/divider_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/price"
+        android:layout_marginLeft="@dimen/space_25px"
+        android:layout_marginBottom="@dimen/space_15px"
+        android:layout_marginRight="@dimen/space_25px"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/space_15px"
+        android:layout_below="@+id/res_item_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/space_25px"
+            android:id="@+id/haicha"
+            android:layout_below="@+id/res_item"
+            android:text="还差"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/space_25px"
+            android:id="@+id/res_deliver_money"
+            android:text="19"
+            android:layout_toRightOf="@+id/haicha"
+            android:textColor="@color/colorRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/qisong"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/space_25px"
+            android:text="元起送"
+            android:layout_toRightOf="@+id/res_deliver_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/res_all_price"
+            android:textColor="@color/black_2e"
+            android:text="合计"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/go_to_account"
+            android:id="@+id/res_all_price"
+            android:textStyle="bold"
+            android:text="￥63"
+            android:textColor="@color/colorRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/space_20px"
+            android:padding="@dimen/space_15px"
+            android:background="@drawable/go_to_account_bg"
+            android:textColor="@color/white"
+            android:text="@string/go_to_account"
+            android:id="@+id/go_to_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/space_20px"
+            android:padding="@dimen/space_15px"
+            android:background="@drawable/go_to_buy_bg"
+            android:textColor="@color/bottom_tab_text_selected_color"
+            android:text="@string/go_to_buy"
+            android:id="@+id/go_to_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <View
+        android:layout_below="@+id/price"
+        style="@style/grey_divider"
+        android:layout_width="match_parent"/>
+
+</com.zhy.autolayout.AutoRelativeLayout>

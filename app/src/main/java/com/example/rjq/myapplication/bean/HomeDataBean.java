@@ -78,7 +78,13 @@ public class HomeDataBean implements Serializable{
     }
 
     public static class HomeRecResDetailBean extends DataSupport implements Serializable{
+        //存到本地数据库中都要设置id
         private int id;
+        //用户在该商店里加入购物车商品的数量，不是从server端获取的，是本地数据库中查到后，代码设置的
+        private int buyNum;
+
+        @SerializedName("res_id")
+        private int resId;
         @SerializedName("res_img")
         private String resImg;
         @SerializedName("res_name")
@@ -119,10 +125,10 @@ public class HomeDataBean implements Serializable{
 
         public HomeRecResDetailBean(){}
 
-        public HomeRecResDetailBean(int id, String resImg, String resName, float resStar, int resOrderNum,
+        public HomeRecResDetailBean(int resId, String resImg, String resName, float resStar, int resOrderNum,
                                     int resDeliverMoney, int resExtraMoney, String resAddress, int resDeliverTime,
                                     String resReduce, String resSpecial, String resNew, String resGive) {
-            this.id = id;
+            this.resId = resId;
             this.resImg = resImg;
             this.resName = resName;
             this.resStar = resStar;
@@ -137,6 +143,14 @@ public class HomeDataBean implements Serializable{
             this.resGive = resGive;
         }
 
+        public int getBuyNum() {
+            return buyNum;
+        }
+
+        public void setBuyNum(int buyNum) {
+            this.buyNum = buyNum;
+        }
+
         public void setResStar(float resStar) {
             this.resStar = resStar;
         }
@@ -149,8 +163,8 @@ public class HomeDataBean implements Serializable{
             this.resDescription = resDescription;
         }
 
-        public int getId() {
-            return id;
+        public int getResId() {
+            return resId;
         }
 
         public String getResImg() {
@@ -202,8 +216,8 @@ public class HomeDataBean implements Serializable{
             return resGive;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setResId(int resId) {
+            this.resId = resId;
         }
 
         public void setResImg(String resImg) {

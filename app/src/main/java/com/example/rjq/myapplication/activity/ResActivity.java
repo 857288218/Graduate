@@ -46,6 +46,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +101,7 @@ public class ResActivity extends BaseActivity {
     @BindView(R.id.return_btn)
     ImageView returnBtn;
     @BindView(R.id.search_ll)
-    LinearLayout searchLl;
+    RelativeLayout searchLl;
     @BindView(R.id.more_iv)
     ImageView moveIv;
     @BindView(R.id.vp)
@@ -342,20 +343,30 @@ public class ResActivity extends BaseActivity {
     public void onMessageEvent(MessageEvent event) {
         if(event!=null){
             if(event.num>0){
+                //double类型保留小数点后一位
+                DecimalFormat df = new DecimalFormat("#0.0");
                 shopCartNum.setText(String.valueOf(event.num));
                 shopCartNum.setVisibility(View.VISIBLE);
                 totalPrice.setVisibility(View.VISIBLE);
                 noShop.setVisibility(View.GONE);
-                totalPrice.setText("¥"+String.valueOf(event.price));
+                //设置购买的总价钱
+                int price2 = (int)event.price;
+                if (event.price > price2){
+                    totalPrice.setText("¥"+df.format(event.price));
+                }else{
+                    totalPrice.setText("¥"+price2);
+                }
+
                 if (event.price >= homeRecResDetailBean.getResDeliverMoney()){
                     howMoneyToDelivery.setVisibility(View.GONE);
                     goToCheckOut.setVisibility(View.VISIBLE);
                 }else{
                     goToCheckOut.setVisibility(View.GONE);
                     howMoneyToDelivery.setVisibility(View.VISIBLE);
+                    //设置还差多少钱起送
                     int price = (int)(homeRecResDetailBean.getResDeliverMoney()-event.price);
                     if ((homeRecResDetailBean.getResDeliverMoney()-event.price) > price){
-                        howMoneyToDelivery.setText("还差￥"+(homeRecResDetailBean.getResDeliverMoney()-event.price)+"起送");
+                        howMoneyToDelivery.setText("还差￥"+df.format((homeRecResDetailBean.getResDeliverMoney()-event.price))+"起送");
                     }else{
                         howMoneyToDelivery.setText("还差￥"+price+"起送");
                     }
@@ -373,7 +384,7 @@ public class ResActivity extends BaseActivity {
                 howMoneyToDelivery.setText(deliverMoney);
             }
 
-            Log.d("ResActivity","添加的数量："+event.goods.size());
+//            Log.d("ResActivity","添加的数量："+event.goods.size());
         }
 
     }

@@ -83,22 +83,22 @@ public class GoodsFragment extends Fragment implements OnHeaderClickListener {
     }
 
     private void initData() {
-//        GoodsListBean dataList = ((ResActivity)getActivity()).getGoodsListBean();   //这是得到ResActivity中网络请求到的数据
+//       dataList = ((ResActivity)getActivity()).getGoodsListBean();   //这是得到ResActivity中网络请求到的数据
         //假数据
         homeRecResDetailBean = ((ResActivity)getActivity()).getResDetailBean();
         dataList = DataUtils.getGoodsListBean();
-        dataList.setId(homeRecResDetailBean.getId());
+        dataList.setResId(homeRecResDetailBean.getResId());
         dataList.setResName(homeRecResDetailBean.getResName());
 
         //从本地数据库中得到category的购买总数和每个category下item的购买数量,然后设置给请求得到的数据dataList
-        List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.where("resId = ?",String.valueOf(dataList.getId())).find(ResBuyCategoryNum.class);
+        List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.where("resId = ?",String.valueOf(dataList.getResId())).find(ResBuyCategoryNum.class);
         for (int i = 0;i<resBuyCategoryNumList.size();i++){
             String categoryId = resBuyCategoryNumList.get(i).getCategoryId();
             int butNum = resBuyCategoryNumList.get(i).getBuyNum();
             for (int j=0;j<dataList.getData().size();j++){
                 if (Integer.parseInt(categoryId) == dataList.getData().get(j).getCategoryId()){
                     dataList.getData().get(j).setBuyNum(butNum);
-                    List<ResBuyItemNum> resBuyItemNumList = DataSupport.where("resId = ? and categoryId =? ",String.valueOf(dataList.getId()),
+                    List<ResBuyItemNum> resBuyItemNumList = DataSupport.where("resId = ? and categoryId =? ",String.valueOf(dataList.getResId()),
                             String.valueOf(categoryId)).find(ResBuyItemNum.class);
                     for (int k=0;k<resBuyItemNumList.size();k++){
                         String goodId = resBuyItemNumList.get(k).getGoodId();

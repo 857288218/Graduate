@@ -14,7 +14,6 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="20dp"
-        android:text="水果"
         android:textSize="13sp"
         android:textColor="#666666"/>
 

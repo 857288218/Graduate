@@ -12,10 +12,10 @@ import java.util.List;
 
 public class MessageEvent {
     public int num;
-    public float price;
+    public double price;
     public List<GoodsListBean.GoodsCategoryBean.GoodsItemBean> goods;
 
-    public MessageEvent(int totalNum, float price,List<GoodsListBean.GoodsCategoryBean.GoodsItemBean> goods) {
+    public MessageEvent(int totalNum, double price,List<GoodsListBean.GoodsCategoryBean.GoodsItemBean> goods) {
         this.num = totalNum;
         this.price = price;
         this.goods = goods;

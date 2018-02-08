@@ -1,7 +1,5 @@
 package com.example.rjq.myapplication.bean;
 
-import com.example.rjq.myapplication.activity.ResActivity;
-
 import org.litepal.crud.DataSupport;
 
 /**
@@ -11,15 +9,18 @@ import org.litepal.crud.DataSupport;
 public class ResBuyItemNum extends DataSupport {
     private int id;
     private String resId;
+    private String resName;
+    private int resDeliverMoney;
+    private int resExtraMoney;
     private String categoryId;
     private String goodId;
     private int buyNum;
-    private String resName;
     private String itemName;
-    private float itemPrice;
+    private double itemPrice;
     private String itemImg;
 
-    public static void add(String resId,String categoryId,String goodId,int buyNum,String itemName,float itemPrice,String itemImg,String resName){
+    public static void add(String resId,String categoryId,String goodId,int buyNum,String itemName,double itemPrice,String itemImg,String resName,
+                           int resDeliverMoney,int resExtraMoney){
         ResBuyItemNum resBuyItemNum = new ResBuyItemNum();
         resBuyItemNum.setResId(resId);
         resBuyItemNum.setCategoryId(categoryId);
@@ -29,10 +30,27 @@ public class ResBuyItemNum extends DataSupport {
         resBuyItemNum.setItemPrice(itemPrice);
         resBuyItemNum.setItemImg(itemImg);
         resBuyItemNum.setResName(resName);
+        resBuyItemNum.setResDeliverMoney(resDeliverMoney);
+        resBuyItemNum.setResExtraMoney(resExtraMoney);
         resBuyItemNum.save();
 
     }
 
+    public int getResExtraMoney() {
+        return resExtraMoney;
+    }
+
+    public void setResExtraMoney(int resExtraMoney) {
+        this.resExtraMoney = resExtraMoney;
+    }
+
+    public int getResDeliverMoney() {
+        return resDeliverMoney;
+    }
+
+    public void setResDeliverMoney(int resDeliverMoney) {
+        this.resDeliverMoney = resDeliverMoney;
+    }
 
     public String getResName() {
         return resName;
@@ -82,11 +100,11 @@ public class ResBuyItemNum extends DataSupport {
         this.itemName = itemName;
     }
 
-    public float getItemPrice() {
+    public double getItemPrice() {
         return itemPrice;
     }
 
-    public void setItemPrice(float itemPrice) {
+    public void setItemPrice(double itemPrice) {
         this.itemPrice = itemPrice;
     }
 

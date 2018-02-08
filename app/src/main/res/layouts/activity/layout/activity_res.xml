@@ -275,50 +275,68 @@
                 app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
-                    <ImageView
+                    <ImageButton
+                        android:background="@null"
                         android:id="@+id/return_btn"
-                        android:layout_width="40dp"
-                        android:layout_height="30dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:paddingLeft="10dp"
-                        android:src="@mipmap/ic_action_return_white_png" />
+                        android:padding="15dp"
+                        android:src="@mipmap/icon_white_back" />
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/search_ll"
-                        android:layout_width="250dp"
+                        android:layout_weight="5"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:background="@color/white"
-                        android:orientation="vertical">
+                        android:background="@drawable/radius_white_bg">
 
-                        <ImageView
+                        <LinearLayout
+                            android:gravity="center"
+                            android:layout_centerInParent="true"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:padding="8dp"
-                            android:text="想吃什么搜一搜" />
-                    </LinearLayout>
+                            <ImageView
+                                android:id="@+id/search"
+                                android:tint="@color/color_999"
+                                android:src="@mipmap/icon_search"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp" />
+
+                            <TextView
+                                android:gravity="center"
+                                android:layout_toRightOf="@+id/search"
+                                android:textColor="@color/color_999"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="8dp"
+                                android:text="想吃什么搜一搜" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
 
                     <ImageView
+                        android:layout_weight="1"
                         android:id="@+id/more_iv"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:paddingRight="10dp"
                         android:src="@mipmap/mx_btn_webview_operation" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
             </android.support.v7.widget.Toolbar>
 

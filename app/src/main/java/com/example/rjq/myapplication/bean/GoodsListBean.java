@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GoodsListBean implements Serializable {
     //商店id
-    private int id;
+    private int resId;
     private String resName;
 
     private List<GoodsCategoryBean> goodsCategoryList;
@@ -22,12 +22,12 @@ public class GoodsListBean implements Serializable {
         this.goodsCategoryList = data;
     }
 
-    public int getId() {
-        return id;
+    public int getResId() {
+        return resId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setResId(int resId) {
+        this.resId = resId;
     }
 
     public String getResName() {
@@ -42,7 +42,7 @@ public class GoodsListBean implements Serializable {
         private int categoryId;
         private String name;
         private String categoryDescription;
-        private int buyNum;
+        private int buyNum;                     //代码中设置的，不是server中取到的
         private List<GoodsItemBean> goodsItemList;
 
         public GoodsCategoryBean(int id, String name, String categoryDescription, List<GoodsItemBean> goodsItemList) {
@@ -103,16 +103,16 @@ public class GoodsListBean implements Serializable {
         public static class GoodsItemBean {
             private int id;
             private int categoryId;              //此id就是categoryId，是代码中设置的GoodsCategoryBean中的此id就是categoryId,不是再次通过server端取到的
-            private int goodId;       //该商品的id ，唯一标识
+            private int goodId;                  //该商品的id ，唯一标识
             private String name;
-            private float price;
+            private double price;
             private String introduce;
             private String goodsImgUrl;
             private int monthOrder;
             private int goodComment;
-            private int buyNum;
+            private int buyNum;                 //代码中设置的，不是server中取到的
 
-            public GoodsItemBean(int goodId, String name, float price, String introduce, String goodsImgUrl, int monthOrder, int goodComment) {
+            public GoodsItemBean(int goodId, String name, double price, String introduce, String goodsImgUrl, int monthOrder, int goodComment) {
                 this.goodId = goodId;
                 this.name = name;
                 this.price = price;
@@ -178,11 +178,11 @@ public class GoodsListBean implements Serializable {
                 this.name = name;
             }
 
-            public float getPrice() {
+            public double getPrice() {
                 return price;
             }
 
-            public void setPrice(float price) {
+            public void setPrice(double price) {
                 this.price = price;
             }
 

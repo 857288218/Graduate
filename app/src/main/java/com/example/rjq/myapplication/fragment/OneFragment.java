@@ -41,6 +41,7 @@ import com.example.rjq.myapplication.activity.ResActivity;
 import com.example.rjq.myapplication.bean.HomeDataBean;
 import com.example.rjq.myapplication.bean.HomeDataBean.HomeRecResDetailBean;
 
+import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.example.rjq.myapplication.util.permission.PermissionFragment;
@@ -57,8 +58,13 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.zhy.autolayout.AutoLinearLayout;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -101,8 +107,6 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     SmartRefreshLayout smartRefreshLayout;
 
     private BaseQuickAdapter adapter;
-    //Glide加载图片参数
-    RequestOptions requestOptions;
 
     public static final String RES_DETAIL = "res_detail";
     public static final String SPECIAL_NUM = "special_num";
@@ -122,7 +126,6 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG,"onCreateView one");
         if (rootView == null){
             rootView = (AutoLinearLayout) inflater.inflate(R.layout.one_fragment,container,false);
             mContext = getActivity();
@@ -139,11 +142,6 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 
     private void initData(){
         ButterKnife.bind(this,rootView);
-        requestOptions = new RequestOptions()
-                .placeholder(R.drawable.no_banner)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //硬盘缓存,内存缓存是自动开启的
-                .dontAnimate();
-
 //        homeDataBean = ((MainActivity)mContext).getHomeData();
 //        homeRecResDetailList = homeDataBean.getHomeRecResDetailList();
 //        homeFiveBeanList = homeDataBean.getHomeFiveImg();
@@ -156,21 +154,21 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         homeDataBean = new HomeDataBean();
         homeRecResDetailList = new ArrayList<>();
         HomeDataBean.HomeRecResDetailBean homeRecResDetailBean2 = new HomeDataBean.HomeRecResDetailBean(2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
-                "稻香村",4.8f,1212,35,3,"东院食堂",30,"","","新用户下单立减20","");
+                "瓦罐汤",4.8f,1212,35,3,"东院食堂",30,"","","新用户下单立减20","");
         HomeDataBean.HomeRecResDetailBean homeRecResDetailBean1 = new HomeDataBean.HomeRecResDetailBean(1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",
-                "杨国福麻辣烫",4.9f,2343,23,5,"公寓食堂三楼",20,"满25减5,满35减11","","","");
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean3 = new HomeDataBean.HomeRecResDetailBean(3,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
-                "稻香村",4f,222,34,3,"东院食堂",30,"","暖心三人餐A","","");
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean4 = new HomeDataBean.HomeRecResDetailBean(4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
-                "稻香村",4.9f,23234,29,6,"东院食堂",45,"","","新用户下单立减20","满20赠送鸡蛋汤一份");
+                "杨国福麻辣烫",4.9f,2343,23,5,"公寓三楼",20,"满25减5,满35减11","","","");
+        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean3 = new HomeDataBean.HomeRecResDetailBean(4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
+                "杭州小笼包",4f,222,34,3,"公寓一楼",30,"满15减4","暖心三人餐A","","");
+        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean4 = new HomeDataBean.HomeRecResDetailBean(3,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
+                "土家掉渣烧饼",4.9f,23234,29,6,"公寓一楼",45,"","","新用户下单立减20","满20赠送鸡蛋汤一份");
         HomeDataBean.HomeRecResDetailBean homeRecResDetailBean5 = new HomeDataBean.HomeRecResDetailBean(5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "杨国福麻辣烫",4.7f,3212,20,6,"东院食堂",27,"","","新用户下单立减20","");
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean6 = new HomeDataBean.HomeRecResDetailBean(6,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "稻香村",4.7f,3212,20,6,"东院食堂",43,"","","新用户下单立减20","");
+                "北李妈妈菜",4.7f,3212,20,6,"东院食堂",27,"","","新用户下单立减15","满18赠送清热解毒苦瓜汤一份");
+        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean6 = new HomeDataBean.HomeRecResDetailBean(8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+                "重庆小面",4.7f,3212,20,6,"公寓二楼",43,"","","新用户下单立减20","");
         HomeRecResDetailBean homeRecResDetailBean7 = new HomeRecResDetailBean(7,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "杨国福麻辣烫",4.7f,3212,20,6,"东院食堂",12,"","","新用户下单立减20","");
-        HomeRecResDetailBean homeRecResDetailBean8 = new HomeRecResDetailBean(8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "稻香村",4.7f,3212,20,6,"东院食堂",67,"","满25减5，满30减7","新用户下单立减20","满17赠奶茶一杯");
+                "兰州拉面",4.7f,3212,20,6,"民族餐厅",12,"","","新用户下单立减28","");
+        HomeRecResDetailBean homeRecResDetailBean8 = new HomeRecResDetailBean(6,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+                "三楼自助",4.7f,3212,20,6,"公寓三楼",67,"","满25减5，满30减7","新用户下单立减20","满17赠奶茶一杯");
         homeRecResDetailList.add(homeRecResDetailBean1);homeRecResDetailList.add(homeRecResDetailBean2);homeRecResDetailList.add(homeRecResDetailBean3);
         homeRecResDetailList.add(homeRecResDetailBean4);homeRecResDetailList.add(homeRecResDetailBean5);homeRecResDetailList.add(homeRecResDetailBean6);
         homeRecResDetailList.add(homeRecResDetailBean7);homeRecResDetailList.add(homeRecResDetailBean8);
@@ -235,9 +233,20 @@ public class OneFragment extends Fragment implements View.OnClickListener{
                 helper.setGone(R.id.one_fragment_item_new_container,false);
                 helper.setGone(R.id.one_fragment_item_give_container,false);
 
+                //设置添加到购物车的数量，红点显示
+                if (item.getBuyNum() > 0){
+                    helper.setText(R.id.one_content_item_buy_num,item.getBuyNum()+"");
+                    helper.setVisible(R.id.one_content_item_buy_num,true);
+                }else{
+                    helper.setVisible(R.id.one_content_item_buy_num,false);
+                }
+
+                //设置img
                 ImageView iv = helper.getView(R.id.one_content_item_iv);
-                GlideUtil.load(mContext,item.getResImg(),iv,requestOptions);
+                GlideUtil.load(mContext,item.getResImg(),iv,GlideUtil.REQUEST_OPTIONS);
+                //店名
                 helper.setText(R.id.one_fragment_content_item_name,item.getResName());
+                //评分
                 RatingBar ratingBar = helper.getView(R.id.one_fragment_star);
                 ratingBar.setRating(item.getResStar());
                 helper.setText(R.id.one_fragment_score,item.getResStar()+"");
@@ -292,7 +301,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         });
         adapter.setEmptyView(LayoutInflater.from(getActivity()).inflate(R.layout.one_fragment_empty_view,null));
         adapter.addHeaderView(recycleHeadView);
-        //默认出现了头部就不会显示Empty，和尾部，配置以下方法也支持同时显示
+        //默认出现了头部就不会显示EmptyView和尾部，配置以下方法也支持同时显示
         adapter.setHeaderFooterEmpty(true,true);
         homeRecyclerView.setAdapter(adapter);
 
@@ -452,11 +461,11 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initFiveImg(){
-        GlideUtil.load(mContext,R.mipmap.five_one,headOneIv,requestOptions);
-        GlideUtil.load(mContext,R.mipmap.five_two,headTwoIv,requestOptions);
-        GlideUtil.load(mContext,R.mipmap.five_three,headThreeIv,requestOptions);
-        GlideUtil.load(mContext,R.mipmap.five_four,headFourIv,requestOptions);
-        GlideUtil.load(mContext,R.mipmap.five_five,headFiveIv,requestOptions);
+        GlideUtil.load(mContext,R.mipmap.five_one,headOneIv,GlideUtil.REQUEST_OPTIONS);
+        GlideUtil.load(mContext,R.mipmap.five_two,headTwoIv,GlideUtil.REQUEST_OPTIONS);
+        GlideUtil.load(mContext,R.mipmap.five_three,headThreeIv,GlideUtil.REQUEST_OPTIONS);
+        GlideUtil.load(mContext,R.mipmap.five_four,headFourIv,GlideUtil.REQUEST_OPTIONS);
+        GlideUtil.load(mContext,R.mipmap.five_five,headFiveIv,GlideUtil.REQUEST_OPTIONS);
         headOneIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -498,11 +507,57 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onResume() {
-        Log.d(TAG,"onResume one");
         super.onResume();
-        if (imageUrl.isEmpty()){
-            smartRefreshLayout.setEnableLoadmore(false);
+        //刷新店铺红点
+        new Thread(new notifyResBuyNumRunnable()).start();
+
+    }
+
+    class notifyResBuyNumRunnable implements Runnable{
+        @Override
+        public void run() {
+            List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.findAll(ResBuyCategoryNum.class);
+            if (resBuyCategoryNumList.size() > 0){
+                Hashtable<String,Integer> resBuyNumTable = new Hashtable<>();
+                //将resBuyCategoryNumList中的添加到购物车的数量按resId设置给resBuyNumTable
+                for (int i=0;i<homeRecResDetailList.size();i++){
+                    resBuyNumTable.put(String.valueOf(homeRecResDetailList.get(i).getResId()),0);
+                }
+                for (ResBuyCategoryNum resBuyCategoryNum : resBuyCategoryNumList){
+                    int num = resBuyNumTable.get(resBuyCategoryNum.getResId()) + resBuyCategoryNum.getBuyNum();
+                    resBuyNumTable.put(resBuyCategoryNum.getResId(),num);
+                }
+                //得到resBuyNumTable中的keyList
+                List<String> keyList = new ArrayList<>();
+                Iterator<String> itr = resBuyNumTable.keySet().iterator();
+                while (itr.hasNext()){
+                    String str = itr.next();
+                    keyList.add(str);
+                }
+                //遍历设置homeRecResDetailList各项的buyNum
+                for (int i=0;i<homeRecResDetailList.size();i++){
+                    for (int j=0;j<keyList.size();j++){
+                        if (homeRecResDetailList.get(i).getResId() == Integer.parseInt(keyList.get(j))){
+                            homeRecResDetailList.get(i).setBuyNum(resBuyNumTable.get(keyList.get(j)));
+                        }
+                    }
+                }
+
+            }else {
+                for (int i=0;i<homeRecResDetailList.size();i++){
+                    homeRecResDetailList.get(i).setBuyNum(0);
+                }
+            }
+
+            //主线程刷新推荐商家列表，显示红点数量
+            ((MainActivity)mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
+
     }
 
 }

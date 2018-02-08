@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:background="@color/white"
+        android:paddingTop="@dimen/space_25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_marginLeft="@dimen/space_25px"
+            android:id="@+id/item_img_cart_fragment_item"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/background"
+            android:layout_width="@dimen/space_90px"
+            android:layout_height="@dimen/space_90px" />
+
+        <TextView
+            android:textColor="@color/black_2e"
+            android:layout_marginLeft="@dimen/space_20px"
+            android:layout_toRightOf="@+id/item_img_cart_fragment_item"
+            android:text="霸王鸡盒A"
+            android:id="@+id/item_name_cart_fragment_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="@dimen/space_25px"
+            android:text="@string/res_item_num"
+            android:layout_marginLeft="@dimen/space_20px"
+            android:layout_toRightOf="@+id/item_img_cart_fragment_item"
+            android:layout_below="@+id/item_name_cart_fragment_item"
+            android:id="@+id/item_num_cart_fragment_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginRight="@dimen/space_25px"
+            android:layout_marginTop="@dimen/space_25px"
+            android:layout_below="@+id/item_name_cart_fragment_item"
+            android:id="@+id/res_item_price"
+            android:layout_alignParentRight="true"
+            android:text="￥35"
+            android:textColor="@color/colorRed"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="@dimen/space_25px"
+            android:layout_below="@+id/res_item_price"
+            style="@style/grey_divider"
+            android:layout_width="match_parent"/>
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+</com.zhy.autolayout.AutoRelativeLayout>

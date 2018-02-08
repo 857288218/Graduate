@@ -13,7 +13,7 @@
     <string-array name="bottom_tab_item_fragment">
         <item>com.example.rjq.myapplication.fragment.OneFragment</item>
         <item>com.example.rjq.myapplication.fragment.CartFragment</item>
-        <item>com.example.rjq.myapplication.fragment.TwoFragment</item>
+        <item>com.example.rjq.myapplication.fragment.OrderFragment</item>
         <item>com.example.rjq.myapplication.fragment.ThreeFragment</item>
     </string-array>
 

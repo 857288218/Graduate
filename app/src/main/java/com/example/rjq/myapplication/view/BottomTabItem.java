@@ -1,4 +1,4 @@
-package com.example.rjq.myapplication.bottomTab;
+package com.example.rjq.myapplication.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

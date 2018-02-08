@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="Restaurant"></dbname>
-    <version value = "7"></version>
+    <version value = "11"></version>
     <list>
         <!--模型类映射，一定要使用完整的类名-->
         <mapping class="com.example.rjq.myapplication.bean.ResBuyCategoryNum"></mapping>
