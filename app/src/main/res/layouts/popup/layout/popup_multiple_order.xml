@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:background="@color/white"
+        android:id="@+id/multiple_order_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/multiple_order_shadow"
+        android:background="#77000000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</com.zhy.autolayout.AutoLinearLayout>

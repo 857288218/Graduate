@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <com.zhy.autolayout.AutoRelativeLayout
@@ -13,10 +13,11 @@
             android:id="@+id/item_img_cart_fragment_item"
             android:scaleType="centerCrop"
             android:src="@mipmap/background"
-            android:layout_width="@dimen/space_90px"
-            android:layout_height="@dimen/space_90px" />
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
 
         <TextView
+            android:includeFontPadding="false"
             android:textColor="@color/black_2e"
             android:layout_marginLeft="@dimen/space_20px"
             android:layout_toRightOf="@+id/item_img_cart_fragment_item"
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:layout_marginTop="@dimen/space_25px"
+            android:layout_marginTop="13dp"
             android:text="@string/res_item_num"
             android:layout_marginLeft="@dimen/space_20px"
             android:layout_toRightOf="@+id/item_img_cart_fragment_item"
@@ -37,7 +38,7 @@
 
         <TextView
             android:layout_marginRight="@dimen/space_25px"
-            android:layout_marginTop="@dimen/space_25px"
+            android:layout_marginTop="13dp"
             android:layout_below="@+id/item_name_cart_fragment_item"
             android:id="@+id/res_item_price"
             android:layout_alignParentRight="true"
@@ -55,4 +56,4 @@
 
     </com.zhy.autolayout.AutoRelativeLayout>
 
-</com.zhy.autolayout.AutoRelativeLayout>
+</com.zhy.autolayout.AutoLinearLayout>

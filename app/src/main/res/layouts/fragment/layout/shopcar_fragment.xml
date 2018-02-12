@@ -8,12 +8,12 @@
         android:orientation="vertical"
         android:background="@color/color_f9"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/space_100px">
+        android:layout_height="@dimen/dimen_50dp">
 
         <TextView
             android:textStyle="bold"
             android:layout_marginLeft="@dimen/space_25px"
-            android:textSize="@dimen/space_30px"
+            android:textSize="15dp"
             android:layout_centerVertical="true"
             android:text="@string/cart"
             android:textColor="@color/color_56"

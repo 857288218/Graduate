@@ -32,13 +32,13 @@
                                     android:ellipsize="end"
                                     android:id="@+id/home_address"
                                     android:drawableRight="@mipmap/down"
-                                    android:textSize="@dimen/space_30px"
+                                    android:textSize="15sp"
                                     android:layout_marginLeft="@dimen/space_20px"
                                     android:gravity="center"
                                     android:textColor="@color/bottom_tab_text_normal_color"
                                     android:text="送至: 天津财经大学"
                                     android:layout_width="0dp"
-                                    android:layout_height="@dimen/space_100px"/>
+                                    android:layout_height="@dimen/dimen_50dp"/>
 
                                 <com.zhy.autolayout.AutoLinearLayout
                                     android:layout_weight="2"
@@ -48,16 +48,16 @@
                                     android:layout_marginLeft="@dimen/space_10px"
                                     android:background="@drawable/grey_radius"
                                     android:layout_width="0dp"
-                                    android:layout_height="@dimen/space_60px">
+                                    android:layout_height="30dp">
 
                                         <ImageButton
-                                            android:layout_marginRight="@dimen/space_10px"
+                                            android:layout_marginRight="5dp"
                                             android:background="@null"
                                             android:src="@mipmap/icon_search"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content" />
                                         <TextView
-                                            android:textSize="@dimen/space_27px"
+                                            android:textSize="14sp"
                                             android:textColor="@color/color_999"
                                             android:text="@string/search_flag"
                                             android:layout_width="wrap_content"

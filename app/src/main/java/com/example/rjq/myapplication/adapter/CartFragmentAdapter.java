@@ -1,17 +1,26 @@
 package com.example.rjq.myapplication.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.activity.ResActivity;
+import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.bean.ResBuyItemNum;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.utils.AutoUtils;
+
+import org.litepal.crud.DataSupport;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,6 +34,7 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
     private Context mContext;
     private List<ResBuyItemNum> resBuyItemNumList;
     private List<String> resIdList;
+    private ItemDeleteBtnListener deleteBtnListener;
 
     public CartFragmentAdapter(Context context, List<ResBuyItemNum> resBuyItemNumList){
         this.mContext = context;
@@ -34,6 +44,7 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
 
     @Override
     public int getItemCount() {
+        //该方法计算ItemCount返回的不是resBuyItemNumList总数而是店铺数量,所以对应的position也不是resBuyItemNumList中的position
         for (ResBuyItemNum resBuyItemNum : resBuyItemNumList){
             if (!resIdList.contains(resBuyItemNum.getResId())){
                 resIdList.add(resBuyItemNum.getResId());
@@ -49,22 +60,29 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         DecimalFormat df = new DecimalFormat("#0.0");
+        //该list为点击结算跳页时携带的数据,该resId的店铺的购买数据
+        final List<ResBuyItemNum> list = new ArrayList<>();
         double sum = 0;
         double deliverPrice = 0;
-
+        holder.resItemContainer.removeAllViews();
         for (ResBuyItemNum resBuyItemNum : resBuyItemNumList){
             if (resBuyItemNum.getResId().equals(resIdList.get(position))){
                 holder.resItemContainer.addView(
                         initResBuyItem(resBuyItemNum.getItemImg(),resBuyItemNum.getItemName(),resBuyItemNum.getBuyNum(),
                                 resBuyItemNum.getBuyNum()*Double.parseDouble(df.format(resBuyItemNum.getItemPrice())))
                 );
-                holder.resNameCartFragmentItem.setText(resBuyItemNum.getResName());
                 sum += resBuyItemNum.getBuyNum() * resBuyItemNum.getItemPrice();
-                deliverPrice = resBuyItemNum.getResDeliverMoney() - sum;
+                list.add(resBuyItemNum);
             }
         }
+
+        if (list.size() > 0){
+            holder.resNameCartFragmentItem.setText(list.get(0).getResName());
+            deliverPrice = list.get(0).getResDeliverMoney() - sum;
+        }
+
         int sum1 = (int) sum;
         if (sum > sum1){
             holder.resAllPrice.setText("￥"+df.format(sum));
@@ -79,7 +97,6 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
             }else{
                 holder.resDeliverMoney.setText(dp+"");
             }
-
             holder.resDeliverMoney.setVisibility(View.VISIBLE);
             holder.goToBuy.setVisibility(View.VISIBLE);
             holder.goToAccount.setVisibility(View.INVISIBLE);
@@ -91,7 +108,32 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
             holder.goToAccount.setVisibility(View.VISIBLE);
             holder.haicha.setVisibility(View.GONE);
             holder.qisong.setVisibility(View.GONE);
+            holder.goToAccount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "go to account resId:"+list.get(0).getResId(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
+        holder.root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ResActivity.class);
+                intent.putExtra("resId",list.get(0).getResId());
+                intent.putExtra("resName",list.get(0).getResName());
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deleteBtnListener != null){
+                    deleteBtnListener.onItemDeleteBtnListener(holder.deleteBtn,position,list.get(0).getResId());
+                }
+            }
+        });
 
     }
 
@@ -102,11 +144,14 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
         TextView goToAccount;
         TextView goToBuy;
         AutoLinearLayout resItemContainer;
+        ImageView deleteBtn;
         TextView haicha;
         TextView qisong;
+        View root;
 
         public ViewHolder(View root) {
             super(root);
+            this.root = root;
             resNameCartFragmentItem = (TextView) root.findViewById(R.id.res_name_cart_fragment_item);
             resDeliverMoney = (TextView) root.findViewById(R.id.res_deliver_money);
             resAllPrice = (TextView) root.findViewById(R.id.res_all_price);
@@ -115,6 +160,7 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
             resItemContainer = (AutoLinearLayout) root.findViewById(R.id.res_item_container);
             haicha = (TextView) root.findViewById(R.id.haicha);
             qisong = (TextView) root.findViewById(R.id.qisong);
+            deleteBtn = (ImageView) root.findViewById(R.id.delete_btn);
         }
 
     }
@@ -136,5 +182,14 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
         TextView res_item_price = (TextView) linearLayout.findViewById(R.id.res_item_price);
         res_item_price.setText("￥"+itemPrice);
         return linearLayout;
+    }
+
+    //子项的垃圾桶按钮的监听接口
+    public interface ItemDeleteBtnListener{
+        void onItemDeleteBtnListener(ImageView btn,int position,String resId);
+    }
+
+    public void setItemDeleteBtnListener(ItemDeleteBtnListener deleteBtnListener) {
+        this.deleteBtnListener = deleteBtnListener;
     }
 }

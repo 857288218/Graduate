@@ -36,6 +36,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.rjq.myapplication.R;
 
+import com.example.rjq.myapplication.activity.ClassifyResActivity;
 import com.example.rjq.myapplication.activity.MainActivity;
 import com.example.rjq.myapplication.activity.ResActivity;
 import com.example.rjq.myapplication.bean.HomeDataBean;
@@ -79,6 +80,18 @@ import okhttp3.Response;
 
 public class OneFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "homeFragment";
+    public static final String DELICIOUS = "delicious";
+    public static final String ONE_FLOUR = "one_flour";
+    public static final String TWO_FLOUR = "two_flour";
+    public static final String THREE_FLOUR = "three_flour";
+    public static final String SWEET = "sweet";
+    public static final String DELIVER = "deliver";
+    public static final String SIMPLE = "simple";
+    public static final String FAVOUR = "favour";
+    public static final String FRUIT = "fruit";
+    public static final String COOK = "cook";
+    public static final String RES_TITLE = "res_title";
+
     private AutoLinearLayout rootView;
     private Context mContext;
 
@@ -392,7 +405,10 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         headFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "美食", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_food));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,DELICIOUS);
+                startActivity(intent);
             }
         });
 
@@ -509,11 +525,11 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     public void onResume() {
         super.onResume();
         //刷新店铺红点
-        new Thread(new notifyResBuyNumRunnable()).start();
+        new Thread(new NotifyResBuyNumRunnable()).start();
 
     }
 
-    class notifyResBuyNumRunnable implements Runnable{
+    class NotifyResBuyNumRunnable implements Runnable{
         @Override
         public void run() {
             List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.findAll(ResBuyCategoryNum.class);

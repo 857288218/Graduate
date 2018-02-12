@@ -9,8 +9,12 @@
     <dimen name="dimen_6dp">6dp</dimen>
     <dimen name="dimen_7dp">7dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_12.5dp">12.5dp</dimen>
+    <dimen name="dimen_15dp">15dp</dimen>
     <dimen name="dimen_20dp">20dp</dimen>
     <dimen name="dimen_36dp">36dp</dimen>
+    <dimen name="dimen_30dp">30dp</dimen>
+    <dimen name="dimen_40dp">40dp</dimen>
     <dimen name="dimen_50dp">50dp</dimen>
     <dimen name="dimen_171dp">171dp</dimen>
 
@@ -56,5 +60,6 @@
     <dimen name="special_num">9sp</dimen>
     <dimen name="one_fragment_location">10sp</dimen>
     <dimen name="one_fragment_item_reduce">12sp</dimen>
+    <dimen name="classify_title_size">18sp</dimen>
 
 </resources>

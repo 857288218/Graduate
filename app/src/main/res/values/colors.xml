@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#5c5c5c</color>
     <color name="colorPrimaryDark">#5c5c5c</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#05c0ab</color>
 
     <color name="black">#000000</color>
     <color name="grey_background">#f0f2f1</color>
@@ -12,7 +12,7 @@
     <color name="white">#ffffff</color>
     <color name="text_color_grey">#989898</color>
     <color name="text_price_color">#ad5f59</color>
-    <color name="text_select_color">#24c720</color>
+    <color name="text_select_color">#44cc00</color>
     <color name="start_golden">#fed100</color>
     <color name="colorRed">#ff0000</color>
 
@@ -27,6 +27,8 @@
     <color name="black_2e">#2e2e2e</color>
     <color name="account_bg">#58D178</color>
 
+    <color name="gradual_start_theme_color">#05cdb7</color>
+    <color name="back_btn_press_color">#06dac3</color>
     <color name="bottom_tab_text_selected_color">#05c0ab</color>
     <color name="bottom_tab_text_normal_color">#676767</color>
     <color name="one_fragment_location">#a9a9a9</color>

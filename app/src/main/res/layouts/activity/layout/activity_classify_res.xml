@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.example.rjq.myapplication.activity.ClassifyResActivity">
+
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:id="@+id/first_load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/header"
+        android:background="@drawable/theme_color_gradual"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dp">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:padding="@dimen/dimen_15dp"
+            android:layout_gravity="center"
+            android:background="@drawable/back_btn_bg"
+            android:src="@mipmap/icon_white_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:includeFontPadding="false"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/back_btn"
+            android:id="@+id/classify_title"
+            android:layout_marginLeft="@dimen/dimen_12.5dp"
+            android:textSize="@dimen/classify_title_size"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="甜品饮品"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/search"
+            android:padding="@dimen/dimen_15dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:tint="@color/white"
+            android:background="@drawable/back_btn_bg"
+            android:src="@mipmap/icon_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/order"
+        android:layout_below="@+id/header"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_weight="2.9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:drawableRight="@mipmap/down_black"
+                android:id="@+id/order_multiple_order"
+                android:textColor="@color/black"
+                android:padding="@dimen/space_20px"
+                android:gravity="center"
+                android:text="@string/multiple_order"
+                android:layout_weight="1.0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/order_good_common"
+                android:textColor="@color/color_666"
+                android:padding="@dimen/space_20px"
+                android:text="@string/good_common"
+                android:gravity="center"
+                android:layout_weight="1.0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/order_short_distance"
+                android:textColor="@color/color_666"
+                android:padding="@dimen/space_20px"
+                android:text="@string/short_distance"
+                android:gravity="center"
+                android:layout_weight="1.0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <TextView
+            android:drawableRight="@mipmap/filter"
+            android:id="@+id/order_filter"
+            android:textColor="@color/color_666"
+            android:padding="@dimen/space_20px"
+            android:text="@string/order_filter"
+            android:gravity="center"
+            android:layout_weight="0.7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_below="@+id/order"
+        style="@style/grey_divider" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/classify_recycler"
+        android:layout_below="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</com.zhy.autolayout.AutoRelativeLayout>

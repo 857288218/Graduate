@@ -15,7 +15,7 @@
         app:indicator_margin="@dimen/dimen_6dp"
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/space_200px"/>
+        android:layout_height="100dp"/>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:paddingBottom="@dimen/space_40px"

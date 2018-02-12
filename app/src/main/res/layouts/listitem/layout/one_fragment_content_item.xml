@@ -14,22 +14,22 @@
         android:id="@+id/one_content_item_iv"
         android:scaleType="centerCrop"
         android:src="@mipmap/b1"
-        android:layout_width="@dimen/space_130px"
-        android:layout_height="@dimen/space_130px" />
+        android:layout_width="65dp"
+        android:layout_height="65dp" />
 
     <TextView
         android:includeFontPadding="false"
         android:id="@+id/one_content_item_buy_num"
         android:visibility="gone"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/space_10px"
-        android:layout_marginLeft="@dimen/space_130px"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="64dp"
         android:gravity="center"
         android:textSize="13sp"
         android:textColor="@color/white"
         android:background="@drawable/shop_cart_num_bg"
-        android:layout_width="@dimen/space_40px"
-        android:layout_height="@dimen/space_40px" />
+        android:layout_width="@dimen/dimen_20dp"
+        android:layout_height="@dimen/dimen_20dp" />
 
     <com.zhy.autolayout.AutoLinearLayout
         android:id="@+id/one_content_item_content"
@@ -119,12 +119,11 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                style="@style/one_fragment_num_style"
                 android:layout_centerVertical="true"
                 android:id="@+id/one_fragment_address"
                 android:layout_toLeftOf="@+id/divider_location"
                 android:text="公寓一楼"
-                android:textColor="@color/one_fragment_location"
-                android:textSize="@dimen/one_fragment_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -139,12 +138,11 @@
                 android:layout_height="@dimen/space_25px"/>
 
             <TextView
+                style="@style/one_fragment_num_style"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:id="@+id/one_fragment_deliver_time"
                 android:text="27分钟"
-                android:textColor="@color/one_fragment_location"
-                android:textSize="@dimen/one_fragment_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

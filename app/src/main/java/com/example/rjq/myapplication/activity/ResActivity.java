@@ -154,7 +154,9 @@ public class ResActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        //请求店铺的商品列表
+        Intent intent = getIntent();
+        homeRecResDetailBean = (HomeDataBean.HomeRecResDetailBean) intent.getSerializableExtra(RES_DETAIL);
+        //请求server端的店铺商品列表
 //        HashMap<String,String> hashMap = new HashMap<>();
 //        hashMap.put("id",String.valueOf(homeRecResDetailBean.getId()));
 //        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
@@ -169,76 +171,28 @@ public class ResActivity extends BaseActivity {
 //            }
 //        });
 
-        Intent intent = getIntent();
-        homeRecResDetailBean = (HomeDataBean.HomeRecResDetailBean) intent.getSerializableExtra(RES_DETAIL);
-
-        //设置商家名称
-        String resName = homeRecResDetailBean.getResName();
-        resNameTv.setText(resName);
-
-        //设置起送费
-        String deliverMoney = getResources().getString(R.string.res_deliver_money);
-        deliverMoney = String.format(deliverMoney,homeRecResDetailBean.getResDeliverMoney());
-        howMoneyToDelivery.setText(deliverMoney);
-
-        //设置图片
-        String resImg = homeRecResDetailBean.getResImg();
-//        GlideUtil.load(this,resImg,resImgIv,GlideUtil.REQUEST_OPTIONS);
-//        collapsingToolbarLayout.setContentScrim(getResources().getDrawable(R.mipmap.background));
-
-        //设置月售多少单
-        int monthOrder = homeRecResDetailBean.getResOrderNum();
-        String monthOrderNum = getResources().getString(R.string.res_month_sell_order);
-        monthOrderNum = String.format(monthOrderNum,monthOrder);
-        resOrderNum.setText(monthOrderNum);
-
-        //设置配送时间
-        int deliverTime = homeRecResDetailBean.getResDeliverTime();
-        String businessDeliverTime = getResources().getString(R.string.res_business_deliver_time);
-        businessDeliverTime = String.format(businessDeliverTime,deliverTime);
-        resDeliverTime.setText(businessDeliverTime);
-
-        //设置星星评分
-        float starNum = homeRecResDetailBean.getResStar();
-        ratingBar.setRating(starNum);
-        resScore.setText(starNum+"");
-
-        //设置商家描述
-        String resDescription = homeRecResDetailBean.getResDescription();
-        if (!TextUtils.isEmpty(resDescription)){
-            resDescriptionTv.setText(resDescription);
-        }
-
-        //设置各个活动
-        String resReduce = homeRecResDetailBean.getResReduce();
-        if (!TextUtils.isEmpty(resReduce)){
-            specialNum ++;
-            resReduceContainer.setVisibility(View.VISIBLE);
-            resReduceTv.setText(resReduce);
-        }
-        String resSpecial = homeRecResDetailBean.getResSpecial();
-        if (!TextUtils.isEmpty(resSpecial)){
-            specialNum ++;
-            resSpecialContainer.setVisibility(View.VISIBLE);
-            resSpecialTv.setText(resSpecial);
-        }
-        String resNew = homeRecResDetailBean.getResNew();
-        if (!TextUtils.isEmpty(resNew)){
-            specialNum ++;
-            resNewContainer.setVisibility(View.VISIBLE);
-            resNewTv.setText(resNew);
-        }
-        String resGive = homeRecResDetailBean.getResGive();
-        if (!TextUtils.isEmpty(resGive)){
-            specialNum ++;
-            resGiveContainer.setVisibility(View.VISIBLE);
-            resGiveTv.setText(resGive);
-        }
-
-        //设置优惠总数
-        if (specialNum > 0){
-            resSpecialNum.setText(specialNum+"个优惠");
-            resSpecialNum.setVisibility(View.VISIBLE);
+        if (homeRecResDetailBean == null){
+            String resId = intent.getStringExtra("resId");
+            //假数据
+            String resName = intent.getStringExtra("resName");
+            homeRecResDetailBean = new HomeDataBean.HomeRecResDetailBean();
+            homeRecResDetailBean.setResId(Integer.valueOf(resId));
+            homeRecResDetailBean.setResName(resName);
+//            HashMap<String,String> hashMap = new HashMap<>();
+//            hashMap.put("resId",String.valueOf(resId));
+//            HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//                    Log.d("homeRecResDetail fail",e.toString());
+//                }
+//
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//                    setResDetail();
+//                }
+//            });
+        }else{
+            setResDetail();
         }
 
     }
@@ -259,7 +213,7 @@ public class ResActivity extends BaseActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         //设置tabLayout的下划线的宽度
-        setIndicator(tabLayout,36,36);
+        setTabIndicator(tabLayout,36,36);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -272,7 +226,6 @@ public class ResActivity extends BaseActivity {
                 switch (position){
                     case 0:
                         shopCartMain.setVisibility(View.VISIBLE);
-//                        shopCartMain.startAnimation(AnimationUtil.createInAnimation(ResActivity.this, shopCartMain.getMeasuredHeight()));
                         break;
                     case 1:
                         shopCartMain.setVisibility(View.GONE);
@@ -291,7 +244,7 @@ public class ResActivity extends BaseActivity {
         });
     }
 
-    public void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
+    public void setTabIndicator(TabLayout tabs, int leftDip, int rightDip) {
         Class<?> tabLayout = tabs.getClass();
         Field tabStrip = null;
         try {
@@ -449,9 +402,7 @@ public class ResActivity extends BaseActivity {
     private ViewGroup createAnimLayout() {
         ViewGroup rootView = (ViewGroup) this.getWindow().getDecorView();
         LinearLayout animLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         animLayout.setLayoutParams(lp);
         animLayout.setId(Integer.MAX_VALUE-1);
         animLayout.setBackgroundResource(android.R.color.transparent);
@@ -492,5 +443,76 @@ public class ResActivity extends BaseActivity {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    private void setResDetail(){
+        //设置商家名称
+        String resName = homeRecResDetailBean.getResName();
+        resNameTv.setText(resName);
+
+        //设置起送费
+        String deliverMoney = getResources().getString(R.string.res_deliver_money);
+        deliverMoney = String.format(deliverMoney,homeRecResDetailBean.getResDeliverMoney());
+        howMoneyToDelivery.setText(deliverMoney);
+
+        //设置图片
+        String resImg = homeRecResDetailBean.getResImg();
+//      GlideUtil.load(this,resImg,resImgIv,GlideUtil.REQUEST_OPTIONS);
+//      collapsingToolbarLayout.setContentScrim(getResources().getDrawable(R.mipmap.background));
+
+        //设置月售多少单
+        int monthOrder = homeRecResDetailBean.getResOrderNum();
+        String monthOrderNum = getResources().getString(R.string.res_month_sell_order);
+        monthOrderNum = String.format(monthOrderNum,monthOrder);
+        resOrderNum.setText(monthOrderNum);
+
+        //设置配送时间
+        int deliverTime = homeRecResDetailBean.getResDeliverTime();
+        String businessDeliverTime = getResources().getString(R.string.res_business_deliver_time);
+        businessDeliverTime = String.format(businessDeliverTime,deliverTime);
+        resDeliverTime.setText(businessDeliverTime);
+
+        //设置星星评分
+        float starNum = homeRecResDetailBean.getResStar();
+        ratingBar.setRating(starNum);
+        resScore.setText(starNum+"");
+
+        //设置商家描述
+        String resDescription = homeRecResDetailBean.getResDescription();
+        if (!TextUtils.isEmpty(resDescription)){
+            resDescriptionTv.setText(resDescription);
+        }
+
+        //设置各个活动
+        String resReduce = homeRecResDetailBean.getResReduce();
+        if (!TextUtils.isEmpty(resReduce)){
+            specialNum ++;
+            resReduceContainer.setVisibility(View.VISIBLE);
+            resReduceTv.setText(resReduce);
+        }
+        String resSpecial = homeRecResDetailBean.getResSpecial();
+        if (!TextUtils.isEmpty(resSpecial)){
+            specialNum ++;
+            resSpecialContainer.setVisibility(View.VISIBLE);
+            resSpecialTv.setText(resSpecial);
+        }
+        String resNew = homeRecResDetailBean.getResNew();
+        if (!TextUtils.isEmpty(resNew)){
+            specialNum ++;
+            resNewContainer.setVisibility(View.VISIBLE);
+            resNewTv.setText(resNew);
+        }
+        String resGive = homeRecResDetailBean.getResGive();
+        if (!TextUtils.isEmpty(resGive)){
+            specialNum ++;
+            resGiveContainer.setVisibility(View.VISIBLE);
+            resGiveTv.setText(resGive);
+        }
+
+        //设置优惠总数
+        if (specialNum > 0){
+            resSpecialNum.setText(specialNum+"个优惠");
+            resSpecialNum.setVisibility(View.VISIBLE);
+        }
     }
 }

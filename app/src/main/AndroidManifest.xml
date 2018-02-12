@@ -48,7 +48,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.WelcomeActivity"
             android:theme="@style/ThemeWelcome">
@@ -58,7 +58,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ResActivity"></activity>
+        <activity android:name=".activity.ResActivity" />
+        <activity android:name=".activity.ClassifyResActivity"></activity>
     </application>
 
 </manifest>
