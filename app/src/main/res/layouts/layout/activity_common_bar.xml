@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:background="@drawable/theme_color_gradual"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dp">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:padding="@dimen/dimen_15dp"
+            android:layout_gravity="center"
+            android:background="@drawable/back_btn_bg"
+            android:src="@mipmap/icon_white_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:includeFontPadding="false"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/back_btn"
+            android:id="@+id/classify_title"
+            android:layout_marginLeft="@dimen/dimen_12.5dp"
+            android:textSize="@dimen/classify_title_size"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="收货地址"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/add_address"
+            android:paddingRight="@dimen/space_25px"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white"
+            android:text="新增地址"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:visibility="gone"
+            android:id="@+id/search"
+            android:padding="@dimen/dimen_15dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:tint="@color/white"
+            android:background="@drawable/back_btn_bg"
+            android:src="@mipmap/icon_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+</com.zhy.autolayout.AutoLinearLayout>

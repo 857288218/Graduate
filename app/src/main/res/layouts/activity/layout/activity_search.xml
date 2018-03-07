@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:zhy="http://schemas.android.com/tools"
+    android:id="@+id/activity_search"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_50dp">
+
+        <ImageButton
+            android:layout_weight="1"
+            android:id="@+id/back_btn"
+            android:padding="@dimen/dimen_10dp"
+            android:layout_centerVertical="true"
+            android:tint="@color/black"
+            android:src="@mipmap/icon_white_back"
+            android:background="@null"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+       <EditText
+           android:inputType="text"
+           android:layout_gravity="center"
+           android:layout_weight="4.5"
+           android:imeOptions="actionSearch"
+           android:layout_centerHorizontal="true"
+           android:paddingLeft="@dimen/space_25px"
+           android:textSize="@dimen/space_25px"
+           android:hint="@string/search_hint"
+           android:id="@+id/search_et"
+           android:background="@drawable/radius_grey_bg"
+           android:layout_width="0dp"
+           android:layout_height="35dp" />
+
+        <TextView
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:id="@+id/search_btn"
+            android:padding="@dimen/dimen_10dp"
+            android:layout_centerVertical="true"
+            android:text="@string/search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:visibility="visible"
+        android:id="@+id/activity_search_hot_and_history_ll"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/dimen_15dp"
+                android:textSize="@dimen/space_25px"
+                android:layout_marginTop="@dimen/space_30px"
+                android:text="热门推荐"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:layout_marginTop="@dimen/space_15px"
+                android:layout_marginRight="@dimen/space_15px"
+                android:layout_marginBottom="@dimen/space_15px"
+                android:id="@+id/search_activity_hot_flowlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                zhy:max_select="-1"
+                >
+            </com.zhy.view.flowlayout.TagFlowLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="@dimen/space_25px"
+                android:id="@+id/history_record"
+                android:layout_marginTop="@dimen/space_30px"
+                android:layout_marginLeft="@dimen/dimen_15dp"
+                android:text="历史搜索"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/activity_search_clear_history"
+                android:textSize="@dimen/space_25px"
+                android:textColor="#d6d6d6"
+                android:layout_marginTop="@dimen/space_30px"
+                android:layout_marginRight="@dimen/space_20px"
+                android:layout_alignParentRight="true"
+                android:text="清除历史"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:layout_marginTop="@dimen/space_15px"
+                android:layout_marginRight="@dimen/space_15px"
+                android:layout_marginBottom="@dimen/space_15px"
+                android:visibility="visible"
+                android:layout_below="@+id/history_record"
+                android:id="@+id/search_activity_history_flowlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                zhy:max_select="-1"
+                >
+            </com.zhy.view.flowlayout.TagFlowLayout>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/activity_search_no_history"
+                android:layout_marginTop="@dimen/space_20px"
+                android:layout_marginBottom="@dimen/space_20px"
+                android:layout_marginLeft="@dimen/dimen_15dp"
+                android:textSize="@dimen/space_25px"
+                android:textColor="#d6d6d6"
+                android:text="暂无搜索历史"
+                android:layout_below="@+id/history_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <ProgressBar
+        android:id="@+id/first_load"
+        android:visibility="gone"
+        android:layout_marginTop="200dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</com.zhy.autolayout.AutoLinearLayout>

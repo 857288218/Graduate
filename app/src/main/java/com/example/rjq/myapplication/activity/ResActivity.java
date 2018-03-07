@@ -18,7 +18,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -30,7 +29,9 @@ import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.TabFragmentAdapter;
 
 import com.example.rjq.myapplication.bean.GoodsListBean;
-import com.example.rjq.myapplication.bean.HomeDataBean;
+import com.example.rjq.myapplication.bean.ResBuyItemNum;
+import com.example.rjq.myapplication.bean.ResDetailBean;
+import com.example.rjq.myapplication.bean.UserBean;
 import com.example.rjq.myapplication.event.MessageEvent;
 import com.example.rjq.myapplication.fragment.EvaluateFragment;
 import com.example.rjq.myapplication.fragment.GoodsFragment;
@@ -39,12 +40,15 @@ import com.example.rjq.myapplication.util.AnimationUtil;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.autolayout.AutoLinearLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -59,7 +63,8 @@ import static com.example.rjq.myapplication.fragment.OneFragment.RES_DETAIL;
 
 public class ResActivity extends BaseActivity {
 
-    private HomeDataBean.HomeRecResDetailBean homeRecResDetailBean;
+    public static final String RES_ID = "res_id";
+    private ResDetailBean homeRecResDetailBean;
     @BindView(R.id.collapsing)
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.appbar)
@@ -127,11 +132,15 @@ public class ResActivity extends BaseActivity {
     private List<String> mTitles = new ArrayList<>();
 
     private GoodsListBean goodsListBean;
+    private List<GoodsListBean.GoodsCategoryBean> categoryBeanList;
 
     private TabFragmentAdapter adapter;
     private ViewGroup anim_mask_layout;//动画层
 
-    public HomeDataBean.HomeRecResDetailBean getResDetailBean(){
+    private int resId;
+    private String resName;
+
+    public ResDetailBean getResDetailBean(){
         return homeRecResDetailBean;
     }
 
@@ -148,6 +157,7 @@ public class ResActivity extends BaseActivity {
 //        collapsingToolbarLayout.setContentScrim(getResources().getDrawable(R.mipmap.background));
         returnBtn.setOnClickListener(this);
         goToCheckOut.setOnClickListener(this);
+        searchLl.setOnClickListener(this);
         setViewPager();
     }
 
@@ -155,29 +165,13 @@ public class ResActivity extends BaseActivity {
     protected void initData() {
         super.initData();
         Intent intent = getIntent();
-        homeRecResDetailBean = (HomeDataBean.HomeRecResDetailBean) intent.getSerializableExtra(RES_DETAIL);
-        //请求server端的店铺商品列表
-//        HashMap<String,String> hashMap = new HashMap<>();
-//        hashMap.put("id",String.valueOf(homeRecResDetailBean.getId()));
-//        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d("GoodsListBean",e.toString());
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                 goodsListBean = new Gson().fromJson(response.toString(),GoodsListBean.class);
-//            }
-//        });
-
+        homeRecResDetailBean = (ResDetailBean) intent.getSerializableExtra(RES_DETAIL);
         if (homeRecResDetailBean == null){
-            String resId = intent.getStringExtra("resId");
+            resId = Integer.parseInt(intent.getStringExtra(RES_ID));
+            resName = intent.getStringExtra("res_name");
             //假数据
-            String resName = intent.getStringExtra("resName");
-            homeRecResDetailBean = new HomeDataBean.HomeRecResDetailBean();
-            homeRecResDetailBean.setResId(Integer.valueOf(resId));
-            homeRecResDetailBean.setResName(resName);
+            homeRecResDetailBean = new ResDetailBean();
+            homeRecResDetailBean.setResId(resId);
 //            HashMap<String,String> hashMap = new HashMap<>();
 //            hashMap.put("resId",String.valueOf(resId));
 //            HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
@@ -188,12 +182,33 @@ public class ResActivity extends BaseActivity {
 //
 //                @Override
 //                public void onResponse(Call call, Response response) throws IOException {
+//                    homeRecResDetailBean = new Gson().fromJson(response.body().string(),ResDetailBean.class);
 //                    setResDetail();
 //                }
 //            });
         }else{
+            resId = homeRecResDetailBean.getResId();
+            resName = homeRecResDetailBean.getResName();
             setResDetail();
         }
+
+        //请求server端的店铺商品列表,
+//        HashMap<String,String> hashMap = new HashMap<>();
+//        hashMap.put("res_id",String.valueOf(resId));
+//        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.d("GoodsListBean",e.toString());
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                categoryBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<GoodsListBean.GoodsCategoryBean>>(){}.getType());
+//                goodsListBean.setData(categoryBeanList);
+//                goodsListBean.setResName(resName);
+//                goodsListBean.setResId(resId);
+//            }
+//        });
 
     }
 
@@ -282,8 +297,20 @@ public class ResActivity extends BaseActivity {
             case R.id.return_btn:
                 finish();
                 break;
+            case R.id.search_ll:
+                Intent intent = new Intent(this,SearchActivity.class);
+                startActivity(intent);
+                break;
             case R.id.go_to_account:
-                Toast.makeText(this, "结账", Toast.LENGTH_SHORT).show();
+                if (DataSupport.findAll(UserBean.class).size() > 0){
+                    Intent accountIntent = new Intent(this,AccountActivity.class);
+                    accountIntent.putExtra("res_id",resId);
+                    accountIntent.putExtra("res_name",resName);
+                    startActivity(accountIntent);
+                }else{
+                    Intent loginIntent = new Intent(this,LoginActivity.class);
+                    startActivity(loginIntent);
+                }
                 break;
         }
     }

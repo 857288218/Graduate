@@ -6,8 +6,5 @@
     android:layout_height="match_parent"
     tools:context="com.example.rjq.myapplication.activity.WelcomeActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </RelativeLayout>

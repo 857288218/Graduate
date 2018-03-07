@@ -6,10 +6,11 @@
         <item name="colorPrimary">@color/common_status_bar_color</item>
         <item name="colorPrimaryDark">@color/common_status_bar_color</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
     </style>
 
     <!--欢迎页面主题-->
-    <style name="ThemeWelcome" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ThemeWelcome" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@mipmap/start_img</item>
     </style>
@@ -142,4 +143,38 @@
         <item name="android:background">@drawable/shop_cart_num_bg</item>
     </style>
 
+    <style name="w_h_match_wrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="w_h_wrap_content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="bg_white" parent="w_h_match_wrap">
+        <item name="android:background">@color/white</item>
+    </style>
+
+
+
+    <style name="black666_text" parent="w_h_wrap_content">
+        <item name="android:textColor">@color/color_666</item>
+    </style>
+
+    <style name="black666_text_35px" parent="black666_text">
+        <item name="android:textSize">35px</item>
+    </style>
+
+    <style name="login_et_style" parent="w_h_match_wrap">
+        <item name="android:background">@null</item>
+        <item name="android:textColorHint">@color/text_color_grey</item>
+        <item name="android:textSize">@dimen/space_30px</item>
+        <item name="android:paddingTop">@dimen/space_30px</item>
+        <item name="android:paddingBottom">@dimen/space_30px</item>
+    </style>
+
+    <style name="green_text" parent="w_h_wrap_content">
+        <item name="android:textColor">@color/bottom_tab_text_selected_color</item>
+    </style>
 </resources>

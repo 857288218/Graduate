@@ -1,52 +1,47 @@
 package com.example.rjq.myapplication.fragment;
 
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
-
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-
 import android.view.WindowManager;
 import android.widget.ImageView;
-
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.rjq.myapplication.R;
-
+import com.example.rjq.myapplication.activity.AddressActivity;
 import com.example.rjq.myapplication.activity.ClassifyResActivity;
 import com.example.rjq.myapplication.activity.MainActivity;
 import com.example.rjq.myapplication.activity.ResActivity;
-import com.example.rjq.myapplication.bean.HomeDataBean;
-import com.example.rjq.myapplication.bean.HomeDataBean.HomeRecResDetailBean;
+import com.example.rjq.myapplication.activity.SearchActivity;
+import com.example.rjq.myapplication.bean.AddressBean;
 
 import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
+import com.example.rjq.myapplication.bean.ResDetailBean;
+import com.example.rjq.myapplication.bean.UserBean;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.util.HttpUtil;
-import com.example.rjq.myapplication.util.permission.PermissionFragment;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -58,6 +53,7 @@ import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import org.litepal.crud.DataSupport;
 
@@ -74,12 +70,16 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static android.app.Activity.RESULT_OK;
+import static com.example.rjq.myapplication.activity.AddressActivity.SELECTED_ADDRESS;
+
 /**
  * Created by rjq on 2017/10/28 0028.
  */
 
 public class OneFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "homeFragment";
+    public static final int ADDRESS_REQUEST = 1010;
     public static final String DELICIOUS = "delicious";
     public static final String ONE_FLOUR = "one_flour";
     public static final String TWO_FLOUR = "two_flour";
@@ -92,7 +92,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     public static final String COOK = "cook";
     public static final String RES_TITLE = "res_title";
 
-    private AutoLinearLayout rootView;
+    private AutoRelativeLayout rootView;
     private Context mContext;
 
     //头部及头部控件
@@ -118,18 +118,22 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     RecyclerView homeRecyclerView;
     @BindView(R.id.one_fragment_sml)
     SmartRefreshLayout smartRefreshLayout;
+    @BindView(R.id.home_search)
+    AutoLinearLayout searchLl;
+    @BindView(R.id.home_address)
+    TextView address;
+    @BindView(R.id.first_load)
+    ProgressBar progressBar;
 
     private BaseQuickAdapter adapter;
-
     public static final String RES_DETAIL = "res_detail";
     public static final String SPECIAL_NUM = "special_num";
 
     //首页数据
-    private HomeDataBean homeDataBean;
-    private List<HomeDataBean.HomeRecResDetailBean> homeRecResDetailList;
-    private List<HomeDataBean.HomeFiveBean> homeFiveBeanList;
-    private List<HomeDataBean.HomeBannerBean> homeBannerBeanList;
+    private ResDetailBean homeDataBean;
+    private List<ResDetailBean> homeRecResDetailList;
     private List<String> homeBannerImgUrl;
+    private int userId;
 
     //假数据
     private List<String> imageUrl;
@@ -140,7 +144,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null){
-            rootView = (AutoLinearLayout) inflater.inflate(R.layout.one_fragment,container,false);
+            rootView = (AutoRelativeLayout) inflater.inflate(R.layout.one_fragment,container,false);
             mContext = getActivity();
             initData();
             initView();
@@ -155,32 +159,46 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 
     private void initData(){
         ButterKnife.bind(this,rootView);
-//        homeDataBean = ((MainActivity)mContext).getHomeData();
-//        homeRecResDetailList = homeDataBean.getHomeRecResDetailList();
-//        homeFiveBeanList = homeDataBean.getHomeFiveImg();
-//        homeBannerBeanList = homeDataBean.getBannerList();
-//        for (HomeBannerBean homeBannerBean : homeBannerBeanList){
-//            homeBannerImgUrl.add(homeBannerBean.getBannerImgUrl());
-//        }
+        //网络请求数据
+//        progressBar.setVisibility(View.VISIBLE);
+//        homeRecyclerView.setVisibility(View.GONE);
+//        HttpUtil.sendOkHttpGetRequest("http://", new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                homeRecResDetailList = new Gson().fromJson(response.body().string(),new TypeToken<List<ResDetailBean>>(){}.getType());
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        progressBar.setVisibility(View.GONE);
+//                        homeRecyclerView.setVisibility(View.VISIBLE);
+//                    }
+//                });
+//            }
+//        });
 
         //假数据
-        homeDataBean = new HomeDataBean();
+        homeDataBean = new ResDetailBean();
         homeRecResDetailList = new ArrayList<>();
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean2 = new HomeDataBean.HomeRecResDetailBean(2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
+        ResDetailBean homeRecResDetailBean2 = new ResDetailBean(2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
                 "瓦罐汤",4.8f,1212,35,3,"东院食堂",30,"","","新用户下单立减20","");
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean1 = new HomeDataBean.HomeRecResDetailBean(1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",
+        ResDetailBean homeRecResDetailBean1 = new ResDetailBean(1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",
                 "杨国福麻辣烫",4.9f,2343,23,5,"公寓三楼",20,"满25减5,满35减11","","","");
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean3 = new HomeDataBean.HomeRecResDetailBean(4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
+        ResDetailBean homeRecResDetailBean3 = new ResDetailBean(4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
                 "杭州小笼包",4f,222,34,3,"公寓一楼",30,"满15减4","暖心三人餐A","","");
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean4 = new HomeDataBean.HomeRecResDetailBean(3,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
+        ResDetailBean homeRecResDetailBean4 = new ResDetailBean(3,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
                 "土家掉渣烧饼",4.9f,23234,29,6,"公寓一楼",45,"","","新用户下单立减20","满20赠送鸡蛋汤一份");
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean5 = new HomeDataBean.HomeRecResDetailBean(5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+        ResDetailBean homeRecResDetailBean5 = new ResDetailBean(5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
                 "北李妈妈菜",4.7f,3212,20,6,"东院食堂",27,"","","新用户下单立减15","满18赠送清热解毒苦瓜汤一份");
-        HomeDataBean.HomeRecResDetailBean homeRecResDetailBean6 = new HomeDataBean.HomeRecResDetailBean(8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+        ResDetailBean homeRecResDetailBean6 = new ResDetailBean(8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
                 "重庆小面",4.7f,3212,20,6,"公寓二楼",43,"","","新用户下单立减20","");
-        HomeRecResDetailBean homeRecResDetailBean7 = new HomeRecResDetailBean(7,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+        ResDetailBean homeRecResDetailBean7 = new ResDetailBean(7,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
                 "兰州拉面",4.7f,3212,20,6,"民族餐厅",12,"","","新用户下单立减28","");
-        HomeRecResDetailBean homeRecResDetailBean8 = new HomeRecResDetailBean(6,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+        ResDetailBean homeRecResDetailBean8 = new ResDetailBean(6,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
                 "三楼自助",4.7f,3212,20,6,"公寓三楼",67,"","满25减5，满30减7","新用户下单立减20","满17赠奶茶一杯");
         homeRecResDetailList.add(homeRecResDetailBean1);homeRecResDetailList.add(homeRecResDetailBean2);homeRecResDetailList.add(homeRecResDetailBean3);
         homeRecResDetailList.add(homeRecResDetailBean4);homeRecResDetailList.add(homeRecResDetailBean5);homeRecResDetailList.add(homeRecResDetailBean6);
@@ -226,7 +244,26 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         headThreeIv = (ImageView) recycleHeadView.findViewById(R.id.head_three_iv);
         headFourIv = (ImageView) recycleHeadView.findViewById(R.id.head_four_iv);
         headFiveIv = (ImageView) recycleHeadView.findViewById(R.id.head_five_iv);
+        searchLl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userId>0){
+                    Intent intent = new Intent(mContext, AddressActivity.class);
+                    startActivityForResult(intent,ADDRESS_REQUEST, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
+                }else{
+                    Toast.makeText(mContext, "登录后查看编辑收货地址", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
         initRecyclerView();
         initRefresh();
     }
@@ -238,9 +275,9 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         homeRecyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new BaseQuickAdapter<HomeRecResDetailBean,BaseViewHolder>(R.layout.one_fragment_content_item,homeRecResDetailList) {
+        adapter = new BaseQuickAdapter<ResDetailBean,BaseViewHolder>(R.layout.one_fragment_content_item,homeRecResDetailList) {
             @Override
-            protected void convert(BaseViewHolder helper, HomeRecResDetailBean item) {
+            protected void convert(BaseViewHolder helper, ResDetailBean item) {
                 helper.setGone(R.id.one_fragment_item_reduce_container,false);
                 helper.setGone(R.id.one_fragment_item_special_container,false);
                 helper.setGone(R.id.one_fragment_item_new_container,false);
@@ -415,63 +452,90 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         headOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "公寓一楼", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_one));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,ONE_FLOUR);
+                startActivity(intent);
             }
         });
 
         headTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "公寓二楼", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_two));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,TWO_FLOUR);
+                startActivity(intent);
             }
         });
 
         headThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "公寓三楼", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_three));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,THREE_FLOUR);
+                startActivity(intent);
             }
         });
 
         headSweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "甜品饮品", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_sweet));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,SWEET);
+                startActivity(intent);
             }
         });
 
         headDeliver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "deliver", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_deliver));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,DELIVER);
+                startActivity(intent);
             }
         });
 
         headSimple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "simple", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_simple));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,SIMPLE);
+                startActivity(intent);
             }
         });
 
         headPrefer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "prefer", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_prefer));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,FAVOUR);
+                startActivity(intent);
             }
         });
 
         headFruit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "fruit", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_fruit));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,FRUIT);
+                startActivity(intent);
             }
         });
 
         headCook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "cook", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ClassifyResActivity.class);
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_cook));
+                intent.putExtra(ClassifyResActivity.RES_CLASSIFY,COOK);
+                startActivity(intent);
             }
         });
     }
@@ -524,8 +588,17 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
+        userId = PreferenceManager.getDefaultSharedPreferences(mContext).getInt("user_id",-1);
+        List<AddressBean> addressBeanList = DataSupport.where("user_id = ? and selected = ?",String.valueOf(userId),"1").find(AddressBean.class);
+        //设置默认收货地址
+        if (userId>0 && addressBeanList.size()>0){
+            address.setText("送至:"+addressBeanList.get(0).getAddress());
+        }else{
+            address.setText("选择收货地址");
+        }
         //刷新店铺红点
         new Thread(new NotifyResBuyNumRunnable()).start();
+        mBanner.startAutoPlay();
 
     }
 
@@ -576,4 +649,16 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mBanner.stopAutoPlay();
+    }
 }

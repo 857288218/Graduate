@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.ClassifyResActivityAdapter;
 import com.example.rjq.myapplication.adapter.MultipleOrderPopWinAdapter;
-import com.example.rjq.myapplication.bean.HomeDataBean;
 import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
+import com.example.rjq.myapplication.bean.ResDetailBean;
 import com.example.rjq.myapplication.fragment.OneFragment;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.example.rjq.myapplication.view.MultipleOrderPopupWindow;
@@ -66,7 +66,7 @@ public class ClassifyResActivity extends BaseActivity {
     View view;
 
     private ClassifyResActivityAdapter adapter;
-    private List<HomeDataBean.HomeRecResDetailBean> list;
+    private List<ResDetailBean> list;
     private LinearLayoutManager linearLayoutManager;
     private String resClassify;
     private MultipleOrderPopupWindow popWin;
@@ -147,6 +147,7 @@ public class ClassifyResActivity extends BaseActivity {
         goodCommon.setOnClickListener(this);
 
         title.setText(getIntent().getStringExtra(OneFragment.RES_TITLE));
+        searchBtn.setVisibility(View.VISIBLE);
 
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 //        recyclerView.setLayoutManager(linearLayoutManager);
@@ -170,6 +171,8 @@ public class ClassifyResActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.search:
+                Intent intent = new Intent(this,SearchActivity.class);
+                startActivity(intent);
                 break;
             case R.id.order_good_common:
 //                HashMap<String,String> hashMap = new HashMap<>();
@@ -179,6 +182,7 @@ public class ClassifyResActivity extends BaseActivity {
                 goodCommon.setTextColor(getResources().getColor(R.color.black));
                 shortDistance.setTextColor(getResources().getColor(R.color.color_666));
                 multipleOrder.setText(getResources().getString(R.string.multiple_order));
+                multipleOrder.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.down_grey),null);
                 multipleOrder.setTextColor(getResources().getColor(R.color.color_666));
                 popWin.setSelectedPosition(-1);
                 selectedFlag = 1;
@@ -192,6 +196,7 @@ public class ClassifyResActivity extends BaseActivity {
                 shortDistance.setTextColor(getResources().getColor(R.color.black));
                 multipleOrder.setText(getResources().getString(R.string.multiple_order));
                 multipleOrder.setTextColor(getResources().getColor(R.color.color_666));
+                multipleOrder.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.mipmap.down_grey),null);
                 popWin.setSelectedPosition(-1);
                 selectedFlag = 2;
                 break;
@@ -217,7 +222,7 @@ public class ClassifyResActivity extends BaseActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                list = new Gson().fromJson(response.toString(), new TypeToken<List<HomeDataBean.HomeRecResDetailBean>>(){}.getType());
+                list = new Gson().fromJson(response.body().string(), new TypeToken<List<ResDetailBean>>(){}.getType());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

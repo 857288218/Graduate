@@ -11,7 +11,7 @@ import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
-import com.example.rjq.myapplication.bean.HomeDataBean;
+import com.example.rjq.myapplication.bean.ResDetailBean;
 import com.example.rjq.myapplication.view.BottomTabItem;
 
 import java.util.ArrayList;
@@ -22,7 +22,6 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity {
     private long mExitTime = 0;
     private static final String TAG = "MainActivity";
-    private HomeDataBean homeDataBean;
 
     @BindView(android.R.id.tabhost)
     FragmentTabHost tabHost;
@@ -36,9 +35,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        //得到welcome页请求的数据
-//        homeDataBean = (HomeDataBean) getIntent().getSerializableExtra("home_data");
-
     }
 
     @Override
@@ -96,10 +92,6 @@ public class MainActivity extends BaseActivity {
         }
         BottomTabItem tabItem = new BottomTabItem(this, tag, c, icon, name);
         return tabItem;
-    }
-
-    public HomeDataBean getHomeData(){
-        return homeDataBean;
     }
 
     @Override

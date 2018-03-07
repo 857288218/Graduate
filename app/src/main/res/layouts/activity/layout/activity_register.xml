@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.rjq.myapplication.activity.RegisterActivity">
+
+    <include layout="@layout/log_reg_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_marginTop="@dimen/space_30px"
+                android:background="#edecea"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:paddingLeft="@dimen/space_20px"
+                style="@style/bg_white">
+
+                <TextView
+                    android:layout_gravity="center"
+                    style="@style/black666_text_35px"
+                    android:layout_centerVertical="true"
+                    android:text="账号" />
+
+                <EditText
+                    android:layout_weight="2.0"
+                    style="@style/login_et_style"
+                    android:id="@+id/register_user_name"
+                    android:maxLength="13"
+                    android:inputType="number"
+                    android:cursorVisible="true"
+                    android:layout_marginLeft="@dimen/space_90px"
+                    android:hint="您的手机号" />
+
+                <View
+                    android:background="#edecea"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/get_identify_code"
+                    android:textColor="@color/text_color_grey"
+                    android:textSize="@dimen/space_30px"
+                    android:gravity="center"
+                    android:text="获取验证码"
+                    android:layout_width="@dimen/space_220px"
+                    android:layout_height="match_parent" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <View
+                android:background="#edecea"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:paddingLeft="@dimen/space_20px"
+                android:paddingRight="@dimen/space_20px"
+                style="@style/bg_white">
+
+                <TextView
+                    style="@style/black666_text_35px"
+                    android:layout_gravity="center"
+                    android:text="验证码" />
+                <EditText
+                    android:maxLength="4"
+                    android:inputType="number"
+                    android:id="@+id/identify_code"
+                    style="@style/login_et_style"
+                    android:cursorVisible="true"
+                    android:layout_marginLeft="27dp"
+                    android:hint="您手机收到的验证码" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <View
+                android:background="#edecea"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:paddingLeft="@dimen/space_20px"
+                android:paddingRight="@dimen/space_20px"
+                style="@style/bg_white">
+
+                <TextView
+                    style="@style/black666_text_35px"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/passwordText"
+                    android:text="密码" />
+                <EditText
+                    style="@style/login_et_style"
+                    android:layout_toRightOf="@+id/passwordText"
+                    android:id="@+id/register_password"
+                    android:cursorVisible="true"
+                    android:inputType="textPassword"
+                    android:layout_marginLeft="@dimen/space_90px"
+                    android:hint="输入您的密码" />
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/register_eye_iv"
+                    android:scaleType="fitXY"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/eye"
+                    android:layout_width="@dimen/space_35px"
+                    android:layout_height="@dimen/space_35px" />
+
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+            <View
+                android:background="#edecea"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+            <Button
+                android:textColor="@color/white"
+                android:id="@+id/register_btn"
+                android:layout_marginTop="@dimen/space_30px"
+                android:background="@drawable/login_bg"
+                android:padding="@dimen/space_25px"
+                android:textSize="@dimen/space_35px"
+                android:layout_marginLeft="@dimen/space_20px"
+                android:layout_marginRight="@dimen/space_20px"
+                android:text="注册"
+                style="@style/w_h_match_wrap" />
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/space_20px"
+                android:textSize="20sp"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:textColor="@color/colorRed"
+                android:id="@+id/identify_code_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </ScrollView>
+
+</com.zhy.autolayout.AutoLinearLayout>

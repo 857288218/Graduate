@@ -20,9 +20,10 @@ import com.example.rjq.myapplication.adapter.BigramHeaderAdapter;
 import com.example.rjq.myapplication.adapter.GoodsCategoryRecyclerAdapter;
 import com.example.rjq.myapplication.adapter.GoodsItemRecyclerAdapter;
 import com.example.rjq.myapplication.bean.GoodsListBean;
-import com.example.rjq.myapplication.bean.HomeDataBean;
+
 import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.bean.ResBuyItemNum;
+import com.example.rjq.myapplication.bean.ResDetailBean;
 import com.example.rjq.myapplication.event.GoodsListEvent;
 import com.example.rjq.myapplication.util.DataUtils;
 
@@ -57,7 +58,7 @@ public class GoodsFragment extends Fragment implements OnHeaderClickListener {
     private LinearLayoutManager mLinearLayoutManager;
 
     private GoodsListBean dataList;
-    private HomeDataBean.HomeRecResDetailBean homeRecResDetailBean;
+    private ResDetailBean homeRecResDetailBean;
 
     private View root;
     @Override
@@ -88,7 +89,6 @@ public class GoodsFragment extends Fragment implements OnHeaderClickListener {
         homeRecResDetailBean = ((ResActivity)getActivity()).getResDetailBean();
         dataList = DataUtils.getGoodsListBean();
         dataList.setResId(homeRecResDetailBean.getResId());
-        dataList.setResName(homeRecResDetailBean.getResName());
 
         //从本地数据库中得到category的购买总数和每个category下item的购买数量,然后设置给请求得到的数据dataList
         List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.where("resId = ?",String.valueOf(dataList.getResId())).find(ResBuyCategoryNum.class);

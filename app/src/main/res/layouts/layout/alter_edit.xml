@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:paddingTop="12dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:maxLength="8"
+        android:id="@+id/edit"
+        android:background="@null"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+    <View
+        android:background="@color/bottom_tab_text_selected_color"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+    <TextView
+        android:layout_marginTop="@dimen/dimen_6dp"
+        android:text="以中文，英文字母或数字开头，限制8个字符以内，不能为空"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

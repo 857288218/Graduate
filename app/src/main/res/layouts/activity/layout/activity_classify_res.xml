@@ -15,47 +15,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:id="@+id/header"
-        android:background="@drawable/theme_color_gradual"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_50dp">
-
-        <ImageButton
-            android:id="@+id/back_btn"
-            android:padding="@dimen/dimen_15dp"
-            android:layout_gravity="center"
-            android:background="@drawable/back_btn_bg"
-            android:src="@mipmap/icon_white_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:includeFontPadding="false"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/back_btn"
-            android:id="@+id/classify_title"
-            android:layout_marginLeft="@dimen/dimen_12.5dp"
-            android:textSize="@dimen/classify_title_size"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:text="甜品饮品"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageButton
-            android:id="@+id/search"
-            android:padding="@dimen/dimen_15dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center"
-            android:tint="@color/white"
-            android:background="@drawable/back_btn_bg"
-            android:src="@mipmap/icon_search"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-    </com.zhy.autolayout.AutoRelativeLayout>
+    <include layout="@layout/activity_common_bar"
+        android:id="@+id/header"/>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:id="@+id/order"

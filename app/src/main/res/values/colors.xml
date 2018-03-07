@@ -15,6 +15,7 @@
     <color name="text_select_color">#44cc00</color>
     <color name="start_golden">#fed100</color>
     <color name="colorRed">#ff0000</color>
+    <color name="colorOrange">#ff8800</color>
 
     <color name="res_detail_month_order">#444444</color>
 
@@ -26,6 +27,7 @@
     <color name="color_56">#565656</color>
     <color name="black_2e">#2e2e2e</color>
     <color name="account_bg">#58D178</color>
+    <color name="account_selected_bg">#4ab566</color>
 
     <color name="gradual_start_theme_color">#05cdb7</color>
     <color name="back_btn_press_color">#06dac3</color>

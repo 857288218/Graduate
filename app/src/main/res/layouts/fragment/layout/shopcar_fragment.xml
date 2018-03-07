@@ -4,29 +4,20 @@
     android:background="@color/white"
     android:layout_height="match_parent">
 
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:orientation="vertical"
-        android:background="@color/color_f9"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_50dp">
+    <include layout="@layout/common_bar"/>
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_marginLeft="@dimen/space_25px"
-            android:textSize="15dp"
-            android:layout_centerVertical="true"
-            android:text="@string/cart"
-            android:textColor="@color/color_56"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:layout_alignParentBottom="true"
-            style="@style/grey_divider"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"/>
-
-    </com.zhy.autolayout.AutoRelativeLayout>
+    <Button
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:id="@+id/login_btn"
+        android:layout_marginTop="200dp"
+        android:padding="20px"
+        android:background="@drawable/login_selected_bg"
+        android:textSize="17sp"
+        android:layout_gravity="center"
+        android:text="登录后查看购物车"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
         android:visibility="visible"

@@ -1,5 +1,7 @@
 package com.example.rjq.myapplication.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,9 +11,12 @@ import java.util.List;
 
 public class GoodsListBean implements Serializable {
     //商店id
+    @SerializedName("red_id")
     private int resId;
+    @SerializedName("res_name")
     private String resName;
 
+    @SerializedName("goods_category")
     private List<GoodsCategoryBean> goodsCategoryList;
 
     public List<GoodsCategoryBean> getData() {
@@ -39,10 +44,14 @@ public class GoodsListBean implements Serializable {
     }
 
     public static class GoodsCategoryBean {
+        @SerializedName("category_id")
         private int categoryId;
+        @SerializedName("category_name")
         private String name;
+        @SerializedName("category_description")
         private String categoryDescription;
         private int buyNum;                     //代码中设置的，不是server中取到的
+        @SerializedName("goods_item")
         private List<GoodsItemBean> goodsItemList;
 
         public GoodsCategoryBean(int id, String name, String categoryDescription, List<GoodsItemBean> goodsItemList) {
@@ -101,14 +110,22 @@ public class GoodsListBean implements Serializable {
         }
 
         public static class GoodsItemBean {
-            private int id;
-            private int categoryId;              //此id就是categoryId，是代码中设置的GoodsCategoryBean中的此id就是categoryId,不是再次通过server端取到的
+            private int id;                        //此id就是categoryId，是代码中设置的GoodsCategoryBean中的此id就是categoryId,不是再次通过server端取到的
+            @SerializedName("category_id")
+            private int categoryId;
+            @SerializedName("good_id")
             private int goodId;                  //该商品的id ，唯一标识
+            @SerializedName("good_name")
             private String name;
+            @SerializedName("good_price")
             private double price;
+            @SerializedName("good_introduce")
             private String introduce;
+            @SerializedName("good_img")
             private String goodsImgUrl;
+            @SerializedName("good_month_order")
             private int monthOrder;
+            @SerializedName("good_comment")
             private int goodComment;
             private int buyNum;                 //代码中设置的，不是server中取到的
 

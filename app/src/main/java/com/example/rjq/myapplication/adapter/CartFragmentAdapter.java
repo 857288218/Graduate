@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.activity.AccountActivity;
 import com.example.rjq.myapplication.activity.ResActivity;
 import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.bean.ResBuyItemNum;
@@ -25,6 +26,8 @@ import org.litepal.crud.DataSupport;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.rjq.myapplication.activity.ResActivity.RES_ID;
 
 /**
  * Created by rjq on 2018/2/7.
@@ -111,7 +114,10 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
             holder.goToAccount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "go to account resId:"+list.get(0).getResId(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, AccountActivity.class);
+                    intent.putExtra("res_id",Integer.parseInt(list.get(0).getResId()));
+                    intent.putExtra("res_name",list.get(0).getResName());
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -120,8 +126,8 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ResActivity.class);
-                intent.putExtra("resId",list.get(0).getResId());
-                intent.putExtra("resName",list.get(0).getResName());
+                intent.putExtra(RES_ID,list.get(0).getResId());
+                intent.putExtra("res_name",list.get(0).getResName());
                 mContext.startActivity(intent);
             }
         });

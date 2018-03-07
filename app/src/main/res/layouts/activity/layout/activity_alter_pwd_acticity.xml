@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.rjq.myapplication.activity.AlterPwdActivity">
+
+    <include layout="@layout/log_reg_bar"/>
+
+    <ScrollView
+        android:layout_marginLeft="@dimen/space_40px"
+        android:layout_marginRight="@dimen/space_40px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.zhy.autolayout.AutoLinearLayout
+
+                android:layout_marginBottom="@dimen/space_40px"
+                android:layout_marginTop="@dimen/space_60px"
+                android:background="@drawable/grey_stroke_white_solid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:maxLength="4"
+                    android:layout_weight="2.0"
+                    android:id="@+id/activity_set_password_now_pwd_et"
+                    android:inputType="textPassword"
+                    style="@style/login_et_style"
+                    android:cursorVisible="true"
+                    android:layout_marginLeft="@dimen/space_25px"
+                    android:hint="验证码" />
+
+                <TextView
+                    android:background="@drawable/grey_stroke_white_solid"
+                    android:id="@+id/activity_set_password_get_identify_code"
+                    android:textColor="@color/bottom_tab_text_selected_color"
+                    android:textSize="@dimen/space_30px"
+                    android:gravity="center"
+                    android:text="获取验证码"
+                    android:layout_width="@dimen/space_220px"
+                    android:layout_height="match_parent" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_marginBottom="@dimen/space_40px"
+                android:background="@drawable/grey_stroke_white_solid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/activity_set_password_new_pwd_et"
+                    android:inputType="textPassword"
+                    style="@style/login_et_style"
+                    android:cursorVisible="true"
+                    android:layout_marginLeft="@dimen/space_25px"
+                    android:hint="新密码" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_marginBottom="@dimen/space_40px"
+                android:background="@drawable/grey_stroke_white_solid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/activity_set_password_repeat_new_pwd_et"
+                    android:inputType="textPassword"
+                    style="@style/login_et_style"
+                    android:cursorVisible="true"
+                    android:layout_marginLeft="@dimen/space_25px"
+                    android:hint="确认新密码" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <TextView
+                android:text="@string/set_pwd_warn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/activity_set_password_submit_tv"
+                android:textSize="@dimen/space_35px"
+                android:paddingTop="@dimen/space_20px"
+                android:paddingBottom="@dimen/space_20px"
+                android:textColor="@color/white"
+                android:background="@drawable/save_btn_bg"
+                android:gravity="center"
+                android:text="确认提交"
+                android:layout_marginTop="@dimen/space_50px"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_90px" />
+
+            <TextView
+                android:visibility="gone"
+                android:textSize="20sp"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:textColor="@color/colorRed"
+                android:id="@+id/identify_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </ScrollView>
+
+</com.zhy.autolayout.AutoLinearLayout>

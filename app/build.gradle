@@ -46,6 +46,7 @@ dependencies {
     compile project(':banner')
     compile project(':library')
     compile 'com.zhy:autolayout:1.4.3'
+    compile 'com.hyman:flowlayout-lib:1.1.2'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.github.bumptech.glide:glide:4.0.0'
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
@@ -57,8 +58,9 @@ dependencies {
     compile 'org.litepal.android:core:1.6.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     apt 'com.jakewharton:butterknife-compiler:8.7.0'

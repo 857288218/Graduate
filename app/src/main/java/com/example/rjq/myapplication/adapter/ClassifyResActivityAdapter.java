@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.activity.ClassifyResActivity;
 import com.example.rjq.myapplication.activity.ResActivity;
-import com.example.rjq.myapplication.bean.HomeDataBean;
+import com.example.rjq.myapplication.bean.ResDetailBean;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.zhy.autolayout.AutoLinearLayout;
 
@@ -29,9 +29,9 @@ import static com.example.rjq.myapplication.fragment.OneFragment.RES_DETAIL;
 public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyResActivityAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<HomeDataBean.HomeRecResDetailBean> homeRecResDetailBeanList;
+    private List<ResDetailBean> homeRecResDetailBeanList;
 
-    public ClassifyResActivityAdapter(Context mContext, List<HomeDataBean.HomeRecResDetailBean> homeRecResDetailBeanList){
+    public ClassifyResActivityAdapter(Context mContext, List<ResDetailBean> homeRecResDetailBeanList){
         this.mContext = mContext;
         this.homeRecResDetailBeanList = homeRecResDetailBeanList;
     }

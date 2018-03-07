@@ -1,12 +1,16 @@
 package com.example.rjq.myapplication.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.litepal.crud.DataSupport;
+
+import java.io.Serializable;
 
 /**
  * Created by rjq on 2018/2/4.
  */
 
-public class ResBuyItemNum extends DataSupport {
+public class ResBuyItemNum extends DataSupport implements Serializable{
     private int id;
     private String resId;
     private String resName;

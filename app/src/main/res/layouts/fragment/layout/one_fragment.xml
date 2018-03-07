@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+        <ProgressBar
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:id="@+id/first_load"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             app:srlEnablePreviewInEditMode="true"
@@ -87,4 +94,4 @@
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-</com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoRelativeLayout>

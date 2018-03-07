@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="@dimen/dimen_12.5dp"
+    android:paddingRight="@dimen/dimen_12.5dp"
+    android:paddingLeft="@dimen/dimen_12.5dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <com.example.rjq.myapplication.view.RoundAngleImageView
+        android:id="@+id/order_fragment_item_res_img"
+        app:roundHeight="2dp"
+        app:roundWidth="2dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/background"
+        android:layout_width="35dp"
+        android:layout_height="35dp" />
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_toRightOf="@+id/order_fragment_item_res_img"
+        android:id="@+id/res_name_time"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp">
+
+        <TextView
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:drawablePadding="@dimen/dimen_5dp"
+            android:drawableRight="@mipmap/icon_right_black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:id="@+id/order_fragment_item_res_name"
+            android:text="粮品生活"
+            android:maxWidth="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:id="@+id/order_fragment_item_res_buy_time"
+            android:includeFontPadding="false"
+            android:textSize="10sp"
+            android:textColor="@color/color_666"
+            android:text="2018-01-06 17:05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:textColor="@color/black_2e"
+        android:textSize="12.5sp"
+        android:layout_alignParentRight="true"
+        android:text="@string/order_has_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/price"
+        android:layout_marginTop="@dimen/dimen_15dp"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_toRightOf="@+id/order_fragment_item_res_img"
+        android:layout_below="@+id/res_name_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="14sp"
+            android:text="宫保鸡丁"
+            android:id="@+id/order_fragment_item_res_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/order_fragment_item_res_item_price"
+            android:gravity="right"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="￥20.5"
+            android:layout_alignParentRight="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:paddingBottom="@dimen/dimen_5dp"
+        android:paddingTop="@dimen/dimen_5dp"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:background="@drawable/go_to_buy_bg"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:textColor="@color/bottom_tab_text_selected_color"
+        android:layout_below="@+id/price"
+        android:layout_alignParentRight="true"
+        android:text="@string/order_fragment_item_buy"
+        android:id="@+id/order_fragment_item_buy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_below="@+id/order_fragment_item_buy"
+        style="@style/grey_divider"
+        android:layout_width="match_parent" />
+
+</RelativeLayout>

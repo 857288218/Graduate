@@ -8,15 +8,18 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -24,20 +27,35 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.rjq.myapplication.activity.AddressActivity;
+import com.example.rjq.myapplication.activity.AlterPwdActivity;
+import com.example.rjq.myapplication.activity.BaseActivity;
+import com.example.rjq.myapplication.activity.LoginActivity;
 import com.example.rjq.myapplication.activity.MainActivity;
+import com.example.rjq.myapplication.bean.UserBean;
+import com.example.rjq.myapplication.util.HttpUtil;
 import com.example.rjq.myapplication.util.permission.PermissionListener;
 import com.example.rjq.myapplication.util.permission.PermissionUtil;
 import com.example.rjq.myapplication.view.RoundAngleImageView;
@@ -51,55 +69,102 @@ import com.example.rjq.myapplication.util.FileStorage;
 import com.example.rjq.myapplication.util.lubanimage.Luban;
 import com.example.rjq.myapplication.util.lubanimage.OnCompressListener;
 
+import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
+
+import org.litepal.crud.DataSupport;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by rjq on 2017/10/28 0028.
  */
 public class ThreeFragment extends Fragment implements View.OnClickListener{
-    private static final String TAG = "life";
+    private static final String TAG = "ThreeFragment";
     private View rootView;
-    private RoundAngleImageView myHeadPhotoIV;
-    private AutoRelativeLayout myHeadPhotoRL;
 
     private static final int REQUEST_PICK_IMAGE = 1; //相册选取
     private static final int REQUEST_CAPTURE = 2;  //拍照
     private static final int REQUEST_PICTURE_CUT = 3;  //剪裁图片
     private static final int REQUEST_PERMISSION = 4;  //权限请求
+    public static final int REQUEST_LOGIN = 5;      //登录
     private Uri imageUri;//原图保存地址
     private Uri outputUri;//剪切的地址
-    private File lubanFile;
     private String imagePath;
 
     private Dialog dialog;
-    private CommonPopupWindow commonPopupWindow;
     private TextView tv3;
     private TextView tv1;
     private TextView tv2;
-
     PermissionUtil permissionUtil;
 
+    @BindView(R.id.common_bar_title)
+    TextView title;
+    @BindView(R.id.user_name)
+    AutoRelativeLayout userName;
+    @BindView(R.id.user_phone)
+    AutoRelativeLayout userPhone;
+    @BindView(R.id.user_sex)
+    AutoRelativeLayout userSex;
+    @BindView(R.id.goods_address)
+    AutoRelativeLayout goodsAddress;
+    @BindView(R.id.my_collect)
+    AutoRelativeLayout myCollect;
+    @BindView(R.id.user_password)
+    AutoRelativeLayout userPassword;
+    @BindView(R.id.buy_password)
+    AutoRelativeLayout buyPwd;
+    @BindView(R.id.log_out)
+    AutoRelativeLayout logOut;
+    @BindView(R.id.my_head_img)
+    CircleImageView headImg;
+    @BindView(R.id.user_img_container)
+    AutoRelativeLayout userImgContainer;
+    @BindView(R.id.all_money)
+    AutoLinearLayout allMoney;
+    @BindView(R.id.user_set_up)
+    AutoLinearLayout userSetUp;
+    @BindView(R.id.fragment_my_wallet_money_tv)
+    TextView walletMoney;
+    @BindView(R.id.fragment_my_red_paper)
+    TextView redPaperNum;
+    @BindView(R.id.gold_money_num)
+    TextView goldMoney;
+    @BindView(R.id.user_name_text)
+    TextView userNameText;
+    @BindView(R.id.user_phone_text)
+    TextView userPhoneText;
+    @BindView(R.id.user_sex_text)
+    TextView userSexText;
+    @BindView(R.id.login)
+    RelativeLayout login;
+    @BindView(R.id.sv)
+    ScrollView sv;
+    @BindView(R.id.ll)
+    AutoLinearLayout ll;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG,"onCreateView three");
-        if (rootView == null){
-            rootView = inflater.inflate(R.layout.three_fragment,container,false);
-            initData();
-            initView();
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.my_fragment_status_bar_color));
+        }
+        if (rootView == null){
+            rootView = inflater.inflate(R.layout.three_fragment,container,false);
+            initData();
+            initView();
         }
         return rootView;
     }
@@ -109,21 +174,131 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initView(){
-        myHeadPhotoIV = (com.example.rjq.myapplication.view.RoundAngleImageView) rootView.findViewById(R.id.fragment_main_my_head_photo_iv);
-        myHeadPhotoRL = (AutoRelativeLayout) rootView.findViewById(R.id.fragment_main_my_head_photo_rl);
-        myHeadPhotoRL.setOnClickListener(this);
         permissionUtil = new PermissionUtil(getActivity());
+        title.setText(getResources().getString(R.string.my));
+        userName.setOnClickListener(this);
+        userPhone.setOnClickListener(this);
+        userSex.setOnClickListener(this);
+        goodsAddress.setOnClickListener(this);
+        myCollect.setOnClickListener(this);
+        userPassword.setOnClickListener(this);
+        buyPwd.setOnClickListener(this);
+        headImg.setOnClickListener(this);
+        logOut.setOnClickListener(this);
+        setUserInfo();
+    }
 
+    private void setUserInfo(){
+        List<UserBean> userList = DataSupport.findAll(UserBean.class);
+        if (userList.size() > 0){
+            login.setVisibility(View.GONE);
+            logOut.setVisibility(View.VISIBLE);
+            UserBean userBean = userList.get(0);
+            GlideUtil.load(getActivity(),userBean.getUserImg(),headImg,GlideUtil.REQUEST_OPTIONS);
+            walletMoney.setText(userBean.getUserMoney()+"");
+            redPaperNum.setText(userBean.getUserRedPaper()+"");
+            goldMoney.setText(userBean.getGoldMoney()+"");
+            userNameText.setText(userBean.getUserName());
+            if (userBean.getUserSex() == 0){
+                userSexText.setText("女");
+            }else{
+                userSexText.setText("男");
+            }
+            String phoneNumber = userBean.getUserPhone().substring(0, 3) + "****" + userBean.getUserPhone().substring(7, userBean.getUserPhone().length());
+            userPhoneText.setText(phoneNumber);
+
+            ll.setClickable(false);
+            userName.setClickable(true);
+            userPhone.setClickable(true);
+            userSex.setClickable(true);
+            goodsAddress.setClickable(true);
+            myCollect.setClickable(true);
+            userPassword.setClickable(true);
+            buyPwd.setClickable(true);
+            headImg.setClickable(true);
+            userName.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
+            userPhone.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
+            userSex.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
+            goodsAddress.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
+            myCollect.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
+            userPassword.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
+            buyPwd.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
+
+        }else{
+            login.setVisibility(View.VISIBLE);
+            walletMoney.setText(0+"");
+            redPaperNum.setText(0+"");
+            goldMoney.setText(0+"");
+            userNameText.setText("");
+            userPhoneText.setText("");
+            userSexText.setText("");
+            GlideUtil.load(getActivity(),R.mipmap.default_img_header,headImg,GlideUtil.REQUEST_OPTIONS);
+            logOut.setVisibility(View.GONE);
+            userName.setClickable(false);
+            userPhone.setClickable(false);
+            userSex.setClickable(false);
+            goodsAddress.setClickable(false);
+            myCollect.setClickable(false);
+            userPassword.setClickable(false);
+            buyPwd.setClickable(false);
+            headImg.setClickable(false);
+            userName.setBackground(getResources().getDrawable(R.color.white));
+            userPhone.setBackground(getResources().getDrawable(R.color.white));
+            userSex.setBackground(getResources().getDrawable(R.color.white));
+            goodsAddress.setBackground(getResources().getDrawable(R.color.white));
+            myCollect.setBackground(getResources().getDrawable(R.color.white));
+            userPassword.setBackground(getResources().getDrawable(R.color.white));
+            buyPwd.setBackground(getResources().getDrawable(R.color.white));
+            ll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUserInfo();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.fragment_main_my_head_photo_rl:
+            case R.id.user_name:
+                alterUserNameDialog();
+                break;
+            case R.id.user_phone:
+
+                break;
+            case R.id.user_sex:
+                alterUserSexDialog();
+                break;
+            case R.id.goods_address:
+                Intent addressIntent = new Intent(getActivity(), AddressActivity.class);
+                addressIntent.putExtra("threefragment",true);
+                startActivity(addressIntent);
+                break;
+            case R.id.my_collect:
+                break;
+            case R.id.user_password:
+                Intent intent = new Intent(getActivity(), AlterPwdActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.buy_password:
+                break;
+            case R.id.my_head_img:
                 initPicPopWindow();
                 break;
-            case R.id.tx_3:
-                dialog.dismiss();
+            case R.id.log_out:
+                DataSupport.deleteAll(UserBean.class);
+                setUserInfo();
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+                editor.putInt("user_id",-1);
+                editor.commit();
                 break;
             case R.id.tx_1:
                 dialog.dismiss();
@@ -145,7 +320,6 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                         PermissionUtil.showDialog(getActivity(),"在设置-应用-食堂订餐-权限中开启 或 安全管家-应用管理-食堂订餐中开启"+msg+"权限，以正常使用相机、录像等功能");
                     }
                 });
-
                 break;
             case R.id.tx_2:
                 dialog.dismiss();
@@ -167,7 +341,116 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                     }
                 });
                 break;
+            case R.id.tx_3:
+                dialog.dismiss();
+                break;
         }
+    }
+
+    private void alterUserNameDialog(){
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.alter_edit,null);
+        final EditText edit = (EditText) view.findViewById(R.id.edit);
+        new AlertDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.user_name))
+                .setView(view)
+                .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String input = edit.getText().toString();
+                        if (!TextUtils.isEmpty(input)) {
+                            userNameText.setText(input);
+                            Toast.makeText(getActivity(), "用户名修改成功", Toast.LENGTH_SHORT).show();
+                            List<UserBean> list = DataSupport.findAll(UserBean.class);
+                            if (list.size()>0){
+                                //将更改保存到本地数据库
+                                UserBean userBean = list.get(0);
+                                userBean.setUserName(input);
+                                userBean.save();
+                                //将更改保存到远程数据库
+//                                        HashMap<String,String> hash = new HashMap<String, String>();
+//                                        hash.put("user_id",String.valueOf(userBean.getUserId()));
+//                                        hash.put("user_name",userBean.getUserName());
+//                                        HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
+//                                            @Override
+//                                            public void onFailure(Call call, IOException e) {
+//                                                Log.d("ThreeFragment",e.toString());
+//                                            }
+//
+//                                            @Override
+//                                            public void onResponse(Call call, Response response) throws IOException {
+//                                                getActivity().runOnUiThread(new Runnable() {
+//                                                    @Override
+//                                                    public void run() {
+//                                                        Toast.makeText(getActivity(), "用户名修改成功", Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                });
+//
+//                                            }
+//                                        });
+                            }
+                        }
+                        else {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.user_name_not_empty), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), null)
+                .show();
+    }
+
+    private void alterUserSexDialog(){
+        final View viewSex = LayoutInflater.from(getActivity()).inflate(R.layout.alter_sex,null);
+        final RadioGroup selected = (RadioGroup) viewSex.findViewById(R.id.radio_group);
+        RadioButton man = (RadioButton) viewSex.findViewById(R.id.man);
+        RadioButton woman = (RadioButton) viewSex.findViewById(R.id.woman);
+        if (userSexText.getText().toString().equals("男")){
+            man.setChecked(true);
+        }else{
+            woman.setChecked(true);
+        }
+        new AlertDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.user_sex))
+                .setView(viewSex)
+                .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        RadioButton rb = (RadioButton) viewSex.findViewById(selected.getCheckedRadioButtonId());
+                        String sex = rb.getText().toString();
+                        userSexText.setText(sex);
+                        //将修改保存到本地数据库
+                        List<UserBean> list = DataSupport.findAll(UserBean.class);
+                        if (list.size()>0){
+                            UserBean userBean = list.get(0);
+                            if (sex.equals("男")){
+                                userBean.setUserSex(1);
+                            }else{
+                                userBean.setUserSex(0);
+                            }
+                            userBean.save();
+                        }
+                        Toast.makeText(getActivity(), "用户性别修改成功", Toast.LENGTH_SHORT).show();
+                        //将更改保存到远程数据库
+//                                        HashMap<String,String> hash = new HashMap<String, String>();
+//                                        hash.put("user_id",String.valueOf(userBean.getUserId()));
+//                                        hash.put("user_sex",userBean.getUserSex());
+//                                        HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
+//                                            @Override
+//                                            public void onFailure(Call call, IOException e) {
+//                                                Log.d("ThreeFragment",e.toString());
+//                                            }
+//
+//                                            @Override
+//                                            public void onResponse(Call call, Response response) throws IOException {
+//                                                getActivity().runOnUiThread(new Runnable() {
+//                                                    @Override
+//                                                    public void run() {
+//                                                        Toast.makeText(getActivity(), "用户性别修改成功", Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                });
+//
+//                                            }
+//                                        });
+
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), null)
+                .show();
     }
 
     private void initPicPopWindow(){
@@ -253,24 +536,24 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         imagePath = null;
         if (data != null) {
             imageUri = data.getData();
-            if (DocumentsContract.isDocumentUri(getActivity(), imageUri)) {
-                //如果是document类型的uri,则通过document id处理
-                String docId = DocumentsContract.getDocumentId(imageUri);
-                if ("com.android.providers.media.documents".equals(imageUri.getAuthority())) {
-                    String id = docId.split(":")[1];//解析出数字格式的id
-                    String selection = MediaStore.Images.Media._ID + "=" + id;
-                    imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-                } else if ("com.android.downloads.documents".equals(imageUri.getAuthority())) {
-                    Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
-                    imagePath = getImagePath(contentUri, null);
-                }
-            } else if ("content".equalsIgnoreCase(imageUri.getScheme())) {
-                //如果是content类型的Uri，则使用普通方式处理
-                imagePath = getImagePath(imageUri, null);
-            } else if ("file".equalsIgnoreCase(imageUri.getScheme())) {
-                //如果是file类型的Uri,直接获取图片路径即可
-                imagePath = imageUri.getPath();
-            }
+//            if (DocumentsContract.isDocumentUri(getActivity(), imageUri)) {
+//                //如果是document类型的uri,则通过document id处理
+//                String docId = DocumentsContract.getDocumentId(imageUri);
+//                if ("com.android.providers.media.documents".equals(imageUri.getAuthority())) {
+//                    String id = docId.split(":")[1];//解析出数字格式的id
+//                    String selection = MediaStore.Images.Media._ID + "=" + id;
+//                    imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+//                } else if ("com.android.downloads.documents".equals(imageUri.getAuthority())) {
+//                    Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+//                    imagePath = getImagePath(contentUri, null);
+//                }
+//            } else if ("content".equalsIgnoreCase(imageUri.getScheme())) {
+//                //如果是content类型的Uri，则使用普通方式处理
+//                imagePath = getImagePath(imageUri, null);
+//            } else if ("file".equalsIgnoreCase(imageUri.getScheme())) {
+//                //如果是file类型的Uri,直接获取图片路径即可
+//                imagePath = imageUri.getPath();
+//            }
 
             cropPhoto();
         }
@@ -278,13 +561,43 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
 
     private void handleImageBeforeKitKat(Intent intent) {
         imageUri = intent.getData();
-        imagePath = getImagePath(imageUri, null);
+//        imagePath = getImagePath(imageUri, null);
         cropPhoto();
+    }
+
+    @TargetApi(19)
+    private String handleImgUri2String(Uri uri){
+        String path = "";
+        if (DocumentsContract.isDocumentUri(getActivity(), uri)) {
+            //如果是document类型的uri,则通过document id处理
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1];//解析出数字格式的id
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                path = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
+                path = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            //如果是content类型的Uri，则使用普通方式处理
+            path = getImagePath(uri, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            //如果是file类型的Uri,直接获取图片路径即可
+            path = uri.getPath();
+        }
+        return path;
+    }
+
+    private String handleImgUri2StringBeforeKitKat(Uri uri){
+        String path;
+        path = getImagePath(uri, null);
+        return path;
     }
 
     private String getImagePath(Uri uri, String selection) {
         String path = null;
-        //通过Uri和selection老获取真实的图片路径
+        //通过Uri和selection来获取真实的图片路径
         Cursor cursor = getActivity().getContentResolver().query(uri, null, selection, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -300,11 +613,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         switch (requestCode) {
             case REQUEST_PICK_IMAGE://从相册选择
                 if (resultCode == Activity.RESULT_OK){
-                    if (Build.VERSION.SDK_INT >= 19) {
-                        handleImageOnKitKat(data);
-                    } else {
-                        handleImageBeforeKitKat(data);
-                    }
+                    handleImageOnKitKat(data);
                 }
                 break;
             case REQUEST_CAPTURE://拍照
@@ -314,103 +623,33 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                 break;
             case REQUEST_PICTURE_CUT://裁剪完成
                 if (resultCode == Activity.RESULT_OK){
-                    RequestOptions requestOptions = new RequestOptions()
-                            .placeholder(R.mipmap.default_photo)
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .dontAnimate();
-                    GlideUtil.load(getActivity(),outputUri,myHeadPhotoIV,requestOptions);
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        imagePath = handleImgUri2String(outputUri);
+                    } else {
+                        imagePath = handleImgUri2StringBeforeKitKat(outputUri);
+                    }
+                    GlideUtil.load(getActivity(),imagePath,headImg,GlideUtil.REQUEST_OPTIONS);
+                    //将图片保存到远程数据库
+//                    HttpUtil.upLoadImg("http://", imagePath, new Callback() {
+//                        @Override
+//                        public void onFailure(Call call, IOException e) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onResponse(Call call, Response response) throws IOException {
+//
+//                        }
+//                    });
+//                    //将图片保存到本地数据库
+//                    List<UserBean> list = DataSupport.findAll(UserBean.class);
+//                    UserBean userBean = list.get(0);
+//                    userBean.setUserImg(imagePath);
+//                    userBean.save();
                 }
-
-                //luBanCompress();
                 break;
         }
     }
 
-//    private void luBanCompress() {
-//        final File file = new File(FileStorage.getRealFilePath(getActivity(), outputUri));
-//        Luban.with(getContext())
-//                .load(file)                     //传人要压缩的图片
-//                .setCompressListener(new OnCompressListener() { //设置回调
-//                    @Override
-//                    public void onStart() {
-//                        // TODO 压缩开始前调用，可以在方法内启动 loading UI
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(File file) {
-//                        // TODO 压缩成功后调用，返回压缩后的图片文件
-//                        lubanFile = file;
-////                        Map<String, RequestBody> map = mesgPackMap();
-////                        if (map != null) {
-////                            postHeadPhoto(map);
-////                        }
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        // TODO 当压缩过去出现问题时调用
-//                        Toast.makeText(getActivity(), "压缩失败", Toast.LENGTH_SHORT).show();
-//                    }
-//                }).launch();    //启动压缩
-//    }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        Log.d(TAG,"onAttach three");
-//    }
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.d(TAG,"onCreate three");
-//    }
-//
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        Log.d(TAG,"onActivityCreated three");
-//    }
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        Log.d(TAG,"onStart three");
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Log.d(TAG,"onResume three");
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        Log.d(TAG,"onPause three");
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        Log.d(TAG,"onStop three");
-//    }
-//
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        Log.d(TAG,"onDestroyView three");
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        Log.d(TAG,"onDestroy three");
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        Log.d(TAG,"onDetach three");
-//    }
 }

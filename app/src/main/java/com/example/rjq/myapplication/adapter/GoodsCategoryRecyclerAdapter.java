@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.bean.GoodsListBean;
 
@@ -25,8 +24,8 @@ public class GoodsCategoryRecyclerAdapter extends RecyclerView.Adapter<GoodsCate
     private OnItemClickListener mOnItemClickListener;
 
     public GoodsCategoryRecyclerAdapter(List<GoodsListBean.GoodsCategoryBean> dataList, Context context) {
-        this.dataList=dataList;
-        this.mContext=context;
+        this.dataList = dataList;
+        this.mContext = context;
     }
 
     @Override

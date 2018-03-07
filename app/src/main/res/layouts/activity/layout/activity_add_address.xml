@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.rjq.myapplication.activity.AddAddressActivity">
+
+    <include layout="@layout/activity_common_bar"
+        android:id="@+id/header"/>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:id="@+id/rl"
+        android:paddingBottom="@dimen/space_30px"
+        android:paddingTop="@dimen/space_30px"
+        android:paddingLeft="@dimen/space_30px"
+        android:layout_below="@+id/header"
+        android:layout_marginTop="@dimen/space_30px"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/ll_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/people"
+                android:textSize="16sp"
+                android:text="联系人"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/name"
+                android:maxLines="1"
+                android:inputType="text"
+                android:layout_centerVertical="true"
+                android:textSize="15sp"
+                android:textColorHint="#bbbbbb"
+                android:hint="姓名"
+                android:layout_marginLeft="@dimen/space_50px"
+                android:background="@null"
+                android:layout_toRightOf="@+id/people"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <View
+            android:layout_marginTop="@dimen/space_15px"
+            android:layout_below="@+id/ll_name"
+            android:id="@+id/divider"
+            android:layout_marginLeft="140px"
+            style="@style/grey_divider" />
+
+        <RadioGroup
+            android:layout_marginTop="@dimen/space_10px"
+            android:id="@+id/radio_group"
+            android:orientation="horizontal"
+            android:layout_below="@+id/divider"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/man"
+                android:textColor="@color/color_666"
+                android:text="先生"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/woman"
+                android:textColor="@color/color_666"
+                android:layout_marginLeft="@dimen/space_100px"
+                android:text="女士"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RadioGroup>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_marginTop="@dimen/space_10px"
+            android:layout_below="@+id/radio_group"
+            style="@style/grey_divider" />
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_marginTop="@dimen/space_25px"
+            android:layout_below="@+id/divider2"
+            android:id="@+id/ll_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/phone"
+                android:textSize="16sp"
+                android:text="手机号"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+
+                android:id="@+id/et_phone"
+                android:maxLines="1"
+                android:inputType="number"
+                android:layout_centerVertical="true"
+                android:textSize="15sp"
+                android:textColorHint="#bbbbbb"
+                android:hint="配送员联系您的电话"
+                android:layout_marginLeft="@dimen/space_50px"
+                android:background="@null"
+                android:layout_toRightOf="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_marginTop="@dimen/space_25px"
+            android:layout_below="@+id/ll_phone"
+            style="@style/grey_divider" />
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_marginTop="@dimen/space_25px"
+            android:layout_below="@+id/divider3"
+            android:id="@+id/ll_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/address"
+                android:textSize="16sp"
+                android:text="地址"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/et_address"
+                android:maxLines="1"
+                android:inputType="text"
+                android:layout_centerVertical="true"
+                android:textSize="15sp"
+                android:textColorHint="#bbbbbb"
+                android:hint="收货地址"
+                android:layout_marginLeft="@dimen/space_80px"
+                android:background="@null"
+                android:layout_toRightOf="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_marginTop="@dimen/space_25px"
+            android:layout_below="@+id/ll_address"
+            style="@style/grey_divider" />
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_marginTop="@dimen/space_25px"
+            android:layout_below="@+id/divider4"
+            android:id="@+id/ll_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/num"
+                android:textSize="16sp"
+                android:text="门牌号"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/et_num"
+                android:maxLines="1"
+                android:inputType="text"
+                android:layout_centerVertical="true"
+                android:textSize="15sp"
+                android:textColorHint="#bbbbbb"
+                android:hint="详细地址，例：15号楼226室"
+                android:layout_marginLeft="@dimen/space_50px"
+                android:background="@null"
+                android:layout_toRightOf="@+id/num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <TextView
+        android:layout_below="@+id/rl"
+        android:id="@+id/activity_add_address_submit_tv"
+        android:textSize="@dimen/space_35px"
+        android:paddingTop="@dimen/space_20px"
+        android:paddingBottom="@dimen/space_20px"
+        android:textColor="@color/white"
+        android:background="@drawable/save_btn_bg"
+        android:gravity="center"
+        android:text="保存"
+        android:layout_marginTop="@dimen/space_30px"
+        android:layout_marginLeft="@dimen/space_20px"
+        android:layout_marginRight="@dimen/space_20px"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_90px" />
+
+</com.zhy.autolayout.AutoRelativeLayout>

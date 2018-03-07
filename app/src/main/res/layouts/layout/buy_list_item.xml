@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_marginBottom="@dimen/space_25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/account_item_name"
+            android:text="酱爆鸡丁盖饭"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/account_item_price"
+            android:layout_marginRight="@dimen/space_30px"
+            android:layout_alignParentRight="true"
+            android:text="￥60"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/account_item_num"
+            android:layout_marginRight="@dimen/space_35px"
+            android:text="×3"
+            android:layout_toLeftOf="@+id/account_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+</LinearLayout>

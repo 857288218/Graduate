@@ -2,11 +2,13 @@ package com.example.rjq.myapplication.bean;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by rjq on 2018/2/4.
  */
 
-public class ResBuyCategoryNum extends DataSupport {
+public class ResBuyCategoryNum extends DataSupport implements Serializable{
     private int id;
     private String resId; //商店id
     private String categoryId; //范畴id

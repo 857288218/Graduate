@@ -24,7 +24,7 @@
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -59,7 +59,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ResActivity" />
-        <activity android:name=".activity.ClassifyResActivity"></activity>
+        <activity android:name=".activity.ClassifyResActivity" />
+        <activity android:name=".activity.SearchActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.AlterPwdActivity" />
+        <activity android:name=".activity.AccountActivity" />
+        <activity android:name=".activity.AddressActivity" />
+        <activity android:name=".activity.AddAddressActivity"></activity>
     </application>
 
 </manifest>
