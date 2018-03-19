@@ -37,7 +37,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:layout_marginRight="@dimen/space_25px"
+            android:layout_marginRight="@dimen/dimen_12.5dp"
             android:layout_marginTop="13dp"
             android:layout_below="@+id/item_name_cart_fragment_item"
             android:id="@+id/res_item_price"

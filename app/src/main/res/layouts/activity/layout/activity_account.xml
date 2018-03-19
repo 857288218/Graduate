@@ -11,11 +11,14 @@
         android:id="@+id/bar"/>
 
     <ScrollView
-        android:layout_below="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <com.zhy.autolayout.AutoLinearLayout
+            android:paddingBottom="60dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -30,56 +33,58 @@
                 android:layout_height="wrap_content">
 
                 <com.zhy.autolayout.AutoRelativeLayout
-                    android:padding="@dimen/space_20px"
+                    android:id="@+id/address_ll"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/space_20px">
 
                     <ImageButton
                         android:id="@+id/icon_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:background="@null"
-                        android:src="@mipmap/icon_map"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:src="@mipmap/icon_map" />
 
                     <TextView
-                        android:layout_marginLeft="@dimen/space_20px"
-                        android:textSize="17sp"
-                        android:textColor="@color/black"
+                        android:layout_marginRight="@dimen/space_25px"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:id="@+id/tv_location"
-                        android:layout_toRightOf="@+id/icon_map"
-                        android:text="天津国际贸易中心b座 2705"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/space_20px"
+                        android:layout_toRightOf="@+id/icon_map"
+                        android:text="请选择收货地址"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
 
                     <TextView
-                        android:layout_marginTop="@dimen/space_15px"
-                        android:layout_marginLeft="@dimen/space_20px"
-                        android:textColor="@color/color_999"
-                        android:layout_toRightOf="@+id/icon_map"
-                        android:layout_below="@+id/icon_map"
-                        android:text="任俊清先生"
                         android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/icon_map"
+                        android:layout_marginLeft="@dimen/space_20px"
+                        android:layout_marginTop="@dimen/space_15px"
+                        android:layout_toRightOf="@+id/icon_map"
+                        android:textColor="@color/color_999" />
 
                     <TextView
-                        android:layout_marginTop="@dimen/space_15px"
-                        android:textColor="@color/color_999"
-                        android:layout_marginLeft="@dimen/dimen_20dp"
-                        android:layout_below="@+id/icon_map"
-                        android:text="13622179395"
-                        android:layout_toRightOf="@+id/tv_name"
                         android:id="@+id/tv_phone"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/icon_map"
+                        android:layout_marginLeft="@dimen/dimen_20dp"
+                        android:layout_marginTop="@dimen/space_15px"
+                        android:layout_toRightOf="@+id/tv_name"
+                        android:textColor="@color/color_999" />
 
                     <ImageView
+                        android:layout_width="@dimen/dimen_20dp"
+                        android:layout_height="@dimen/dimen_20dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="@mipmap/icon_right"
                         android:background="@null"
-                        android:layout_width="@dimen/dimen_20dp"
-                        android:layout_height="@dimen/dimen_20dp" />
+                        android:src="@mipmap/icon_right" />
 
                 </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -175,6 +180,83 @@
                     </com.zhy.autolayout.AutoRelativeLayout>
 
                 </com.zhy.autolayout.AutoRelativeLayout>
+
+                <View
+                    android:layout_marginTop="@dimen/space_15px"
+                    android:layout_marginLeft="@dimen/space_80px"
+                    style="@style/grey_divider"
+                    android:layout_height="0.6dp"/>
+
+                <!--支付方式-->
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:id="@+id/pay_way"
+                    android:padding="@dimen/space_20px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_centerVertical="true"
+                        android:id="@+id/icon_pay"
+                        android:src="@mipmap/icon_pay"
+                        android:background="@null"
+                        android:layout_width="35px"
+                        android:layout_height="35px" />
+
+                    <TextView
+                        android:layout_toRightOf="@+id/icon_pay"
+                        android:layout_centerVertical="true"
+                        android:textSize="17sp"
+                        android:textColor="@color/black"
+                        android:layout_marginLeft="@dimen/space_20px"
+                        android:text="支付方式"
+                        android:id="@+id/tv_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:drawableRight="@mipmap/icon_right"
+                        android:id="@+id/tv_pay_selected"
+                        android:layout_centerVertical="true"
+                        android:text="支付宝"
+                        android:layout_below="@+id/rl_immediately_deliver"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/color_999"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+                <View
+                    android:layout_marginTop="@dimen/space_15px"
+                    android:layout_marginLeft="@dimen/space_80px"
+                    style="@style/grey_divider"
+                    android:layout_height="0.6dp"/>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:visibility="visible"
+                    android:padding="@dimen/space_20px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@mipmap/icon_edit"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:hint="备注"
+                        android:textSize="17sp"
+                        android:layout_gravity="center"
+                        android:id="@+id/extra_info"
+                        android:layout_marginLeft="@dimen/space_20px"
+                        android:background="@null"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
 
             </com.zhy.autolayout.AutoLinearLayout>
 

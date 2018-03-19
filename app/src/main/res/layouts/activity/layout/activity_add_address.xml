@@ -13,11 +13,11 @@
         android:paddingBottom="@dimen/space_30px"
         android:paddingTop="@dimen/space_30px"
         android:paddingLeft="@dimen/space_30px"
-        android:layout_below="@+id/header"
-        android:layout_marginTop="@dimen/space_30px"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header">
 
         <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/ll_name"
@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content" />
 
             <EditText
+                android:textColor="@color/black"
                 android:id="@+id/name"
                 android:maxLines="1"
                 android:inputType="text"
@@ -103,7 +104,7 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-
+                android:textColor="@color/black"
                 android:id="@+id/et_phone"
                 android:maxLines="1"
                 android:inputType="number"
@@ -126,13 +127,14 @@
             style="@style/grey_divider" />
 
         <com.zhy.autolayout.AutoRelativeLayout
-            android:layout_marginTop="@dimen/space_25px"
             android:layout_below="@+id/divider3"
             android:id="@+id/ll_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                android:paddingBottom="@dimen/space_25px"
+                android:paddingTop="@dimen/space_25px"
                 android:layout_centerVertical="true"
                 android:id="@+id/address"
                 android:textSize="16sp"
@@ -140,14 +142,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <EditText
-                android:id="@+id/et_address"
+            <TextView
+                android:textColor="@color/black"
+                android:ellipsize="end"
+                android:id="@+id/tv_address"
                 android:maxLines="1"
-                android:inputType="text"
                 android:layout_centerVertical="true"
                 android:textSize="15sp"
                 android:textColorHint="#bbbbbb"
-                android:hint="收货地址"
+                android:hint="选择收货地址"
                 android:layout_marginLeft="@dimen/space_80px"
                 android:background="@null"
                 android:layout_toRightOf="@+id/address"
@@ -158,7 +161,6 @@
 
         <View
             android:id="@+id/divider4"
-            android:layout_marginTop="@dimen/space_25px"
             android:layout_below="@+id/ll_address"
             style="@style/grey_divider" />
 
@@ -178,6 +180,7 @@
                 android:layout_height="wrap_content" />
 
             <EditText
+                android:textColor="@color/black"
                 android:id="@+id/et_num"
                 android:maxLines="1"
                 android:inputType="text"
@@ -210,5 +213,13 @@
         android:layout_marginRight="@dimen/space_20px"
         android:layout_width="match_parent"
         android:layout_height="@dimen/space_90px" />
+
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </com.zhy.autolayout.AutoRelativeLayout>

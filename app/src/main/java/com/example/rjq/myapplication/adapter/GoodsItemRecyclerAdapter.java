@@ -76,7 +76,7 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
             goodsNum[i] = dataList.get(i).getBuyNum();
             if (goodsNum[i] > 0){
                 buyNum += goodsNum[i];
-                totalPrice = totalPrice + goodsNum[i] * dataList.get(i).getPrice();
+                totalPrice = totalPrice + goodsNum[i] * dataList.get(i).getPrice() + goodsNum[i] * dataList.get(i).getGoodPackageMoney();
             }
         }
     }
@@ -217,7 +217,7 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
                 selectGoods.add(dataList.get(position));
                 mGoodsCategoryBuyNums[dataList.get(position).getId()]++;
                 buyNum++;
-                totalPrice += dataList.get(position).getPrice();
+                totalPrice = totalPrice + dataList.get(position).getPrice() + dataList.get(position).getGoodPackageMoney();
                 if (goodsNum[position]<=1) {
                     holder.ivGoodsMinus.setAnimation(getShowAnimation());
                     holder.tvGoodsSelectNum.setAnimation(getShowAnimation());
@@ -245,7 +245,7 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
 
                     ResBuyItemNum.add(String.valueOf(resId),String.valueOf(dataList.get(position).getCategoryId()),String.valueOf(dataList.get(position).getGoodId()),
                             goodsNum[position],dataList.get(position).getName(),dataList.get(position).getPrice(),dataList.get(position).getGoodsImgUrl(),
-                            resName,resDeliverMoney,resExtraMoney);
+                            resName,resDeliverMoney,resExtraMoney,dataList.get(position).getGoodPackageMoney());
 
                 }else if (goodsNum[position] > 1){
                     ResBuyItemNum resBuyItemNum = new ResBuyItemNum();
@@ -262,7 +262,7 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
 
             }
         });
-        //减号点击按钮点击
+        //减号按钮点击
         holder.ivGoodsMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -272,7 +272,7 @@ public class GoodsItemRecyclerAdapter extends RecyclerView.Adapter<GoodsItemRecy
                     mGoodsCategoryBuyNums[dataList.get(position).getId()]--;
                     isSelected(goodsNum[position], holder);
                     buyNum --;
-                    totalPrice -= dataList.get(position).getPrice();
+                    totalPrice = totalPrice - dataList.get(position).getPrice() - dataList.get(position).getGoodPackageMoney();
                     if (goodsNum[position] <=0) {
                         holder.ivGoodsMinus.setAnimation(getHiddenAnimation());
                         holder.tvGoodsSelectNum.setAnimation(getHiddenAnimation());

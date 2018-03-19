@@ -48,13 +48,49 @@
     </com.zhy.autolayout.AutoLinearLayout>
 
     <com.zhy.autolayout.AutoRelativeLayout
+        android:visibility="visible"
+        android:padding="@dimen/dimen_12.5dp"
+        android:id="@+id/res_package_money"
+        android:layout_below="@+id/res_item_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/black_2e"
+            android:id="@+id/package_money"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:drawablePadding="@dimen/dimen_5dp"
+            android:text="包装费"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/res_package_money_tv"
+            android:layout_alignParentRight="true"
+            android:text="￥35"
+            android:textColor="@color/colorRed"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+    <View
+        android:visibility="visible"
+        android:id="@+id/divider_two"
+        android:layout_below="@+id/res_package_money"
+        style="@style/grey_divider"
+        android:layout_width="match_parent"/>
+
+    <com.zhy.autolayout.AutoRelativeLayout
         android:id="@+id/price"
         android:layout_marginLeft="@dimen/dimen_12.5dp"
         android:layout_marginBottom="@dimen/dimen_7dp"
         android:layout_marginRight="@dimen/dimen_12.5dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/dimen_7dp"
-        android:layout_below="@+id/res_item_container"
+        android:layout_below="@+id/divider_two"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -127,9 +127,11 @@ public class GoodsListBean implements Serializable {
             private int monthOrder;
             @SerializedName("good_comment")
             private int goodComment;
+            @SerializedName("good_package_money")
+            private double goodPackageMoney;
             private int buyNum;                 //代码中设置的，不是server中取到的
 
-            public GoodsItemBean(int goodId, String name, double price, String introduce, String goodsImgUrl, int monthOrder, int goodComment) {
+            public GoodsItemBean(int goodId, String name, double price, String introduce, String goodsImgUrl, int monthOrder, int goodComment,double goodPackageMoney) {
                 this.goodId = goodId;
                 this.name = name;
                 this.price = price;
@@ -137,6 +139,7 @@ public class GoodsListBean implements Serializable {
                 this.goodsImgUrl = goodsImgUrl;
                 this.monthOrder = monthOrder;
                 this.goodComment = goodComment;
+                this.goodPackageMoney = goodPackageMoney;
             }
 
             public int getId() {
@@ -217,6 +220,14 @@ public class GoodsListBean implements Serializable {
 
             public void setGoodsImgUrl(String goodsImgUrl) {
                 this.goodsImgUrl = goodsImgUrl;
+            }
+
+            public double getGoodPackageMoney() {
+                return goodPackageMoney;
+            }
+
+            public void setGoodPackageMoney(double goodPackageMoney) {
+                this.goodPackageMoney = goodPackageMoney;
             }
         }
     }

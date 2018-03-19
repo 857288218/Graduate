@@ -1,10 +1,12 @@
 package com.example.rjq.myapplication.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,8 +15,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.example.rjq.myapplication.adapter.PopupPayWayAdapter;
 import com.example.rjq.myapplication.adapter.PupupTimeAdapter;
 
 import android.widget.ProgressBar;
@@ -23,12 +28,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.bean.AddressBean;
 import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.bean.ResBuyItemNum;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
 
 import org.litepal.crud.DataSupport;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -39,12 +47,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Handler;
+
 import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 public class AccountActivity extends BaseActivity {
+    private static final int REQUEST_ADDRESS = 8080;
     @BindView(R.id.title_middle)
     TextView middleTitle;
     @BindView(R.id.title_right)
@@ -77,13 +88,34 @@ public class AccountActivity extends BaseActivity {
     TextView takenTime;
     @BindView(R.id.loading)
     ProgressBar progressBar;
+    @BindView(R.id.address_ll)
+    RelativeLayout address;
+    @BindView(R.id.tv_location)
+    TextView location;
+    @BindView(R.id.tv_name)
+    TextView name;
+    @BindView(R.id.tv_phone)
+    TextView phone;
+    @BindView(R.id.pay_way)
+    AutoRelativeLayout payWay;
+    @BindView(R.id.tv_pay_selected)
+    TextView paySelectedTv;
+    @BindView(R.id.tv_package_money)
+    TextView packageMoneyTv;
+    @BindView(R.id.extra_info)
+    EditText extraInfo;
 
     private int resId;
     private String resNameText;
     //用户购买的详细数据
     private List<ResBuyItemNum> list;
+    private List<AddressBean> addressList;
     private double allMoney;
+    private double packageMoney;
     private List<String> timeList;
+    private List<String> payTvList;
+    private List<Integer> payIvList;
+    private Dialog payDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,17 +128,26 @@ public class AccountActivity extends BaseActivity {
         super.initData();
         resId = getIntent().getIntExtra("res_id",-1);
         resNameText = getIntent().getStringExtra("res_name");
+
         list = DataSupport.where("resId = ?",String.valueOf(resId)).find(ResBuyItemNum.class);
+        addressList = DataSupport.where("selected = ?","1").find(AddressBean.class);
+        if (addressList.size()>0){
+            location.setText(addressList.get(0).getAddress());
+            name.setText(addressList.get(0).getName());
+            phone.setText(addressList.get(0).getPhone());
+        }
         for (ResBuyItemNum resBuyItemNum : list){
             View view = initBuyItem(resBuyItemNum);
             buyItemContainer.addView(view);
             allMoney += resBuyItemNum.getBuyNum() * resBuyItemNum.getItemPrice();
+            packageMoney += resBuyItemNum.getItemPackageMoney();
         }
         allMoney += list.get(0).getResExtraMoney();
+        allMoney += packageMoney;
         deliverMoney.setText("￥"+list.get(0).getResExtraMoney());
         allMoneyTv.setText(""+allMoney);
         allPriceBottom.setText("￥"+allMoney);
-
+        packageMoneyTv.setText("￥"+packageMoney);
         //初始化堂取时间
         timeList = new ArrayList<>();
         DateFormat format = new SimpleDateFormat("HH:mm");
@@ -122,6 +163,13 @@ public class AccountActivity extends BaseActivity {
             timeList.add(format.format(date));
         }
 
+        //初始化支付方式
+        payTvList = new ArrayList<>();
+        payTvList.add("支付宝");payTvList.add("银行卡支付");payTvList.add("微信支付");payTvList.add("QQ钱包");
+
+        payIvList = new ArrayList<>();
+        payIvList.add(R.mipmap.ali_pay);payIvList.add(R.mipmap.card_pay);payIvList.add(R.mipmap.v_pay);payIvList.add(R.mipmap.q_pay);
+
     }
 
     @Override
@@ -136,6 +184,7 @@ public class AccountActivity extends BaseActivity {
         imageView.setVisibility(View.GONE);
         allPriceBottom.setVisibility(View.VISIBLE);
         resName.setText(resNameText);
+        paySelectedTv.setText(payTvList.get(0));
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -144,13 +193,16 @@ public class AccountActivity extends BaseActivity {
                     takenTime.setText("选择堂取时间");
                     deliverMoney.setText("￥"+list.get(0).getResExtraMoney());
                     allMoneyTv.setText(allMoney+"");
+                    allPriceBottom.setText("￥"+allMoney);
                 }
             }
         });
         goToAccount.setOnClickListener(this);
         backBtn.setOnClickListener(this);
         rlOwnToken.setOnClickListener(this);
-
+        address.setOnClickListener(this);
+        payWay.setOnClickListener(this);
+        initPayDialog();
     }
 
     @Override
@@ -161,20 +213,71 @@ public class AccountActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.go_to_account:
-                if (!checkBox.isChecked() || takenTime.equals("选择堂取时间")){
-                    Toast.makeText(this, "请选择配送方式后付款!", Toast.LENGTH_SHORT).show();
-                }else{
+                if (!checkBox.isChecked() && takenTime.getText().equals("选择堂取时间")){
+                    Toast.makeText(this, "请选择配送方式!", Toast.LENGTH_SHORT).show();
+                }else if (location.getText().equals("请选择收货地址") && checkBox.isChecked()){
+                    Toast.makeText(this, "请选择收货地址!", Toast.LENGTH_SHORT).show();
+                } else{
+                    progressBar.setVisibility(View.VISIBLE);
+                    new android.os.Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            DataSupport.deleteAll(ResBuyItemNum.class,"resId = ?",list.get(0).getResId());
+                            DataSupport.deleteAll(ResBuyCategoryNum.class,"resId = ?",list.get(0).getResId());
+                            startActivity(new Intent(AccountActivity.this,SuccessBuyActivity.class));
+                            finish();
+                        }
+                    }, 500);
+//                    String orderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
+//                    int userId = PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1);
 //                    progressBar.setVisibility(View.VISIBLE);
-//                    int num = 0;
-//                    HashMap<String,String> hashMap = new HashMap<>();
-//                    hashMap.put("user_id",list.get(0).getUserId());
-//                    hashMap.put("res_id",list.get(0).getResId());
-//                    hashMap.put("order_time",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
-//                    hashMap.put("order_price",String.valueOf(allMoney));
-//                    for (ResBuyItemNum resBuyItemNum : list){
-//                        num += resBuyItemNum.getBuyNum();
+//
+//                    //存到订单明细表
+//                    for (int i=0;i<list.size();i++){
+//                        HashMap<String,String> hash = new HashMap<>();
+//                        hash.put("order_detail_id",orderTime+userId);
+//                        hash.put("good_id",list.get(i).getGoodId());
+//                        hash.put("order_detail_order",i+"");
+//                        hash.put("order_detail_goods_num",list.get(i).getBuyNum()+"");
+//                        hash.put("order_detail_goods_price",list.get(i).getBuyNum()*list.get(i).getItemPrice()+"");
+//                        HttpUtil.sendOkHttpPostRequest("", hash, new Callback() {
+//                            @Override
+//                            public void onFailure(Call call, IOException e) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onResponse(Call call, Response response) throws IOException {
+//
+//                            }
+//                        });
 //                    }
-//                    hashMap.put("order_description",list.get(0).getItemName()+"等"+num+"件商品");
+//
+//                    //存到订单表
+//                    HashMap<String,String> hashMap = new HashMap<>();
+//                    hashMap.put("order_id",orderTime+userId);
+//                    hashMap.put("user_id",String.valueOf(userId));
+//                    hashMap.put("res_id",list.get(0).getResId());
+//                    hashMap.put("order_time",orderTime);
+//                    hashMap.put("order_address",location.getText().toString());
+//                    hashMap.put("order_price",String.valueOf(allMoney));
+//                    hashMap.put("order_buy_way",paySelectedTv.getText().toString());
+//                    hashMap.put("order_extra_info",extraInfo.getText().toString());
+//                    String orderDescription = list.get(0).getItemName();
+//                    if (list.size()>1){
+//                        orderDescription = orderDescription + "等" +list.size()+"件商品";
+//                    }else{
+//                        orderDescription = orderDescription + "1件商品";
+//                    }
+//                    hashMap.put("order_description",list.get(0).getItemName()+orderDescription);
+//                    if (checkBox.isChecked()){
+//                        hashMap.put("order_deliver",String.valueOf(1));   //外送则为1
+//                    }else{
+//                        hashMap.put("order_deliver",String.valueOf(0));
+//                        //堂取时间
+//                        hashMap.put("order_taken_time",takenTime.getText().toString());
+//                    }
+//
 //                    HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
 //                        @Override
 //                        public void onFailure(Call call, IOException e) {
@@ -185,16 +288,30 @@ public class AccountActivity extends BaseActivity {
 //                        public void onResponse(Call call, Response response) throws IOException {
 //                            Toast.makeText(AccountActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
 //                            progressBar.setVisibility(View.GONE);
-//                            DataSupport.where("res_id = ? and user_id = ?",list.get(0).getResId(),list.get(0).getUserId()).find(ResBuyItemNum.class);
-//                            DataSupport.where("res_id = ? and user_id = ?",list.get(0).getResId(),list.get(0).getUserId()).find(ResBuyCategoryNum.class);
+//                            //删除本地数据库购物车信息
+//                            DataSupport.deleteAll(ResBuyItemNum.class,"res_id = ? and user_id = ?",list.get(0).getResId(),
+//                                    String.valueOf(PreferenceManager.getDefaultSharedPreferences(AccountActivity.this).getInt("user_id",-1)));
+//                            DataSupport.deleteAll(ResBuyCategoryNum.class,"res_id = ? and user_id = ?",list.get(0).getResId(),
+//                                    String.valueOf(PreferenceManager.getDefaultSharedPreferences(AccountActivity.this).getInt("user_id",-1)));
+//                            Intent intent = new Intent(AccountActivity.this,SuccessBuyActivity.class);
+//                            startActivity(intent);
 //                            finish();
 //                        }
 //                    });
                 }
+
                 break;
             case R.id.rl_own_taken:
                 showTimeSelectedDialog();
                 break;
+            case R.id.address_ll:
+                Intent intent = new Intent(this,AddressActivity.class);
+                startActivityForResult(intent,REQUEST_ADDRESS);
+                break;
+            case R.id.pay_way:
+                payDialog.show();
+                break;
+
         }
     }
 
@@ -207,6 +324,56 @@ public class AccountActivity extends BaseActivity {
         price.setText("￥"+resBuyItemNum.getBuyNum() * resBuyItemNum.getItemPrice());
         num.setText("×"+resBuyItemNum.getBuyNum()+"");
         return view;
+    }
+
+    private void initPayDialog(){
+        payDialog = new Dialog(this,R.style.ActionSheetDialogStyle);
+        //填充对话框的布局
+        View view = LayoutInflater.from(this).inflate(R.layout.popup_pay_bottom, null);
+        RecyclerView payRecyclerView = (RecyclerView) view.findViewById(R.id.pay_recycler);
+        ImageButton close = (ImageButton) view.findViewById(R.id.close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payDialog.dismiss();
+            }
+        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        payRecyclerView.setLayoutManager(linearLayoutManager);
+        final PopupPayWayAdapter adapter = new PopupPayWayAdapter(this,payTvList,payIvList);
+        adapter.setOnItemClickListener(new PopupPayWayAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(final int position) {
+                payDialog.dismiss();
+                adapter.setSelected(position);
+                progressBar.setVisibility(View.VISIBLE);
+                new android.os.Handler(getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                      progressBar.setVisibility(View.GONE);
+                        paySelectedTv.setText(payTvList.get(position));
+                    }
+                },500);
+
+            }
+        });
+        payRecyclerView.setAdapter(adapter);
+
+        payDialog.setCancelable(false);
+        //将布局设置给Dialog
+        payDialog.setContentView(view);
+        //获取当前Activity所在的窗体
+        Window dialogWindow = payDialog.getWindow();
+        //设置Dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.y = 0;//设置Dialog距离底部的距离
+        //设置dialog宽度满屏
+        WindowManager m = dialogWindow.getWindowManager();
+        Display d = m.getDefaultDisplay();
+        lp.width = d.getWidth();
+        //将属性设置给窗体
+        dialogWindow.setAttributes(lp);
     }
 
     private void showTimeSelectedDialog(){
@@ -224,6 +391,7 @@ public class AccountActivity extends BaseActivity {
                 checkBox.setChecked(false);
                 deliverMoney.setText("免");
                 allMoneyTv.setText((allMoney - list.get(0).getResExtraMoney())+"");
+                allPriceBottom.setText("￥"+(allMoney - list.get(0).getResExtraMoney()));
                 dialog.dismiss();
             }
         });
@@ -245,4 +413,48 @@ public class AccountActivity extends BaseActivity {
         dialogWindow.setAttributes(lp);
         dialog.show();//显示对话框
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        progressBar.setVisibility(View.VISIBLE);
+        addressList = DataSupport.where("selected = ?","1").find(AddressBean.class);
+        new android.os.Handler((getMainLooper())).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (addressList.size()>0){
+                    location.setText(addressList.get(0).getAddress());
+                    name.setText(addressList.get(0).getName());
+                    phone.setText(addressList.get(0).getPhone());
+                }else{
+                    location.setText("请选择收货地址");
+                    name.setText("");
+                    phone.setText("");
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        },700);
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        switch (requestCode){
+//            case REQUEST_ADDRESS:
+//                if (resultCode == RESULT_OK){
+//                    progressBar.setVisibility(View.VISIBLE);
+//                    new android.os.Handler(getMainLooper()).postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            AddressBean addressBean = (AddressBean) data.getSerializableExtra("address");
+//                            location.setText(addressBean.getAddress());
+//                            name.setText(addressBean.getName());
+//                            phone.setText(addressBean.getPhone());
+//                            progressBar.setVisibility(View.GONE);
+//                        }
+//                    },1000);
+//                }
+//                break;
+//        }
+//    }
 }

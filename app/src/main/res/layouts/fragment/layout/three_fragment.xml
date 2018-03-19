@@ -297,10 +297,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
-                    <ImageView
-                        android:layout_centerVertical="true"
+                    <TextView
+                        android:ellipsize="end"
+                        android:id="@+id/user_address_text"
+                        android:drawablePadding="@dimen/space_10px"
                         android:layout_alignParentRight="true"
-                        android:src="@mipmap/icon_right"
+                        android:drawableRight="@mipmap/icon_right"
+                        android:layout_toLeftOf="@+id/right"
+                        android:textColor="@color/color_999"
+                        android:textSize="15sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </com.zhy.autolayout.AutoRelativeLayout>

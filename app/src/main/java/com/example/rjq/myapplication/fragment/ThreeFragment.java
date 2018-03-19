@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -54,6 +55,7 @@ import com.example.rjq.myapplication.activity.AlterPwdActivity;
 import com.example.rjq.myapplication.activity.BaseActivity;
 import com.example.rjq.myapplication.activity.LoginActivity;
 import com.example.rjq.myapplication.activity.MainActivity;
+import com.example.rjq.myapplication.bean.AddressBean;
 import com.example.rjq.myapplication.bean.UserBean;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.example.rjq.myapplication.util.permission.PermissionListener;
@@ -69,6 +71,8 @@ import com.example.rjq.myapplication.util.FileStorage;
 import com.example.rjq.myapplication.util.lubanimage.Luban;
 import com.example.rjq.myapplication.util.lubanimage.OnCompressListener;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -152,6 +156,8 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     ScrollView sv;
     @BindView(R.id.ll)
     AutoLinearLayout ll;
+    @BindView(R.id.user_address_text)
+    TextView userAddressText;
 
     @Nullable
     @Override
@@ -190,6 +196,8 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
 
     private void setUserInfo(){
         List<UserBean> userList = DataSupport.findAll(UserBean.class);
+        List<AddressBean> addressList = DataSupport.where("user_id = ? and selected = ?",
+                String.valueOf(PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("user_id",-1)),"1").find(AddressBean.class);
         if (userList.size() > 0){
             login.setVisibility(View.GONE);
             logOut.setVisibility(View.VISIBLE);
@@ -199,6 +207,11 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             redPaperNum.setText(userBean.getUserRedPaper()+"");
             goldMoney.setText(userBean.getGoldMoney()+"");
             userNameText.setText(userBean.getUserName());
+            if (addressList.size()>0){
+                userAddressText.setText(addressList.get(0).getAddress());
+            }else{
+                userAddressText.setText("");
+            }
             if (userBean.getUserSex() == 0){
                 userSexText.setText("女");
             }else{
@@ -232,6 +245,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             userNameText.setText("");
             userPhoneText.setText("");
             userSexText.setText("");
+            userAddressText.setText("");
             GlideUtil.load(getActivity(),R.mipmap.default_img_header,headImg,GlideUtil.REQUEST_OPTIONS);
             logOut.setVisibility(View.GONE);
             userName.setClickable(false);

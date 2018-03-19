@@ -10,6 +10,8 @@ import org.litepal.crud.DataSupport;
 
 public class OrderBean{
     private int id;
+    @SerializedName("order_id")
+    private String orderId;
     @SerializedName("user_id")
     private int userId;
     @SerializedName("res_id")
@@ -89,5 +91,13 @@ public class OrderBean{
 
     public void setOrderDescription(String orderDescription) {
         this.orderDescription = orderDescription;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }

@@ -19,14 +19,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.bean.AddressBean;
 import com.example.rjq.myapplication.bean.UserBean;
 import com.example.rjq.myapplication.fragment.ThreeFragment;
 import com.example.rjq.myapplication.util.HttpUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.autolayout.AutoLinearLayout;
 
 import org.json.JSONException;
@@ -81,9 +85,12 @@ public class LoginActivity extends BaseActivity {
     TextView titleRight;
     @BindView(R.id.identify_code)
     TextView identifyCode;
+    @BindView(R.id.first_load)
+    ProgressBar progressBar;
 
     private LoginTextWatcher loginTextWatcher;
     private int a = 1000000000;
+    List<AddressBean> addressBeanList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +113,7 @@ public class LoginActivity extends BaseActivity {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.showSoftInput(userName, 0);
             }
         }, 300);
@@ -133,7 +140,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.login_btn:
                 login();
                 break;
@@ -147,16 +154,16 @@ public class LoginActivity extends BaseActivity {
                 clearEditText(loginPhoneEt);
                 break;
             case R.id.login_eye_iv:
-                if (password.getTransformationMethod() == HideReturnsTransformationMethod.getInstance()){
+                if (password.getTransformationMethod() == HideReturnsTransformationMethod.getInstance()) {
                     password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }else{
+                } else {
                     password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
                 password.setSelection(password.getText().length());
                 break;
             case R.id.title_right:
                 //启动注册页
-                Intent intent = new Intent(this,RegisterActivity.class);
+                Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 break;
             case R.id.login_by_identify_code:
@@ -173,7 +180,7 @@ public class LoginActivity extends BaseActivity {
                 AlertDialog builder = new AlertDialog.Builder(this)
                         .setTitle("修改登陆密码流程")
                         .setMessage("通过手机验证码登陆->进入我的界面->修改登录密码")
-                        .setPositiveButton(R.string.yes,null)
+                        .setPositiveButton(R.string.yes, null)
                         .create();
                 builder.show();
 
@@ -182,11 +189,13 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void login(){
+    private void login() {
+//        progressBar.setVisibility(View.VISIBLE);
+        HashMap<String, String> hash = new HashMap<>();
         //密码登陆
-        if (loginByPasswordLl.getVisibility() == View.VISIBLE){
+        if (loginByPasswordLl.getVisibility() == View.VISIBLE) {
             //假数据账号密码登陆
-            if (userName.getText().toString().replace(" ", "").equals("13622179395")){
+            if (userName.getText().toString().replace(" ", "").equals("13622179395")) {
                 UserBean userBean = new UserBean();
                 userBean.setUserId(1001);
                 userBean.setPassword(password.getText().toString());
@@ -195,23 +204,22 @@ public class LoginActivity extends BaseActivity {
                 userBean.setUserRedPaper(5);
                 userBean.setUserMoney(53.2);
                 userBean.setGoldMoney(192);
-                userBean.setUserName("订餐用户"+1001);
+                userBean.setUserName("订餐用户" + 1001);
                 userBean.setUserSex(1);
                 userBean.save();
                 Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-                editor.putInt("user_id",userBean.getUserId());
+                editor.putInt("user_id", userBean.getUserId());
                 editor.commit();
                 finish();
-            }else{
+            } else {
                 Toast.makeText(this, "账号或密码错误!", Toast.LENGTH_SHORT).show();
             }
-
-            //用户名密码校验
-//            HashMap<String,String> hash = new HashMap<>();
+//
 //            hash.put("account",userName.getText().toString().replace(" ", ""));
 //            hash.put("password",password.getText().toString());
+//            //用户名密码校验
 //            HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
 //                @Override
 //                public void onFailure(Call call, IOException e) {
@@ -226,19 +234,11 @@ public class LoginActivity extends BaseActivity {
 //                        public void run() {
 //                            try{
 //                                final JSONObject jsonObject = new JSONObject(responseText);
-//                                final Integer state = (Integer) jsonObject.get("state");
-//                                final String msg = (String) jsonObject.get("msg");
+//                                Integer state = (Integer) jsonObject.get("state");
+//                                String msg = (String) jsonObject.get("msg");
 //                                if (state == 1){
 //                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                                    UserBean userBean = new UserBean();
-//                                    userBean.setUserId((Integer) jsonObject.get("user_id"));
-//                                    userBean.setUserName((String) jsonObject.get("user_name"));
-//                                    userBean.setUserPhone((String) jsonObject.get("account"));
-//                                    userBean.setGoldMoney((Integer) jsonObject.get("gold_money"));
-//                                    userBean.setUserRedPaper((Integer) jsonObject.get("user_red_paper"));
-//                                    userBean.setUserMoney((Double) jsonObject.get("user_money"));
-//                                    userBean.setUserImg((String) jsonObject.get("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg"));
-//                                    userBean.save();
+//                                    initUserBean(jsonObject);
 //                                    setResult(RESULT_OK);
 //                                    finish();
 //                                }else{
@@ -247,16 +247,15 @@ public class LoginActivity extends BaseActivity {
 //                            }catch (JSONException e){
 //                                Log.d("LoginActivity",e.toString());
 //                            }
-//
 //                        }
 //                    });
 //
 //                }
 //            });
 
-        }else{
+        } else {
             //手机验证码登陆
-            if (Integer.parseInt(loginIdentifyCodeEt.getText().toString()) == a){
+            if (Integer.parseInt(loginIdentifyCodeEt.getText().toString()) == a) {
                 //假数据验证码登陆
                 UserBean userBean = new UserBean();
                 userBean.setUserId(1001);
@@ -266,19 +265,18 @@ public class LoginActivity extends BaseActivity {
                 userBean.setUserRedPaper(5);
                 userBean.setUserMoney(53.2);
                 userBean.setGoldMoney(192);
-                userBean.setUserName("订餐用户"+1001);
+                userBean.setUserName("订餐用户" + 1001);
                 userBean.setUserSex(1);
                 userBean.save();
                 Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK);
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-                editor.putInt("user_id",userBean.getUserId());
+                editor.putInt("user_id", userBean.getUserId());
                 editor.commit();
-                PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1);
+                PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id", -1);
                 finish();
 
                 //手机号校验(是否注册过)
-//                HashMap<String,String> hash = new HashMap<>();
 //                hash.put("account",loginPhoneEt.getText().toString());
 //                HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
 //                    @Override
@@ -288,39 +286,64 @@ public class LoginActivity extends BaseActivity {
 //
 //                    @Override
 //                    public void onResponse(Call call, Response response) throws IOException {
-//                        String responseText = response.body().string();
-//                        try{
-//                            JSONObject jsonObject = new JSONObject(responseText);
-//                            UserBean userBean = new UserBean();
-//                            userBean.setUserId(jsonObject.getInt("user_id"));
-//                            userBean.setPassword(jsonObject.getString("user_password"));
-//                            userBean.setUserImg(jsonObject.getString("user_img"));
-//                            userBean.setUserPhone(jsonObject.getString("user_account"));
-//                            userBean.setUserRedPaper(jsonObject.getInt("user_red_paper"));
-//                            userBean.setUserMoney(jsonObject.getInt("user_money"));
-//                            userBean.setGoldMoney(jsonObject.getInt("user_gold_money"));
-//                            userBean.setUserName(jsonObject.getString("user_nickname"));
-//                            userBean.setUserSex(jsonObject.getInt("user_sex"));
-//                            userBean.save();
-//                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-//                            editor.putInt("user_id",userBean.getUserId());
-//                            editor.commit();
-//                            Toast.makeText(LoginActivity.this, (String)jsonObject.get("msg"), Toast.LENGTH_SHORT).show();
-//                        }catch (JSONException e){
-//                            Log.d("LoginActivity",e.toString());
-//                        }
+//                        final String responseText = response.body().string();
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                try{
+//                                    final JSONObject jsonObject = new JSONObject(responseText);
+//                                    Integer state = (Integer) jsonObject.get("state");
+//                                    String msg = (String) jsonObject.get("msg");
+//                                    if (state == 1){
+//                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                                        initUserBean(jsonObject);
+//                                        setResult(RESULT_OK);
+//                                        finish();
+//                                    }else{
+//                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }catch (JSONException e){
+//                                    Log.d("LoginActivity",e.toString());
+//                                }
+//                            }
+//                        });
 //                    }
 //                });
-            }else{
+            } else {
                 Toast.makeText(this, "验证码不正确", Toast.LENGTH_SHORT).show();
             }
         }
+        //获得用户收货地址信息
+//        hash.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
+//        HttpUtil.sendOkHttpPostRequest("h", hash, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                addressBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<AddressBean>>(){}.getType());
+//                //将地址添加到本地数据库
+//                DataSupport.deleteAll(AddressBean.class);
+//                for (AddressBean addressBean : addressBeanList){
+//                    addressBean.save();
+//                }
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        progressBar.setVisibility(View.GONE);
+//                    }
+//                });
+//            }
+//        });
     }
 
     class LoginTextWatcher implements TextWatcher {
         EditText editText;
         int lastContentLength = 0;
         boolean isDelete = false;
+
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -329,12 +352,12 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             //隐藏显示登陆按钮
-            if(loginByPasswordLl.getVisibility() == View.VISIBLE){
+            if (loginByPasswordLl.getVisibility() == View.VISIBLE) {
                 if (!(userName.getText().toString().equals("") || password.getText().toString().equals(""))) {
                     loginBtn.setEnabled(true);
                     loginBtn.setBackground(getResources().getDrawable(R.drawable.login_selected_bg));
                 }
-            }else{
+            } else {
                 if (!(loginPhoneEt.getText().toString().equals("") || loginIdentifyCodeEt.getText().toString().equals(""))) {
                     loginBtn.setEnabled(true);
                     loginBtn.setBackground(getResources().getDrawable(R.drawable.login_selected_bg));
@@ -346,9 +369,9 @@ public class LoginActivity extends BaseActivity {
              *手机号分隔处理
              *
              */
-            if (loginByPasswordLl.getVisibility() == View.VISIBLE){
+            if (loginByPasswordLl.getVisibility() == View.VISIBLE) {
                 editText = userName;
-            }else{
+            } else {
                 editText = loginPhoneEt;
             }
             StringBuffer sb = new StringBuffer(editText.getText().toString());
@@ -356,10 +379,10 @@ public class LoginActivity extends BaseActivity {
             isDelete = editText.getText().toString().length() > lastContentLength ? false : true;
 
             //输入是第4，第9位，这时需要插入空格
-            if(!isDelete&& (editText.getText().toString().length() == 4||editText.getText().toString().length() == 9)){
-                if(editText.getText().toString().length() == 4) {
+            if (!isDelete && (editText.getText().toString().length() == 4 || editText.getText().toString().length() == 9)) {
+                if (editText.getText().toString().length() == 4) {
                     sb.insert(3, " ");
-                }else {
+                } else {
                     sb.insert(8, " ");
                 }
                 setContent(sb);
@@ -387,15 +410,15 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (s.toString().equals("")){
+            if (s.toString().equals("")) {
                 loginBtn.setEnabled(false);
                 loginBtn.setBackground(getResources().getDrawable(R.drawable.login_bg));
             }
-            if (loginByIdentifyCodeLl.getVisibility() == View.VISIBLE){
-                if (loginPhoneEt.getText().toString().length() == 13 && loginGetIdentifyCodeTv.getText().toString().equals("获取验证码")){
+            if (loginByIdentifyCodeLl.getVisibility() == View.VISIBLE) {
+                if (loginPhoneEt.getText().toString().length() == 13 && loginGetIdentifyCodeTv.getText().toString().equals("获取验证码")) {
                     loginGetIdentifyCodeTv.setTextColor(getResources().getColor(R.color.bottom_tab_text_selected_color));
                     loginGetIdentifyCodeTv.setEnabled(true);
-                }else{
+                } else {
                     loginGetIdentifyCodeTv.setEnabled(false);
                     loginGetIdentifyCodeTv.setTextColor(getResources().getColor(R.color.text_color_grey));
                 }
@@ -403,8 +426,8 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void loginWay(){
-        if (loginByPasswordLl.getVisibility() == View.GONE){
+    private void loginWay() {
+        if (loginByPasswordLl.getVisibility() == View.GONE) {
             identifyCode.setVisibility(View.GONE);
             loginByPasswordLl.setVisibility(View.VISIBLE);
             loginByIdentifyCodeLl.setVisibility(View.GONE);
@@ -412,8 +435,8 @@ public class LoginActivity extends BaseActivity {
             loginNotTv.setVisibility(View.VISIBLE);
             loginByPassword.setVisibility(View.GONE);
             password.setText("");
-        }else{
-            if (loginPhoneEt.getText().toString().length() == 13){
+        } else {
+            if (loginPhoneEt.getText().toString().length() == 13) {
                 loginGetIdentifyCodeTv.setEnabled(true);
                 loginGetIdentifyCodeTv.setTextColor(getResources().getColor(R.color.bottom_tab_text_selected_color));
             }
@@ -427,34 +450,54 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    private void clearEditText(EditText et){
+    private void clearEditText(EditText et) {
         et.setText("");
         et.setFocusable(true);
         et.setFocusableInTouchMode(true);
         et.requestFocus();
     }
 
-    private void setCountDownTimer(){
+    private void setCountDownTimer() {
         identifyCode.setVisibility(View.VISIBLE);
-        a = (int)(Math.random()*(9999-1000+1))+1000;//产生1000-9999的随机数
-        identifyCode.setText("验证码为:"+a);
+        a = (int) (Math.random() * (9999 - 1000 + 1)) + 1000;//产生1000-9999的随机数
+        identifyCode.setText("验证码为:" + a);
         loginGetIdentifyCodeTv.setEnabled(false);
         loginGetIdentifyCodeTv.setTextColor(getResources().getColor(R.color.text_color_grey));
-        new CountDownTimer(59000+50,1000) {
+        new CountDownTimer(59000 + 50, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                loginGetIdentifyCodeTv.setText("已发送("+millisUntilFinished/1000+"秒)");
+                loginGetIdentifyCodeTv.setText("已发送(" + millisUntilFinished / 1000 + "秒)");
             }
 
             @Override
             public void onFinish() {
-                if (loginPhoneEt.getText().toString().length() == 13){
+                if (loginPhoneEt.getText().toString().length() == 13) {
                     loginGetIdentifyCodeTv.setEnabled(true);
                     loginGetIdentifyCodeTv.setTextColor(getResources().getColor(R.color.bottom_tab_text_selected_color));
                 }
                 loginGetIdentifyCodeTv.setText("获取验证码");
             }
         }.start();
+    }
+
+    private void initUserBean(JSONObject jsonObject) {
+        try {
+            UserBean userBean = new UserBean();
+            userBean.setUserId((Integer) jsonObject.get("user_id"));
+            userBean.setUserName((String) jsonObject.get("user_name"));
+            userBean.setUserPhone((String) jsonObject.get("account"));
+            userBean.setGoldMoney((Integer) jsonObject.get("gold_money"));
+            userBean.setUserRedPaper((Integer) jsonObject.get("user_red_paper"));
+            userBean.setUserMoney((Double) jsonObject.get("user_money"));
+            userBean.setUserImg((String) jsonObject.get("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg"));
+            userBean.save();
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
+            editor.putInt("user_id", userBean.getUserId());
+            editor.commit();
+        } catch (JSONException e) {
+
+        }
+
     }
 
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:padding="15dp"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:text="选择支付方式"
+        android:id="@+id/pay_way"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/close"
+        android:padding="15dp"
+        android:background="@null"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/icon_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_below="@+id/close"
+        style="@style/grey_divider" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginBottom="@dimen/dimen_30dp"
+        android:layout_below="@+id/divider"
+        android:id="@+id/pay_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</com.zhy.autolayout.AutoRelativeLayout>

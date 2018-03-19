@@ -19,9 +19,11 @@ import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.bean.ResBuyItemNum;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.AutoRelativeLayout;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import org.litepal.crud.DataSupport;
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
         //该list为点击结算跳页时携带的数据,该resId的店铺的购买数据
         final List<ResBuyItemNum> list = new ArrayList<>();
         double sum = 0;
+        double packageMoney = 0;
         double deliverPrice = 0;
         holder.resItemContainer.removeAllViews();
         for (ResBuyItemNum resBuyItemNum : resBuyItemNumList){
@@ -77,15 +80,23 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
                                 resBuyItemNum.getBuyNum()*Double.parseDouble(df.format(resBuyItemNum.getItemPrice())))
                 );
                 sum += resBuyItemNum.getBuyNum() * resBuyItemNum.getItemPrice();
+                packageMoney += resBuyItemNum.getItemPackageMoney();
                 list.add(resBuyItemNum);
             }
         }
-
+        if (packageMoney > 0){
+            holder.packageMoneyContainer.setVisibility(View.VISIBLE);
+            holder.divider.setVisibility(View.VISIBLE);
+            holder.packageMoneyTv.setText("￥"+packageMoney);
+        }else{
+            holder.packageMoneyContainer.setVisibility(View.GONE);
+            holder.divider.setVisibility(View.GONE);
+        }
+        sum += packageMoney;
         if (list.size() > 0){
             holder.resNameCartFragmentItem.setText(list.get(0).getResName());
             deliverPrice = list.get(0).getResDeliverMoney() - sum;
         }
-
         int sum1 = (int) sum;
         if (sum > sum1){
             holder.resAllPrice.setText("￥"+df.format(sum));
@@ -153,6 +164,9 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
         ImageView deleteBtn;
         TextView haicha;
         TextView qisong;
+        TextView packageMoneyTv;
+        AutoRelativeLayout packageMoneyContainer;
+        View divider;
         View root;
 
         public ViewHolder(View root) {
@@ -167,6 +181,9 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
             haicha = (TextView) root.findViewById(R.id.haicha);
             qisong = (TextView) root.findViewById(R.id.qisong);
             deleteBtn = (ImageView) root.findViewById(R.id.delete_btn);
+            packageMoneyTv = (TextView) root.findViewById(R.id.res_package_money_tv);
+            packageMoneyContainer = (AutoRelativeLayout) root.findViewById(R.id.res_package_money);
+            divider = root.findViewById(R.id.divider_two);
         }
 
     }

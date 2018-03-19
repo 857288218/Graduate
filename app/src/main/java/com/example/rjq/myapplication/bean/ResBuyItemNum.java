@@ -14,8 +14,12 @@ public class ResBuyItemNum extends DataSupport implements Serializable{
     private int id;
     private String resId;
     private String resName;
+    //多少钱起送
     private int resDeliverMoney;
+    //配送费
     private int resExtraMoney;
+    //包装费
+    private double itemPackageMoney;
     private String categoryId;
     private String goodId;
     private int buyNum;
@@ -24,7 +28,7 @@ public class ResBuyItemNum extends DataSupport implements Serializable{
     private String itemImg;
 
     public static void add(String resId,String categoryId,String goodId,int buyNum,String itemName,double itemPrice,String itemImg,String resName,
-                           int resDeliverMoney,int resExtraMoney){
+                           int resDeliverMoney,int resExtraMoney,double goodPackageMoney){
         ResBuyItemNum resBuyItemNum = new ResBuyItemNum();
         resBuyItemNum.setResId(resId);
         resBuyItemNum.setCategoryId(categoryId);
@@ -36,6 +40,7 @@ public class ResBuyItemNum extends DataSupport implements Serializable{
         resBuyItemNum.setResName(resName);
         resBuyItemNum.setResDeliverMoney(resDeliverMoney);
         resBuyItemNum.setResExtraMoney(resExtraMoney);
+        resBuyItemNum.setItemPackageMoney(goodPackageMoney);
         resBuyItemNum.save();
 
     }
@@ -118,5 +123,13 @@ public class ResBuyItemNum extends DataSupport implements Serializable{
 
     public void setItemImg(String itemImg) {
         this.itemImg = itemImg;
+    }
+
+    public double getItemPackageMoney() {
+        return itemPackageMoney;
+    }
+
+    public void setItemPackageMoney(double itemPackageMoney) {
+        this.itemPackageMoney = itemPackageMoney;
     }
 }

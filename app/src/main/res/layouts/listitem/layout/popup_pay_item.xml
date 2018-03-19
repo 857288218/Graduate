@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/root"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:id="@+id/iv_ll"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_gravity="center"
+            android:background="@null"
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv"
+        android:paddingTop="17dp"
+        android:paddingBottom="17dp"
+        android:layout_toRightOf="@+id/iv_ll"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text="支付宝"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:visibility="gone"
+        android:id="@+id/selected"
+        android:padding="@dimen/dimen_15dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:src="@mipmap/icon_select_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginLeft="@dimen/dimen_50dp"
+        android:layout_below="@+id/tv"
+        style="@style/grey_divider"
+        />
+
+</RelativeLayout>

@@ -20,6 +20,7 @@ public class AddressBean extends DataSupport implements Serializable{
     private String name;
     @SerializedName("receiver_phone")
     private String phone;
+    @SerializedName("receiver_selected")
     private int selected;
 
     public String getAddress() {

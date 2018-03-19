@@ -54,7 +54,7 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ResActivity.class);
-                intent.putExtra(ResActivity.RES_ID,orderList.get(position).getResId());
+                intent.putExtra(ResActivity.RES_ID,String.valueOf(orderList.get(position).getResId()));
                 mContext.startActivity(intent);
             }
         });

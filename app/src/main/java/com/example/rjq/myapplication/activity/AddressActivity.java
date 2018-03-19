@@ -63,25 +63,6 @@ public class AddressActivity extends BaseActivity {
         hashMap = new HashMap<>();
         hashMap.put("user_id",String.valueOf(userId));
         list = DataSupport.where("user_id = ?", String.valueOf(userId)).find(AddressBean.class);
-//        if (list.size()<0){
-//            //如果本地地址为空，则网络请求
-//            HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    String responseText = response.body().string();
-//                    list = new Gson().fromJson(responseText,new TypeToken<List<AddressBean>>(){}.getType());
-//                    //将地址添加到本地数据库
-//                    for (AddressBean addressBean : list){
-//                        addressBean.save();
-//                    }
-//                }
-//            });
-//        }
     }
 
     @Override
