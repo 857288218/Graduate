@@ -1,14 +1,18 @@
 package com.example.rjq.myapplication.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rjq.myapplication.R;
@@ -77,17 +81,49 @@ public class AddressActivity extends BaseActivity {
             addressAapter.setOnItemClickListener(new AddressAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    //设置收货地址
-                    AddressBean addressBean = new AddressBean();
-                    addressBean.setToDefault("selected");
-                    addressBean.updateAll("user_id = ?",String.valueOf(userId));
-
-                    list.get(position).setSelected(1);
-                    list.get(position).updateAll("user_id = ? and address = ?",String.valueOf(userId),list.get(position).getAddress());
+                    setResult(RESULT_OK,new Intent().putExtra("address",list.get(position)));
                     finish();
                 }
             });
         }
+
+        addressAapter.setOnItemLongClickListener(new AddressAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(final int position) {
+                AlertDialog alertDialog = new AlertDialog.Builder(AddressActivity.this)
+                        .setTitle("设置")
+                        .setMessage("确定将该地址设置成默认收货地址？")
+                        .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AddressBean addressBean = new AddressBean();
+                                addressBean.setToDefault("selected");
+                                addressBean.updateAll("user_id = ?",String.valueOf(userId));
+
+                                //刷新adapter
+                                for(AddressBean address : list){
+                                    address.setSelected(0);
+                                }
+                                list.get(position).setSelected(1);
+                                list.get(position).updateAll("user_id = ? and address = ? and phone = ?",String.valueOf(userId),list.get(position).getAddress()
+                                                            ,list.get(position).getPhone());
+                                addressAapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.cancel),null)
+                        .create();
+                alertDialog.show();
+                //设置Dialog中的文字样式
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.bottom_tab_text_selected_color));
+                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.bottom_tab_text_selected_color));
+                TextView tvMsg = (TextView) alertDialog.findViewById(android.R.id.message);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0,getResources().getDimensionPixelSize(R.dimen.dimen_10dp),0,0);
+                tvMsg.setLayoutParams(lp);
+                tvMsg.setTextColor(getResources().getColor(R.color.color_666));
+            }
+        });
+
         addressAapter.setOnItemDeleteListener(new AddressAdapter.OnItemDeleteListener() {
             @Override
             public void onItemDelete(int position) {
@@ -98,18 +134,21 @@ public class AddressActivity extends BaseActivity {
                 addressAapter.notifyItemRemoved(position);
                 addressAapter.notifyItemRangeChanged(0,list.size());
                 //删除远程数据库中的该项地址信息
-//                hashMap.put("receiver_address",list.get(position).getAddress());
-//                HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        Log.d(TAG,e.toString());
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        Log.d(TAG,response.body().toString());
-//                    }
-//                });
+                hashMap.put("receiver_address",list.get(position).getAddress());
+                hashMap.put("user_id",String.valueOf(userId));
+                hashMap.put("name",list.get(position).getName());
+                hashMap.put("phone",list.get(position).getPhone());
+                HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d(TAG,e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        Log.d(TAG,response.body().toString());
+                    }
+                });
             }
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

@@ -41,6 +41,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -76,10 +77,13 @@ import com.google.gson.reflect.TypeToken;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -158,6 +162,8 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     AutoLinearLayout ll;
     @BindView(R.id.user_address_text)
     TextView userAddressText;
+    @BindView(R.id.loading)
+    ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -202,7 +208,11 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             login.setVisibility(View.GONE);
             logOut.setVisibility(View.VISIBLE);
             UserBean userBean = userList.get(0);
-            GlideUtil.load(getActivity(),userBean.getUserImg(),headImg,GlideUtil.REQUEST_OPTIONS);
+            if (new File(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("user_img","")).exists()){
+                GlideUtil.load(getActivity(),PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("user_img",""),headImg,GlideUtil.REQUEST_OPTIONS);
+            }else{
+                GlideUtil.load(getActivity(),userBean.getUserImg(),headImg,GlideUtil.REQUEST_OPTIONS);
+            }
             walletMoney.setText(userBean.getUserMoney()+"");
             redPaperNum.setText(userBean.getUserRedPaper()+"");
             goldMoney.setText(userBean.getGoldMoney()+"");
@@ -546,40 +556,6 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     }
 
     @TargetApi(19)
-    private void handleImageOnKitKat(Intent data) {
-        imagePath = null;
-        if (data != null) {
-            imageUri = data.getData();
-//            if (DocumentsContract.isDocumentUri(getActivity(), imageUri)) {
-//                //如果是document类型的uri,则通过document id处理
-//                String docId = DocumentsContract.getDocumentId(imageUri);
-//                if ("com.android.providers.media.documents".equals(imageUri.getAuthority())) {
-//                    String id = docId.split(":")[1];//解析出数字格式的id
-//                    String selection = MediaStore.Images.Media._ID + "=" + id;
-//                    imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-//                } else if ("com.android.downloads.documents".equals(imageUri.getAuthority())) {
-//                    Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docId));
-//                    imagePath = getImagePath(contentUri, null);
-//                }
-//            } else if ("content".equalsIgnoreCase(imageUri.getScheme())) {
-//                //如果是content类型的Uri，则使用普通方式处理
-//                imagePath = getImagePath(imageUri, null);
-//            } else if ("file".equalsIgnoreCase(imageUri.getScheme())) {
-//                //如果是file类型的Uri,直接获取图片路径即可
-//                imagePath = imageUri.getPath();
-//            }
-
-            cropPhoto();
-        }
-    }
-
-    private void handleImageBeforeKitKat(Intent intent) {
-        imageUri = intent.getData();
-//        imagePath = getImagePath(imageUri, null);
-        cropPhoto();
-    }
-
-    @TargetApi(19)
     private String handleImgUri2String(Uri uri){
         String path = "";
         if (DocumentsContract.isDocumentUri(getActivity(), uri)) {
@@ -627,7 +603,10 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         switch (requestCode) {
             case REQUEST_PICK_IMAGE://从相册选择
                 if (resultCode == Activity.RESULT_OK){
-                    handleImageOnKitKat(data);
+                    if (data != null) {
+                        imageUri = data.getData();
+                        cropPhoto();
+                    }
                 }
                 break;
             case REQUEST_CAPTURE://拍照
@@ -642,24 +621,49 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                     } else {
                         imagePath = handleImgUri2StringBeforeKitKat(outputUri);
                     }
-                    GlideUtil.load(getActivity(),imagePath,headImg,GlideUtil.REQUEST_OPTIONS);
-                    //将图片保存到远程数据库
-//                    HttpUtil.upLoadImg("http://", imagePath, new Callback() {
-//                        @Override
-//                        public void onFailure(Call call, IOException e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onResponse(Call call, Response response) throws IOException {
-//
-//                        }
-//                    });
-//                    //将图片保存到本地数据库
-//                    List<UserBean> list = DataSupport.findAll(UserBean.class);
-//                    UserBean userBean = list.get(0);
-//                    userBean.setUserImg(imagePath);
-//                    userBean.save();
+
+                    //将图片保存到MySql
+                    progressBar.setVisibility(View.VISIBLE);
+                    List<String> files = new ArrayList<>();
+                    files.add(imagePath);
+                    HashMap<String,String> hashMap = new HashMap<>();
+                    hashMap.put("user_id","1");
+                    hashMap.put("user_img",DataSupport.findAll(UserBean.class).get(0).getUserImg());
+                    HttpUtil.upLoadImgsRequest(HttpUtil.HOME_PATH + HttpUtil.UPLOAD_IMG_API, hashMap ,files, new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Log.d(TAG,e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            //将更改的头像保存到本地用户中
+                            final String responseText = response.body().string();
+                            try{
+                                final JSONObject jsonObject = new JSONObject(responseText);
+                                List<UserBean> list = DataSupport.findAll(UserBean.class);
+                                UserBean userBean = list.get(0);
+                                userBean.setUserImg((String)jsonObject.get("url"));
+                                userBean.save();
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try{
+                                            //保存本地图片头像的路径
+                                            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("user_img",imagePath).commit();
+                                            GlideUtil.load(getActivity(),jsonObject.get("url"),headImg,GlideUtil.REQUEST_OPTIONS);
+                                            progressBar.setVisibility(View.GONE);
+                                        }catch(Exception e){
+
+                                        }
+                                    }
+                                });
+                            }catch (JSONException e){
+
+                            }
+                        }
+                    });
+
                 }
                 break;
         }

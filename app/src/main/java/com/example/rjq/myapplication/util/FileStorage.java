@@ -26,7 +26,7 @@ public class FileStorage {
     public FileStorage() {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             File external = Environment.getExternalStorageDirectory();
-            String rootDir = "/" + "DC";
+            String rootDir = "/" + "restaurant";
             cropIconDir = new File(external, rootDir + "/crop");
             if (!cropIconDir.exists()) {
                 cropIconDir.mkdirs();

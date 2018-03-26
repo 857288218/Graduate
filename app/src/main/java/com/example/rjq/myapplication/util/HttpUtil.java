@@ -19,7 +19,9 @@ import okhttp3.RequestBody;
  */
 
 public class HttpUtil {
-    public static final String home_path = "http://";
+    public static final String HOME_PATH = "http://192.168.1.105/restaurant/index.php";
+    public static final String HOME_DATA_API = "/HomePage/obtain_res_by_label";
+    public static final String UPLOAD_IMG_API = "/UserInfo/upLoadImgs";
 
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/*");
 
@@ -31,13 +33,15 @@ public class HttpUtil {
         okHttpClient.newCall(request).enqueue(callback);
     }
 
+    //第三个方法可以代替第二个方法
     public static void sendOkHttpPostRequest(String address, HashMap<String,String> hashMap, Callback callback){
         OkHttpClient okHttpClient = new OkHttpClient();
         FormBody.Builder builder = new FormBody.Builder();
         Set set = hashMap.keySet();
         Iterator iterator = set.iterator();
         while(iterator.hasNext()){
-            builder.add((String)iterator.next(),hashMap.get(iterator.next()));
+            String key = (String)iterator.next();
+            builder.add(key,hashMap.get(key));
         }
 
         Request request = new Request.Builder()
@@ -47,41 +51,29 @@ public class HttpUtil {
         okHttpClient.newCall(request).enqueue(callback);
     }
 
-    public static void upLoadImg(String address,String imgUrl, Callback callback){
+    public static void upLoadImgsRequest(String address, HashMap<String,String> hashMap,List<String> imgUrls, Callback callback){
         OkHttpClient okHttpClient = new OkHttpClient();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        File f = new File(imgUrl);
-        builder.addFormDataPart("img", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
-
-        //添加其它信息
-//        builder.addFormDataPart("time",takePicTime);
-//        builder.addFormDataPart("mapX", SharedInfoUtils.getLongitude());
-//        builder.addFormDataPart("mapY",SharedInfoUtils.getLatitude());
-//        builder.addFormDataPart("name",SharedInfoUtils.getUserName());
-        MultipartBody requestBody = builder.build();
-        //构建请求
-        Request request = new Request.Builder()
-                .url(address)//地址
-                .post(requestBody)//添加请求体
-                .build();
-        okHttpClient.newCall(request).enqueue(callback);
-    }
-
-    public static void upLoadImgs(String address, List<String> imgUrls, Callback callback){
-        OkHttpClient okHttpClient = new OkHttpClient();
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-        for (int i = 0; i <imgUrls.size() ; i++) {
-            File f = new File(imgUrls.get(i));
-            if (f!=null) {
-                builder.addFormDataPart("img", f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
+        if (imgUrls!=null){
+            for (int i = 0; i <imgUrls.size() ; i++) {
+                File f = new File(imgUrls.get(i));
+                if (f != null) {
+                    builder.addFormDataPart("img"+i, f.getName(), RequestBody.create(MEDIA_TYPE_PNG, f));
+                }
             }
         }
 
-        MultipartBody requestBody = builder.build();
+        Set set = hashMap.keySet();
+        Iterator iterator = set.iterator();
+        while(iterator.hasNext()){
+            String key = (String)iterator.next();
+            builder.addFormDataPart(key,hashMap.get(key));
+        }
+
         //构建请求
         Request request = new Request.Builder()
                 .url(address)//地址
-                .post(requestBody)//添加请求体
+                .post(builder.build())//添加请求体
                 .build();
         okHttpClient.newCall(request).enqueue(callback);
     }

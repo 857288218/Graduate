@@ -315,7 +315,7 @@ public class LoginActivity extends BaseActivity {
         }
         //获得用户收货地址信息
 //        hash.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
-//        HttpUtil.sendOkHttpPostRequest("h", hash, new Callback() {
+//        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hash, new Callback() {
 //            @Override
 //            public void onFailure(Call call, IOException e) {
 //

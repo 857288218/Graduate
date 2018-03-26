@@ -162,15 +162,19 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         //网络请求数据
 //        progressBar.setVisibility(View.VISIBLE);
 //        homeRecyclerView.setVisibility(View.GONE);
-//        HttpUtil.sendOkHttpGetRequest("http://", new Callback() {
+//        HashMap<String,String> hashMap = new HashMap<>();
+//        hashMap.put("label","推荐商家");
+//        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.HOME_DATA_API,hashMap, new Callback() {
 //            @Override
 //            public void onFailure(Call call, IOException e) {
-//
+//                Log.d("oneFragment",e.getMessage());
 //            }
 //
 //            @Override
 //            public void onResponse(Call call, Response response) throws IOException {
-//                homeRecResDetailList = new Gson().fromJson(response.body().string(),new TypeToken<List<ResDetailBean>>(){}.getType());
+//                String responseText = response.body().string();
+//                Log.d("oneFragment",responseText.toString());
+//                homeRecResDetailList = new Gson().fromJson(responseText,new TypeToken<List<ResDetailBean>>(){}.getType());
 //                getActivity().runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -252,18 +256,18 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (userId>0){
-                    Intent intent = new Intent(mContext, AddressActivity.class);
-                    startActivityForResult(intent,ADDRESS_REQUEST, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
-                }else{
-                    Toast.makeText(mContext, "登录后查看编辑收货地址", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
+//        address.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (userId>0){
+//                    Intent intent = new Intent(mContext, AddressActivity.class);
+//                    startActivityForResult(intent,ADDRESS_REQUEST, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
+//                }else{
+//                    Toast.makeText(mContext, "登录后查看编辑收货地址", Toast.LENGTH_SHORT).show();
+//                }
+//
+//            }
+//        });
         initRecyclerView();
         initRefresh();
     }
@@ -588,14 +592,14 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        userId = PreferenceManager.getDefaultSharedPreferences(mContext).getInt("user_id",-1);
-        List<AddressBean> addressBeanList = DataSupport.where("user_id = ? and selected = ?",String.valueOf(userId),"1").find(AddressBean.class);
+//        userId = PreferenceManager.getDefaultSharedPreferences(mContext).getInt("user_id",-1);
+//        List<AddressBean> addressBeanList = DataSupport.where("user_id = ? and selected = ?",String.valueOf(userId),"1").find(AddressBean.class);
         //设置默认收货地址
-        if (userId>0 && addressBeanList.size()>0){
-            address.setText("送至:"+addressBeanList.get(0).getAddress());
-        }else{
-            address.setText("选择收货地址");
-        }
+//        if (userId>0 && addressBeanList.size()>0){
+//            address.setText("送至:"+addressBeanList.get(0).getAddress());
+//        }else{
+//            address.setText("选择收货地址");
+//        }
         //刷新店铺红点
         new Thread(new NotifyResBuyNumRunnable()).start();
         mBanner.startAutoPlay();

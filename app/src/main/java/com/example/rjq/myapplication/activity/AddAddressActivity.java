@@ -169,7 +169,11 @@ public class AddAddressActivity extends BaseActivity {
             //将地址添加到远程数据库
 //            HashMap<String,String> hash = new HashMap<>();
 //            hash.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
-//            HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
+//            hash.put("build_name",address);
+//            hash.put("name",name);
+//            hash.put("phone",phone);
+//            hash.put("addr_detail",num);
+//            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hash, new Callback() {
 //                @Override
 //                public void onFailure(Call call, IOException e) {
 //                    progressBar.setVisibility(View.GONE);

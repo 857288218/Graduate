@@ -1,6 +1,8 @@
 package com.example.rjq.myapplication.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     private List<AddressBean> list;
     private OnItemClickListener onItemClickListener;
     private OnItemDeleteListener onItemDeleteListener;
+    private OnItemLongClickListener onItemLongClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
@@ -29,6 +32,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     public void setOnItemDeleteListener(OnItemDeleteListener onItemDeleteListener){
         this.onItemDeleteListener = onItemDeleteListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener){
+        this.onItemLongClickListener = onItemLongClickListener;
     }
 
     public AddressAdapter(Context context, List<AddressBean> list){
@@ -69,6 +76,24 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 }
             }
         });
+
+        holder.view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (onItemLongClickListener != null){
+                    onItemLongClickListener.onItemLongClick(position);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        if (list.get(position).getSelected() == 1){
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.grey_background));
+        }else{
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        }
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -93,6 +118,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     public interface OnItemDeleteListener{
         void onItemDelete(int position);
+    }
+
+    public interface OnItemLongClickListener{
+        void onItemLongClick(int position);
     }
 
 }

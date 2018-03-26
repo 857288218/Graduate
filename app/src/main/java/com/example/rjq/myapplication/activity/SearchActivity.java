@@ -232,29 +232,29 @@ public class SearchActivity extends BaseActivity {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
 
-//        HashMap<String,String> hashMap = new HashMap<>();
-//        hashMap.put("search_key",content);
-//        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d("SearchActivity",e.toString());
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                list = new Gson().fromJson(response.toString(), new TypeToken<List<ResDetailBean>>(){}.getType());
-//                notifyResBuyNum();
-//                final ClassifyResActivityAdapter adapter = new ClassifyResActivityAdapter(SearchActivity.this,list);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        recyclerView.setAdapter(adapter);
-//                        progressBar.setVisibility(View.GONE);
-//                        recyclerView.setVisibility(View.VISIBLE);
-//                    }
-//                });
-//            }
-//        });
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("search_key",content);
+        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("SearchActivity",e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                list = new Gson().fromJson(response.toString(), new TypeToken<List<ResDetailBean>>(){}.getType());
+                notifyResBuyNum();
+                final ClassifyResActivityAdapter adapter = new ClassifyResActivityAdapter(SearchActivity.this,list);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(adapter);
+                        progressBar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
     }
 
     private void notifyResBuyNum(){

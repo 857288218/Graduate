@@ -48,8 +48,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.MainActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activity.WelcomeActivity"
             android:theme="@style/ThemeWelcome">
@@ -67,11 +68,13 @@
             android:launchMode="singleTask" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.AlterPwdActivity" />
-        <activity android:name=".activity.AccountActivity"
-            android:windowSoftInputMode="adjustNothing|stateHidden"/>
+        <activity
+            android:name=".activity.AccountActivity"
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
         <activity android:name=".activity.AddressActivity" />
         <activity android:name=".activity.AddAddressActivity" />
-        <activity android:name=".activity.SuccessBuyActivity"></activity>
+        <activity android:name=".activity.SuccessBuyActivity" />
+        <activity android:name=".activity.CouponActivity"></activity>
     </application>
 
 </manifest>
