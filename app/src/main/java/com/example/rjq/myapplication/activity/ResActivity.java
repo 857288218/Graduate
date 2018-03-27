@@ -1,5 +1,6 @@
 package com.example.rjq.myapplication.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -8,16 +9,24 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -26,8 +35,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.adapter.PopupPayWayAdapter;
 import com.example.rjq.myapplication.adapter.TabFragmentAdapter;
 
+import com.example.rjq.myapplication.bean.DiscountBean;
 import com.example.rjq.myapplication.bean.GoodsListBean;
 import com.example.rjq.myapplication.bean.ResBuyItemNum;
 import com.example.rjq.myapplication.bean.ResDetailBean;
@@ -39,6 +50,7 @@ import com.example.rjq.myapplication.fragment.ResDetailFragment;
 import com.example.rjq.myapplication.util.AnimationUtil;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.util.HttpUtil;
+import com.example.rjq.myapplication.view.GoodsDetailPopWin;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -123,6 +135,8 @@ public class ResActivity extends BaseActivity {
     TextView howMoneyToDelivery;
     @BindView(R.id.go_to_account)
     TextView goToCheckOut;
+    @BindView(R.id.pop_rl)
+    RelativeLayout popRl;
 
     //优惠总数
     private int specialNum;
@@ -130,6 +144,8 @@ public class ResActivity extends BaseActivity {
     private List<Fragment> mFragments = new ArrayList<>();
     //tab名的列表
     private List<String> mTitles = new ArrayList<>();
+
+    private double totalMoney;
 
     private GoodsListBean goodsListBean;
     private List<GoodsListBean.GoodsCategoryBean> categoryBeanList;
@@ -139,6 +155,8 @@ public class ResActivity extends BaseActivity {
 
     private int resId;
     private String resName;
+    private String discountString;
+    private List<DiscountBean> discountBeanList;
 
     public ResDetailBean getResDetailBean(){
         return homeRecResDetailBean;
@@ -158,6 +176,7 @@ public class ResActivity extends BaseActivity {
         returnBtn.setOnClickListener(this);
         goToCheckOut.setOnClickListener(this);
         searchLl.setOnClickListener(this);
+        popRl.setOnClickListener(this);
         setViewPager();
     }
 
@@ -189,9 +208,9 @@ public class ResActivity extends BaseActivity {
         }else{
             resId = homeRecResDetailBean.getResId();
             resName = homeRecResDetailBean.getResName();
-            setResDetail();
         }
 
+        setResDetail();
         //请求server端的店铺商品列表,
 //        HashMap<String,String> hashMap = new HashMap<>();
 //        hashMap.put("res_id",String.valueOf(resId));
@@ -228,7 +247,7 @@ public class ResActivity extends BaseActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
         //设置tabLayout的下划线的宽度
-        setTabIndicator(tabLayout,36,36);
+//        setTabIndicator(tabLayout,36,36);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -301,11 +320,23 @@ public class ResActivity extends BaseActivity {
                 Intent intent = new Intent(this,SearchActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.pop_rl:
+                showSelectedDetailDialog();
+                break;
             case R.id.go_to_account:
                 if (DataSupport.findAll(UserBean.class).size() > 0){
                     Intent accountIntent = new Intent(this,AccountActivity.class);
                     accountIntent.putExtra("res_id",resId);
                     accountIntent.putExtra("res_name",resName);
+                    if (discountBeanList != null && discountBeanList.size() > 0){
+                        double reduceMoney = 0;
+                        for (DiscountBean discountBean : discountBeanList){
+                            if (totalMoney >= discountBean.getFilledVal()){
+                                reduceMoney = discountBean.getReduceVal();
+                            }
+                        }
+                        accountIntent.putExtra("reduce_money",reduceMoney);
+                    }
                     startActivity(accountIntent);
                 }else{
                     Intent loginIntent = new Intent(this,LoginActivity.class);
@@ -331,6 +362,7 @@ public class ResActivity extends BaseActivity {
                 noShop.setVisibility(View.GONE);
                 //设置购买的总价钱
                 int price2 = (int)event.price;
+                totalMoney = event.price;
                 if (event.price > price2){
                     totalPrice.setText("¥"+df.format(event.price));
                 }else{
@@ -472,7 +504,101 @@ public class ResActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    private void showSelectedDetailDialog(){
+        List<ResBuyItemNum> list = DataSupport.where("resId = ?",String.valueOf(resId)).find(ResBuyItemNum.class);
+        if (list.size() > 0){
+            double packageMoney = 0;
+            final Dialog dialog = new Dialog(this,R.style.ActionSheetDialogStyle);
+            //填充对话框的布局
+            View view = LayoutInflater.from(this).inflate(R.layout.popup_goods_detail, null);
+            AutoLinearLayout itemLl = (AutoLinearLayout) view.findViewById(R.id.item_ll);
+            TextView packageMoneyTv = (TextView) view.findViewById(R.id.good_package_money);
+            RelativeLayout packageMoneyRl = (RelativeLayout) view.findViewById(R.id.package_money_rl);
+            for (ResBuyItemNum resBuyItemNum : list){
+                itemLl.addView(initGoodDetailItemView(resBuyItemNum.getItemName(),resBuyItemNum.getBuyNum(),resBuyItemNum.getItemPrice()*resBuyItemNum.getBuyNum()));
+                packageMoney += resBuyItemNum.getItemPackageMoney() * resBuyItemNum.getBuyNum();
+            }
+
+            if (packageMoney > 0){
+                packageMoneyRl.setVisibility(View.VISIBLE);
+                int price = (int) packageMoney;
+                if (packageMoney > price){
+                    packageMoneyTv.setText(""+packageMoney);
+                }else{
+                    packageMoneyTv.setText(""+price);
+                }
+            }else{
+                packageMoneyRl.setVisibility(View.GONE);
+            }
+            dialog.setCancelable(true);
+            //将布局设置给Dialog
+            dialog.setContentView(view);
+            //获取当前Activity所在的窗体
+            Window dialogWindow = dialog.getWindow();
+            //设置Dialog从窗体底部弹出
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            lp.y = getResources().getDimensionPixelOffset(R.dimen.dimen_54dp);//设置Dialog距离底部的距离
+            //设置dialog宽度满屏
+            WindowManager m = dialogWindow.getWindowManager();
+            Display d = m.getDefaultDisplay();
+            lp.width = d.getWidth();
+            //将属性设置给窗体
+            dialogWindow.setAttributes(lp);
+            dialog.show();
+        }
+    }
+
+    private View initGoodDetailItemView(String goodNameText, int num, double goodPriceText){
+        View view = LayoutInflater.from(this).inflate(R.layout.goods_detail_item,null);
+        TextView goodName = (TextView) view.findViewById(R.id.good_name);
+        TextView goodNum = (TextView) view.findViewById(R.id.good_num);
+        TextView goodPrice = (TextView) view.findViewById(R.id.good_price);
+        goodName.setText(goodNameText);
+        goodNum.setText("×"+num);
+        int price = (int) goodPriceText;
+        if (goodPriceText > price){
+            goodPrice.setText(""+goodPriceText);
+        }else{
+            goodPrice.setText(""+price);
+        }
+        return view;
+    }
+
     private void setResDetail(){
+        //设置满减活动
+        discountBeanList = homeRecResDetailBean.getDiscountList();
+        if (discountBeanList != null && discountBeanList.size() > 0){
+            StringBuffer sb = new StringBuffer();
+            for (DiscountBean discountBean : homeRecResDetailBean.getDiscountList()){
+                int fillPrice = (int) discountBean.getFilledVal();
+                int reducePrice = (int) discountBean.getReduceVal();
+                if (discountBean.getFilledVal()>fillPrice){
+                    sb.append("满"+discountBean.getFilledVal());
+                }else{
+                    sb.append("满"+fillPrice);
+                }
+                if (discountBean.getReduceVal() > reducePrice){
+                    sb.append("减"+discountBean.getReduceVal()+",");
+                }else{
+                    sb.append("减"+reducePrice+",");
+                }
+            }
+            discountString = sb.toString().substring(0,sb.length()-1);
+        }
+
+        if (!TextUtils.isEmpty(discountString)){
+            resReduceContainer.setVisibility(View.VISIBLE);
+            resReduceTv.setText(discountString);
+            specialNum = 1;
+        }
+
+        //设置优惠总数
+        if (specialNum > 0){
+            resSpecialNum.setText(specialNum+"个优惠");
+            resSpecialNum.setVisibility(View.VISIBLE);
+        }
+
         //设置商家名称
         String resName = homeRecResDetailBean.getResName();
         resNameTv.setText(resName);
@@ -511,35 +637,30 @@ public class ResActivity extends BaseActivity {
         }
 
         //设置各个活动
-        String resReduce = homeRecResDetailBean.getResReduce();
-        if (!TextUtils.isEmpty(resReduce)){
-            specialNum ++;
-            resReduceContainer.setVisibility(View.VISIBLE);
-            resReduceTv.setText(resReduce);
-        }
-        String resSpecial = homeRecResDetailBean.getResSpecial();
-        if (!TextUtils.isEmpty(resSpecial)){
-            specialNum ++;
-            resSpecialContainer.setVisibility(View.VISIBLE);
-            resSpecialTv.setText(resSpecial);
-        }
-        String resNew = homeRecResDetailBean.getResNew();
-        if (!TextUtils.isEmpty(resNew)){
-            specialNum ++;
-            resNewContainer.setVisibility(View.VISIBLE);
-            resNewTv.setText(resNew);
-        }
-        String resGive = homeRecResDetailBean.getResGive();
-        if (!TextUtils.isEmpty(resGive)){
-            specialNum ++;
-            resGiveContainer.setVisibility(View.VISIBLE);
-            resGiveTv.setText(resGive);
-        }
+//        String resReduce = homeRecResDetailBean.getResReduce();
+//        if (!TextUtils.isEmpty(resReduce)){
+//            specialNum ++;
+//            resReduceContainer.setVisibility(View.VISIBLE);
+//            resReduceTv.setText(resReduce);
+//        }
+//        String resSpecial = homeRecResDetailBean.getResSpecial();
+//        if (!TextUtils.isEmpty(resSpecial)){
+//            specialNum ++;
+//            resSpecialContainer.setVisibility(View.VISIBLE);
+//            resSpecialTv.setText(resSpecial);
+//        }
+//        String resNew = homeRecResDetailBean.getResNew();
+//        if (!TextUtils.isEmpty(resNew)){
+//            specialNum ++;
+//            resNewContainer.setVisibility(View.VISIBLE);
+//            resNewTv.setText(resNew);
+//        }
+//        String resGive = homeRecResDetailBean.getResGive();
+//        if (!TextUtils.isEmpty(resGive)){
+//            specialNum ++;
+//            resGiveContainer.setVisibility(View.VISIBLE);
+//            resGiveTv.setText(resGive);
+//        }
 
-        //设置优惠总数
-        if (specialNum > 0){
-            resSpecialNum.setText(specialNum+"个优惠");
-            resSpecialNum.setVisibility(View.VISIBLE);
-        }
     }
 }

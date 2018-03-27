@@ -382,6 +382,7 @@
                         android:layout_height="wrap_content" />
 
                     <com.zhy.autolayout.AutoRelativeLayout
+                        android:visibility="gone"
                         android:id="@+id/rl_reduce"
                         android:layout_marginRight="@dimen/space_30px"
                         android:layout_marginTop="@dimen/space_30px"

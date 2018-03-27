@@ -149,6 +149,7 @@
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <View
+            android:id="@+id/divider"
             android:layout_marginTop="@dimen/space_20px"
             android:background="@color/grey_divider"
             android:layout_width="match_parent"

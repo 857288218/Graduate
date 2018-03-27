@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.activity.ClassifyResActivity;
 import com.example.rjq.myapplication.activity.ResActivity;
+import com.example.rjq.myapplication.bean.DiscountBean;
 import com.example.rjq.myapplication.bean.ResDetailBean;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -90,21 +91,43 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
         deliverTime = String.format(deliverTime,homeRecResDetailBeanList.get(position).getResDeliverTime());
         holder.one_fragment_deliver_time.setText(deliverTime);
         //设置优惠活动
-        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResReduce())){
+//        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResReduce())){
+//            holder.one_fragment_item_reduce_container.setVisibility(View.VISIBLE);
+//            holder.one_fragment_item_reduce.setText(homeRecResDetailBeanList.get(position).getResReduce());
+//        }
+//        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResSpecial())){
+//            holder.one_fragment_item_special_container.setVisibility(View.VISIBLE);
+//            holder.one_fragment_item_special.setText(homeRecResDetailBeanList.get(position).getResSpecial());
+//        }
+//        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResNew())){
+//            holder.one_fragment_item_new_container.setVisibility(View.VISIBLE);
+//            holder.one_fragment_item_new.setText(homeRecResDetailBeanList.get(position).getResNew());
+//        }
+//        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResGive())){
+//            holder.one_fragment_item_give_container.setVisibility(View.VISIBLE);
+//            holder.one_fragment_item_give.setText(homeRecResDetailBeanList.get(position).getResGive());
+//        }
+        if (homeRecResDetailBeanList.get(position).getDiscountList()!= null && homeRecResDetailBeanList.get(position).getDiscountList().size()>0){
             holder.one_fragment_item_reduce_container.setVisibility(View.VISIBLE);
-            holder.one_fragment_item_reduce.setText(homeRecResDetailBeanList.get(position).getResReduce());
-        }
-        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResSpecial())){
-            holder.one_fragment_item_special_container.setVisibility(View.VISIBLE);
-            holder.one_fragment_item_special.setText(homeRecResDetailBeanList.get(position).getResSpecial());
-        }
-        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResNew())){
-            holder.one_fragment_item_new_container.setVisibility(View.VISIBLE);
-            holder.one_fragment_item_new.setText(homeRecResDetailBeanList.get(position).getResNew());
-        }
-        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResGive())){
-            holder.one_fragment_item_give_container.setVisibility(View.VISIBLE);
-            holder.one_fragment_item_give.setText(homeRecResDetailBeanList.get(position).getResGive());
+
+            StringBuffer sb = new StringBuffer();
+
+            for (DiscountBean discountBean : homeRecResDetailBeanList.get(position).getDiscountList()){
+                int fillPrice = (int) discountBean.getFilledVal();
+                int reducePrice = (int) discountBean.getReduceVal();
+                if (discountBean.getFilledVal()>fillPrice){
+                    sb.append("满"+discountBean.getFilledVal());
+                }else{
+                    sb.append("满"+fillPrice);
+                }
+                if (discountBean.getReduceVal() > reducePrice){
+                    sb.append("减"+discountBean.getReduceVal()+",");
+                }else{
+                    sb.append("减"+reducePrice+",");
+                }
+            }
+
+            holder.one_fragment_item_reduce.setText(sb.toString().substring(0,sb.length()-1));
         }
 
         //设置每个item的点击事件

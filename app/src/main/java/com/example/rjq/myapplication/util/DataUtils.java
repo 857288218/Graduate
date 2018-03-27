@@ -64,27 +64,5 @@ public class DataUtils {
         return goodsListBean;
     }
 
-    /**
-     * 转成list
-     *
-     * @param gsonString
-     * @param cls
-     * @return
-     */
-    public static <T> List<T> GsonToList(String gsonString, Class<T[]> cls) {
-        T[] arr = new Gson().fromJson(gsonString, cls);
-        return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
-    }
-    /**
-     * 转成bean
-     *
-     * @param gsonString
-     * @param cls
-     * @return
-     */
-    public static <T> T GsonToBean(String gsonString, Class<T> cls) {
-        T t = new Gson().fromJson(gsonString, cls);
-        return t;
-    }
 
 }

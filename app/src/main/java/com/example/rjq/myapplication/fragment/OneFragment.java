@@ -35,6 +35,7 @@ import com.example.rjq.myapplication.activity.ResActivity;
 import com.example.rjq.myapplication.activity.SearchActivity;
 import com.example.rjq.myapplication.bean.AddressBean;
 
+import com.example.rjq.myapplication.bean.DiscountBean;
 import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.bean.ResDetailBean;
 import com.example.rjq.myapplication.bean.UserBean;
@@ -134,6 +135,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     private List<ResDetailBean> homeRecResDetailList;
     private List<String> homeBannerImgUrl;
     private int userId;
+    String discountString;
 
     //假数据
     private List<String> imageUrl;
@@ -162,9 +164,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         //网络请求数据
 //        progressBar.setVisibility(View.VISIBLE);
 //        homeRecyclerView.setVisibility(View.GONE);
-//        HashMap<String,String> hashMap = new HashMap<>();
-//        hashMap.put("label","推荐商家");
-//        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.HOME_DATA_API,hashMap, new Callback() {
+//        HttpUtil.sendOkHttpGetRequest(HttpUtil.HOME_PATH+HttpUtil.HOME_DATA_API, new Callback() {
 //            @Override
 //            public void onFailure(Call call, IOException e) {
 //                Log.d("oneFragment",e.getMessage());
@@ -188,22 +188,25 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         //假数据
         homeDataBean = new ResDetailBean();
         homeRecResDetailList = new ArrayList<>();
+        List<DiscountBean> discountBeanList = new ArrayList<>();
+        DiscountBean discountBean1 = new DiscountBean(25.0,5.5);DiscountBean discountBean2 = new DiscountBean(35.0,10.5);
+        discountBeanList.add(discountBean1);discountBeanList.add(discountBean2);
         ResDetailBean homeRecResDetailBean2 = new ResDetailBean(2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
-                "瓦罐汤",4.8f,1212,35,3,"东院食堂",30,"","","新用户下单立减20","");
+                "瓦罐汤",4.8f,1212,35,3,"东院食堂",30,discountBeanList);
         ResDetailBean homeRecResDetailBean1 = new ResDetailBean(1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",
-                "杨国福麻辣烫",4.9f,2343,23,5,"公寓三楼",20,"满25减5,满35减11","","","");
+                "杨国福麻辣烫",4.9f,2343,23,5,"公寓三楼",20,null);
         ResDetailBean homeRecResDetailBean3 = new ResDetailBean(4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
-                "杭州小笼包",4f,222,34,3,"公寓一楼",30,"满15减4","暖心三人餐A","","");
+                "杭州小笼包",4f,222,34,3,"公寓一楼",30,discountBeanList);
         ResDetailBean homeRecResDetailBean4 = new ResDetailBean(3,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
-                "土家掉渣烧饼",4.9f,23234,29,6,"公寓一楼",45,"","","新用户下单立减20","满20赠送鸡蛋汤一份");
+                "土家掉渣烧饼",4.9f,23234,29,6,"公寓一楼",45,discountBeanList);
         ResDetailBean homeRecResDetailBean5 = new ResDetailBean(5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "北李妈妈菜",4.7f,3212,20,6,"东院食堂",27,"","","新用户下单立减15","满18赠送清热解毒苦瓜汤一份");
+                "北李妈妈菜",4.7f,3212,20,6,"东院食堂",27,discountBeanList);
         ResDetailBean homeRecResDetailBean6 = new ResDetailBean(8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "重庆小面",4.7f,3212,20,6,"公寓二楼",43,"","","新用户下单立减20","");
+                "重庆小面",4.7f,3212,20,6,"公寓二楼",43,null);
         ResDetailBean homeRecResDetailBean7 = new ResDetailBean(7,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "兰州拉面",4.7f,3212,20,6,"民族餐厅",12,"","","新用户下单立减28","");
+                "兰州拉面",4.7f,3212,20,6,"民族餐厅",12,discountBeanList);
         ResDetailBean homeRecResDetailBean8 = new ResDetailBean(6,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "三楼自助",4.7f,3212,20,6,"公寓三楼",67,"","满25减5，满30减7","新用户下单立减20","满17赠奶茶一杯");
+                "三楼自助",4.7f,3212,20,6,"公寓三楼",67,discountBeanList);
         homeRecResDetailList.add(homeRecResDetailBean1);homeRecResDetailList.add(homeRecResDetailBean2);homeRecResDetailList.add(homeRecResDetailBean3);
         homeRecResDetailList.add(homeRecResDetailBean4);homeRecResDetailList.add(homeRecResDetailBean5);homeRecResDetailList.add(homeRecResDetailBean6);
         homeRecResDetailList.add(homeRecResDetailBean7);homeRecResDetailList.add(homeRecResDetailBean8);
@@ -283,9 +286,6 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             @Override
             protected void convert(BaseViewHolder helper, ResDetailBean item) {
                 helper.setGone(R.id.one_fragment_item_reduce_container,false);
-                helper.setGone(R.id.one_fragment_item_special_container,false);
-                helper.setGone(R.id.one_fragment_item_new_container,false);
-                helper.setGone(R.id.one_fragment_item_give_container,false);
 
                 //设置添加到购物车的数量，红点显示
                 if (item.getBuyNum() > 0){
@@ -324,21 +324,28 @@ public class OneFragment extends Fragment implements View.OnClickListener{
                 String deliverTime = mContext.getResources().getString(R.string.res_deliver_time);
                 deliverTime = String.format(deliverTime,item.getResDeliverTime());
                 helper.setText(R.id.one_fragment_deliver_time,deliverTime);
-                if (!TextUtils.isEmpty(item.getResReduce())){
+
+                helper.setGone(R.id.divider,false);
+                if (item.getDiscountList() != null && item.getDiscountList().size() > 0){
                     helper.setVisible(R.id.one_fragment_item_reduce_container,true);
-                    helper.setText(R.id.one_fragment_item_reduce,item.getResReduce());
-                }
-                if (!TextUtils.isEmpty(item.getResSpecial())){
-                    helper.setVisible(R.id.one_fragment_item_special_container,true);
-                    helper.setText(R.id.one_fragment_item_special,item.getResSpecial());
-                }
-                if (!TextUtils.isEmpty(item.getResNew())){
-                    helper.setVisible(R.id.one_fragment_item_new_container,true);
-                    helper.setText(R.id.one_fragment_item_new,item.getResNew());
-                }
-                if (!TextUtils.isEmpty(item.getResGive())){
-                    helper.setVisible(R.id.one_fragment_item_give_container,true);
-                    helper.setText(R.id.one_fragment_item_give,item.getResGive());
+                    helper.setVisible(R.id.divider,true);
+                    StringBuffer sb = new StringBuffer();
+                    for (DiscountBean discountBean : item.getDiscountList()){
+                        int fillPrice = (int) discountBean.getFilledVal();
+                        int reducePrice = (int) discountBean.getReduceVal();
+                        if (discountBean.getFilledVal()>fillPrice){
+                            sb.append("满"+discountBean.getFilledVal());
+                        }else{
+                            sb.append("满"+fillPrice);
+                        }
+                        if (discountBean.getReduceVal() > reducePrice){
+                            sb.append("减"+discountBean.getReduceVal()+",");
+                        }else{
+                            sb.append("减"+reducePrice+",");
+                        }
+                    }
+                    discountString = sb.toString().substring(0,sb.length()-1);
+                    helper.setText(R.id.one_fragment_item_reduce,discountString);
                 }
 
             }

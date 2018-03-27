@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout
+        android:paddingLeft="@dimen/dimen_20dp"
+        android:paddingRight="@dimen/dimen_20dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:text="油麦菜"
+            android:id="@+id/good_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_alignBaseline="@+id/good_price"
+            android:layout_toLeftOf="@+id/good_price"
+            android:textSize="12sp"
+            android:textColor="@color/colorRed"
+            android:text="￥"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginLeft="@dimen/dimen_10dp"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_30dp"
+            android:layout_toRightOf="@+id/good_name"
+            android:id="@+id/good_num"
+            android:text="×1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorRed"
+            android:layout_alignParentRight="true"
+            android:text="12"
+            android:id="@+id/good_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_alignParentBottom="true"
+            style="@style/grey_divider" />
+
+    </RelativeLayout>
+</RelativeLayout>

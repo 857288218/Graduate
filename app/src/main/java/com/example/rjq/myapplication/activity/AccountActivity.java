@@ -108,6 +108,10 @@ public class AccountActivity extends BaseActivity {
     AutoRelativeLayout rlRedPaper;
     @BindView(R.id.tv_red_paper)
     TextView redPaperTv;
+    @BindView(R.id.rl_reduce)
+    RelativeLayout reduceRl;
+    @BindView(R.id.tv_reduce)
+    TextView reduceTv;
 
     private int resId;
     private String resNameText;
@@ -120,6 +124,7 @@ public class AccountActivity extends BaseActivity {
     private List<Integer> payIvList;
     private Dialog payDialog;
     private CouponBean couponBean;
+    private double reduceMoney;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +137,17 @@ public class AccountActivity extends BaseActivity {
         super.initData();
         resId = getIntent().getIntExtra("res_id",-1);
         resNameText = getIntent().getStringExtra("res_name");
+        reduceMoney = getIntent().getDoubleExtra("reduce_money",0);
+        if (reduceMoney > 0){
+            int price = (int)reduceMoney;
+            reduceRl.setVisibility(View.VISIBLE);
+            if (reduceMoney > price){
+                reduceTv.setText("-￥"+reduceMoney);
+            }else{
+                reduceTv.setText(price+"");
+            }
+
+        }
 
         list = DataSupport.where("resId = ?",String.valueOf(resId)).find(ResBuyItemNum.class);
         addressList = DataSupport.where("selected = ?","1").find(AddressBean.class);
@@ -144,10 +160,11 @@ public class AccountActivity extends BaseActivity {
             View view = initBuyItem(resBuyItemNum);
             buyItemContainer.addView(view);
             allMoney += resBuyItemNum.getBuyNum() * resBuyItemNum.getItemPrice();
-            packageMoney += resBuyItemNum.getItemPackageMoney();
+            packageMoney += resBuyItemNum.getItemPackageMoney() * resBuyItemNum.getBuyNum();
         }
         allMoney += list.get(0).getResExtraMoney();
         allMoney += packageMoney;
+        allMoney -= reduceMoney;
         deliverMoney.setText("￥"+list.get(0).getResExtraMoney());
         allMoneyTv.setText(""+allMoney);
         allPriceBottom.setText("￥"+allMoney);
