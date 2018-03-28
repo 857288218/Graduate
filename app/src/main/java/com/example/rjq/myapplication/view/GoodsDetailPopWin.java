@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.bean.ResBuyItemNum;
 import com.zhy.autolayout.AutoLinearLayout;
-import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.List;
 

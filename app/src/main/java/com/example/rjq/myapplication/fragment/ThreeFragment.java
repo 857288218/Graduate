@@ -52,6 +52,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.rjq.myapplication.activity.AddressActivity;
+import com.example.rjq.myapplication.activity.AlterPhoneActivity;
 import com.example.rjq.myapplication.activity.AlterPwdActivity;
 import com.example.rjq.myapplication.activity.BaseActivity;
 import com.example.rjq.myapplication.activity.LoginActivity;
@@ -99,6 +100,7 @@ import okhttp3.Response;
  */
 public class ThreeFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "ThreeFragment";
+    private static final int REQUEST_ALTER_PHONE = 3001;
     private View rootView;
 
     private static final int REQUEST_PICK_IMAGE = 1; //相册选取
@@ -208,8 +210,8 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             login.setVisibility(View.GONE);
             logOut.setVisibility(View.VISIBLE);
             UserBean userBean = userList.get(0);
-            if (new File(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("user_img","")).exists()){
-                GlideUtil.load(getActivity(),PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("user_img",""),headImg,GlideUtil.REQUEST_OPTIONS);
+            if (new File(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(userList.get(0).getUserId()+"","")).exists()){
+                GlideUtil.load(getActivity(),PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(userList.get(0).getUserId()+"",""),headImg,GlideUtil.REQUEST_OPTIONS);
             }else{
                 GlideUtil.load(getActivity(),userBean.getUserImg(),headImg,GlideUtil.REQUEST_OPTIONS);
             }
@@ -296,7 +298,9 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                 alterUserNameDialog();
                 break;
             case R.id.user_phone:
-
+                Intent intentPhone = new Intent(getActivity(),AlterPhoneActivity.class);
+                intentPhone.putExtra("phone",userPhoneText.getText().toString());
+                startActivityForResult(intentPhone,REQUEST_ALTER_PHONE);
                 break;
             case R.id.user_sex:
                 alterUserSexDialog();
@@ -642,7 +646,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                             try{
                                 final JSONObject jsonObject = new JSONObject(responseText);
                                 List<UserBean> list = DataSupport.findAll(UserBean.class);
-                                UserBean userBean = list.get(0);
+                                final UserBean userBean = list.get(0);
                                 userBean.setUserImg((String)jsonObject.get("url"));
                                 userBean.save();
                                 getActivity().runOnUiThread(new Runnable() {
@@ -650,7 +654,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                                     public void run() {
                                         try{
                                             //保存本地图片头像的路径
-                                            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("user_img",imagePath).commit();
+                                            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString(userBean.getUserId()+"",imagePath).commit();
                                             GlideUtil.load(getActivity(),jsonObject.get("url"),headImg,GlideUtil.REQUEST_OPTIONS);
                                             progressBar.setVisibility(View.GONE);
                                         }catch(Exception e){
@@ -664,6 +668,11 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                         }
                     });
 
+                }
+                break;
+            case REQUEST_ALTER_PHONE:
+                if (resultCode == Activity.RESULT_OK){
+                    setUserInfo();
                 }
                 break;
         }

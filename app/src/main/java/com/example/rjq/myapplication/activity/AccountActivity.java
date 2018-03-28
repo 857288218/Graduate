@@ -27,9 +27,12 @@ import android.widget.Toast;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.bean.AddressBean;
 import com.example.rjq.myapplication.bean.CouponBean;
+import com.example.rjq.myapplication.bean.DiscountBean;
 import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.bean.ResBuyItemNum;
 import com.example.rjq.myapplication.util.HttpUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
@@ -125,6 +128,7 @@ public class AccountActivity extends BaseActivity {
     private Dialog payDialog;
     private CouponBean couponBean;
     private double reduceMoney;
+    private List<DiscountBean> discountBeanList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,16 +142,6 @@ public class AccountActivity extends BaseActivity {
         resId = getIntent().getIntExtra("res_id",-1);
         resNameText = getIntent().getStringExtra("res_name");
         reduceMoney = getIntent().getDoubleExtra("reduce_money",0);
-        if (reduceMoney > 0){
-            int price = (int)reduceMoney;
-            reduceRl.setVisibility(View.VISIBLE);
-            if (reduceMoney > price){
-                reduceTv.setText("-￥"+reduceMoney);
-            }else{
-                reduceTv.setText(price+"");
-            }
-
-        }
 
         list = DataSupport.where("resId = ?",String.valueOf(resId)).find(ResBuyItemNum.class);
         addressList = DataSupport.where("selected = ?","1").find(AddressBean.class);
@@ -164,6 +158,37 @@ public class AccountActivity extends BaseActivity {
         }
         allMoney += list.get(0).getResExtraMoney();
         allMoney += packageMoney;
+
+        if (reduceMoney > 0){
+            int price = (int)reduceMoney;
+            reduceRl.setVisibility(View.VISIBLE);
+            if (reduceMoney > price){
+                reduceTv.setText("-￥"+reduceMoney);
+            }else{
+                reduceTv.setText(price+"");
+            }
+        }else{
+//            HashMap<String,String> hashMap = new HashMap<>();
+//            hashMap.put("res_id",String.valueOf(resId));
+//            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hashMap, new Callback() {
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//
+//                }
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//                    discountBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<DiscountBean>>(){}.getType());
+//                    if (discountBeanList != null && discountBeanList.size() > 0){
+//                        for (DiscountBean discountBean : discountBeanList){
+//                            if (allMoney >= discountBean.getFilledVal()){
+//                                reduceMoney = discountBean.getReduceVal();
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+        }
+
         allMoney -= reduceMoney;
         deliverMoney.setText("￥"+list.get(0).getResExtraMoney());
         allMoneyTv.setText(""+allMoney);

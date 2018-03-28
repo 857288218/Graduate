@@ -74,7 +74,8 @@
         <activity android:name=".activity.AddressActivity" />
         <activity android:name=".activity.AddAddressActivity" />
         <activity android:name=".activity.SuccessBuyActivity" />
-        <activity android:name=".activity.CouponActivity"></activity>
+        <activity android:name=".activity.CouponActivity" />
+        <activity android:name=".activity.AlterPhoneActivity"></activity>
     </application>
 
 </manifest>

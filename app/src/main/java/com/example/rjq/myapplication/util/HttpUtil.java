@@ -19,7 +19,7 @@ import okhttp3.RequestBody;
  */
 
 public class HttpUtil {
-    public static final String HOME_PATH = "http://192.168.1.105/restaurant/index.php";
+    public static final String HOME_PATH = "http://192.168.30.84/restaurant/index.php";
     public static final String HOME_DATA_API = "/HomePage/obtain_res_by_label";
     public static final String UPLOAD_IMG_API = "/UserInfo/upLoadImgs";
 
