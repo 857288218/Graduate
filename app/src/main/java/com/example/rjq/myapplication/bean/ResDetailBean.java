@@ -26,15 +26,18 @@ public class ResDetailBean extends DataSupport implements Serializable{
     //星级
     @SerializedName("eval_decription")
     private float resStar;
-    //月售多少订单
-    @SerializedName("res_order_num")
+    //月售多少订单,应该是在订单表中查询的订单数
+    @SerializedName("order_num")
     private int resOrderNum;
     //多少钱起送
-    @SerializedName("ship_Amount")
+    @SerializedName("ship_money")
     private int resDeliverMoney;
     //配送费
-    @SerializedName("ship_Amounty")
+    @SerializedName("deliver_money")
     private int resExtraMoney;
+    //包装费
+    @SerializedName("pack_expense")
+    private double packExpense;
     //地址
     @SerializedName("shop_addr")
     private String resAddress;
@@ -44,19 +47,7 @@ public class ResDetailBean extends DataSupport implements Serializable{
     //商家描述
     @SerializedName("shop_intro")
     private String resDescription;
-//    //满减
-//    @SerializedName("res_reduce_activity")
-//    private String resReduce;
-//    //特殊活动
-//    @SerializedName("res_special_activity")
-//    private String resSpecial;
-//    //新用户下单减
-//    @SerializedName("res_new_activity")
-//    private String resNew;
-//    //赠
-//    @SerializedName("res_gift_activity")
-//    private String resGive;
-
+    //减价
     @SerializedName("discount_list")
     private List<DiscountBean> discountList;
 
@@ -75,10 +66,6 @@ public class ResDetailBean extends DataSupport implements Serializable{
         this.resAddress = resAddress;
         this.resDeliverTime = resDeliverTime;
         this.discountList = discountList;
-//        this.resReduce = resReduce;
-//        this.resSpecial = resSpecial;
-//        this.resNew = resNew;
-//        this.resGive = resGive;
     }
 
     public int getBuyNum() {
@@ -138,22 +125,6 @@ public class ResDetailBean extends DataSupport implements Serializable{
         return resDeliverTime;
     }
 
-//    public String getResReduce() {
-//        return resReduce;
-//    }
-//
-//    public String getResSpecial() {
-//        return resSpecial;
-//    }
-//
-//    public String getResNew() {
-//        return resNew;
-//    }
-//
-//    public String getResGive() {
-//        return resGive;
-//    }
-
     public void setResId(int resId) {
         this.resId = resId;
     }
@@ -197,20 +168,13 @@ public class ResDetailBean extends DataSupport implements Serializable{
     public void setDiscountList(List<DiscountBean> discountList) {
         this.discountList = discountList;
     }
-//    public void setResReduce(String resReduce) {
-//        this.resReduce = resReduce;
-//    }
-//
-//    public void setResSpecial(String resSpecial) {
-//        this.resSpecial = resSpecial;
-//    }
-//
-//    public void setResNew(String resNew) {
-//        this.resNew = resNew;
-//    }
-//
-//    public void setResGive(String resGive) {
-//        this.resGive = resGive;
-//    }
+
+    public double getPackExpense() {
+        return packExpense;
+    }
+
+    public void setPackExpense(double packExpense) {
+        this.packExpense = packExpense;
+    }
 }
 

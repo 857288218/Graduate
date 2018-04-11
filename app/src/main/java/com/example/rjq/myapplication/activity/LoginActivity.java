@@ -195,148 +195,158 @@ public class LoginActivity extends BaseActivity {
         //密码登陆
         if (loginByPasswordLl.getVisibility() == View.VISIBLE) {
             //假数据账号密码登陆
-            if (userName.getText().toString().replace(" ", "").equals("13622179395")) {
-                UserBean userBean = new UserBean();
-                userBean.setUserId(1001);
-                userBean.setPassword(password.getText().toString());
-                userBean.setUserImg("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
-                userBean.setUserPhone("13622179395");
-                userBean.setUserRedPaper(5);
-                userBean.setUserMoney(53.2);
-                userBean.setGoldMoney(192);
-                userBean.setUserName("订餐用户" + 1001);
-                userBean.setUserSex(1);
-                userBean.save();
-                Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK);
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-                editor.putInt("user_id", userBean.getUserId());
-                editor.commit();
-                finish();
-            } else {
-                Toast.makeText(this, "账号或密码错误!", Toast.LENGTH_SHORT).show();
-            }
-//
-//            hash.put("account",userName.getText().toString().replace(" ", ""));
-//            hash.put("password",password.getText().toString());
-//            //用户名密码校验
-//            HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    Log.d("LoginActivity",e.toString());
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    final String responseText = response.body().string();
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            try{
-//                                final JSONObject jsonObject = new JSONObject(responseText);
-//                                Integer state = (Integer) jsonObject.get("state");
-//                                String msg = (String) jsonObject.get("msg");
-//                                if (state == 1){
-//                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                                    initUserBean(jsonObject);
-//                                    setResult(RESULT_OK);
-//                                    finish();
-//                                }else{
-//                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                                }
-//                            }catch (JSONException e){
-//                                Log.d("LoginActivity",e.toString());
-//                            }
-//                        }
-//                    });
-//
-//                }
-//            });
+//            if (userName.getText().toString().replace(" ", "").equals("13622179395")) {
+//                UserBean userBean = new UserBean();
+//                userBean.setUserId(1001);
+//                userBean.setPassword(password.getText().toString());
+//                userBean.setUserImg("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
+//                userBean.setUserPhone("13622179395");
+////                userBean.setUserRedPaper(5);
+////                userBean.setUserMoney(53.2);
+////                userBean.setGoldMoney(192);
+//                userBean.setUserName("订餐用户" + 1001);
+//                userBean.setUserSex(1);
+//                userBean.save();
+//                Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
+//                setResult(RESULT_OK);
+//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+//                editor.putInt("user_id", userBean.getUserId());
+//                editor.commit();
+//                finish();
+//            } else {
+//                Toast.makeText(this, "账号或密码错误!", Toast.LENGTH_SHORT).show();
+//            }
+            progressBar.setVisibility(View.VISIBLE);
+            hash.put("user_tel",userName.getText().toString().replace(" ", ""));
+            hash.put("password",password.getText().toString());
+            //用户名密码校验(实现)
+            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.LOGIN_BY_PWD, hash, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d("LoginActivity",e.toString());
+                    Toast.makeText(LoginActivity.this, "登陆失败，请检查网络!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    final String responseText = response.body().string();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            try{
+                                final JSONObject jsonObject = new JSONObject(responseText);
+                                int state = jsonObject.getInt("status");
+                                String msg = jsonObject.getString("msg");
+                                if (state == 1){
+                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                    //保存用户信息
+                                    UserBean userBean = new Gson().fromJson(jsonObject.getJSONObject("user_info").toString(),UserBean.class);
+                                    userBean.save();
+                                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
+                                    editor.putInt("user_id", userBean.getUserId());
+                                    editor.commit();
+                                    try{
+                                        addressBeanList = new Gson().fromJson(jsonObject.getJSONArray("address").toString(),new TypeToken<List<AddressBean>>(){}.getType());
+                                        //将地址添加到本地数据库
+                                        DataSupport.deleteAll(AddressBean.class);
+                                        for (AddressBean addressBean : addressBeanList){
+                                            addressBean.save();
+                                        }
+                                    }catch(JSONException e){
+                                        Toast.makeText(LoginActivity.this, "收货地址获取失败！", Toast.LENGTH_SHORT).show();
+                                    }
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }else{
+                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                }
+                            }catch (JSONException e){
+                                Log.d("LoginActivity",e.getMessage());
+                                Toast.makeText(LoginActivity.this, "登陆失败，请检查网络!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+            });
 
         } else {
             //手机验证码登陆
             if (Integer.parseInt(loginIdentifyCodeEt.getText().toString()) == a) {
                 //假数据验证码登陆
-                UserBean userBean = new UserBean();
-                userBean.setUserId(1001);
-                userBean.setPassword(password.getText().toString());
-                userBean.setUserImg("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
-                userBean.setUserPhone("13622179395");
-                userBean.setUserRedPaper(5);
-                userBean.setUserMoney(53.2);
-                userBean.setGoldMoney(192);
-                userBean.setUserName("订餐用户" + 1001);
-                userBean.setUserSex(1);
-                userBean.save();
-                Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK);
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-                editor.putInt("user_id", userBean.getUserId());
-                editor.commit();
-                PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id", -1);
-                finish();
+//                UserBean userBean = new UserBean();
+//                userBean.setUserId(1001);
+//                userBean.setPassword(password.getText().toString());
+//                userBean.setUserImg("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
+//                userBean.setUserPhone("13622179395");
+////                userBean.setUserRedPaper(5);
+////                userBean.setUserMoney(53.2);
+////                userBean.setGoldMoney(192);
+//                userBean.setUserName("订餐用户" + 1001);
+//                userBean.setUserSex(1);
+//                userBean.save();
+//                Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
+//                setResult(RESULT_OK);
+//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+//                editor.putInt("user_id", userBean.getUserId());
+//                editor.commit();
+//                finish();
 
-                //手机号校验(是否注册过)
-//                hash.put("account",loginPhoneEt.getText().toString());
-//                HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        final String responseText = response.body().string();
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                try{
-//                                    final JSONObject jsonObject = new JSONObject(responseText);
-//                                    Integer state = (Integer) jsonObject.get("state");
-//                                    String msg = (String) jsonObject.get("msg");
-//                                    if (state == 1){
-//                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                                        initUserBean(jsonObject);
-//                                        setResult(RESULT_OK);
-//                                        finish();
-//                                    }else{
-//                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }catch (JSONException e){
-//                                    Log.d("LoginActivity",e.toString());
-//                                }
-//                            }
-//                        });
-//                    }
-//                });
+                //手机号校验(实现)
+                progressBar.setVisibility(View.VISIBLE);
+                hash.put("user_tel",loginPhoneEt.getText().toString().replace(" ",""));
+                HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.LOGIN_BY_CODE, hash, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        final String responseText = response.body().string();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                                try{
+                                    final JSONObject jsonObject = new JSONObject(responseText);
+                                    Integer state = (Integer) jsonObject.get("status");
+                                    String msg = (String) jsonObject.get("msg");
+                                    if (state == 1){
+                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                        UserBean userBean = new Gson().fromJson(jsonObject.getJSONObject("user_info").toString(),UserBean.class);
+                                        userBean.save();
+                                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
+                                        editor.putInt("user_id", userBean.getUserId());
+                                        editor.commit();
+                                        try{
+                                            addressBeanList = new Gson().fromJson(jsonObject.getJSONArray("address").toString(),new TypeToken<List<AddressBean>>(){}.getType());
+                                            //将地址添加到本地数据库
+                                            DataSupport.deleteAll(AddressBean.class);
+                                            for (AddressBean addressBean : addressBeanList){
+                                                addressBean.save();
+                                            }
+                                        }catch(JSONException e){
+                                            Toast.makeText(LoginActivity.this, "收货地址获取失败！", Toast.LENGTH_SHORT).show();
+                                        }
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }else{
+                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                }catch (JSONException e){
+                                    Log.d("LoginActivity",e.toString());
+                                    Toast.makeText(LoginActivity.this, "登陆失败，请检查网络!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
             } else {
                 Toast.makeText(this, "验证码不正确", Toast.LENGTH_SHORT).show();
             }
         }
-        //获得用户收货地址信息
-//        hash.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
-//        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hash, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                addressBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<AddressBean>>(){}.getType());
-//                //将地址添加到本地数据库
-//                DataSupport.deleteAll(AddressBean.class);
-//                for (AddressBean addressBean : addressBeanList){
-//                    addressBean.save();
-//                }
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        progressBar.setVisibility(View.GONE);
-//                    }
-//                });
-//            }
-//        });
     }
 
     class LoginTextWatcher implements TextWatcher {
@@ -478,26 +488,6 @@ public class LoginActivity extends BaseActivity {
                 loginGetIdentifyCodeTv.setText("获取验证码");
             }
         }.start();
-    }
-
-    private void initUserBean(JSONObject jsonObject) {
-        try {
-            UserBean userBean = new UserBean();
-            userBean.setUserId((Integer) jsonObject.get("user_id"));
-            userBean.setUserName((String) jsonObject.get("user_name"));
-            userBean.setUserPhone((String) jsonObject.get("account"));
-            userBean.setGoldMoney((Integer) jsonObject.get("gold_money"));
-            userBean.setUserRedPaper((Integer) jsonObject.get("user_red_paper"));
-            userBean.setUserMoney((Double) jsonObject.get("user_money"));
-            userBean.setUserImg((String) jsonObject.get("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg"));
-            userBean.save();
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
-            editor.putInt("user_id", userBean.getUserId());
-            editor.commit();
-        } catch (JSONException e) {
-
-        }
-
     }
 
 

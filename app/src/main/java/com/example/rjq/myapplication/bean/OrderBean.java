@@ -4,26 +4,30 @@ import com.google.gson.annotations.SerializedName;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by rjq on 2018/2/14.
  */
 
-public class OrderBean{
+public class OrderBean implements Serializable{
     private int id;
     @SerializedName("order_id")
     private String orderId;
-    @SerializedName("user_id")
+    @SerializedName("buyer_id")
     private int userId;
-    @SerializedName("res_id")
+    @SerializedName("shop_id")
     private int resId;
-    @SerializedName("res_img")
+    @SerializedName("shop_logo")
     private String resImg;
-    @SerializedName("res_name")
+    @SerializedName("shop_name")
     private String resName;
     @SerializedName("order_time")
     private String orderTime;
-    @SerializedName("order_price")
+    @SerializedName("pay_amount")
     private double orderPrice;
+    @SerializedName("order_state")
+    private int orderState;
     @SerializedName("order_description")
     private String orderDescription;
 
@@ -99,5 +103,13 @@ public class OrderBean{
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public int getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(int orderState) {
+        this.orderState = orderState;
     }
 }

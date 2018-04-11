@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +58,8 @@ public class AlterPhoneActivity extends BaseActivity {
     EditText newPhoneAlterIdentifyCode;
     @BindView(R.id.login_by_identify_code_ll)
     AutoLinearLayout identifyCodeLl;
-
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     private int a;
 
@@ -199,49 +201,54 @@ public class AlterPhoneActivity extends BaseActivity {
     }
 
     private void changePhone(){
+        progressBar.setVisibility(View.VISIBLE);
         int userId = PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1);
-//        HashMap<String,String> hash = new HashMap<>();
-//        hash.put("user_id",String.valueOf(userId));
-//        hash.put("phone",newPhoneEt.getText().toString());
-//        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hash, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String responseText = response.body().string();
-//                try{
-//                    JSONObject json = new JSONObject(responseText);
-//                    int status = json.getInt("status");
-//                    if (status == 1){
-//                        AlterPhoneActivity.this.runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Toast.makeText(AlterPhoneActivity.this, "手机号换帮成功，请重新登陆!", Toast.LENGTH_SHORT).show();
-//                                DataSupport.deleteAll(UserBean.class);
-//                                setResult(RESULT_OK);
-//                                finish();
-//                            }
-//                        });
-//                    }else{
-//                        new android.os.Handler(getMainLooper()).post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Toast.makeText(AlterPhoneActivity.this, "手机号换帮失败，请稍后重试!", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
-//                }catch (JSONException e){
-//
-//                }
-//            }
-//        });
-        Toast.makeText(AlterPhoneActivity.this, "手机号换帮成功，请重新登陆!", Toast.LENGTH_SHORT).show();
-        DataSupport.deleteAll(UserBean.class);
-        setResult(RESULT_OK);
-        finish();
+        HashMap<String,String> hash = new HashMap<>();
+        hash.put("user_id",String.valueOf(userId));
+        hash.put("phone",newPhoneEt.getText().toString());
+        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.SAVE_USER_PHONE, hash, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String responseText = response.body().string();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        try{
+                            JSONObject json = new JSONObject(responseText);
+                            int status = json.getInt("status");
+                            final String msg = json.getString("msg");
+                            if (status == 1){
+                                AlterPhoneActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(AlterPhoneActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                        DataSupport.deleteAll(UserBean.class);
+                                        finish();
+                                    }
+                                });
+                            }else{
+                                new android.os.Handler(getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(AlterPhoneActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }catch (JSONException e){
+
+                        }
+                    }
+                });
+
+            }
+        });
+
     }
 
     private void setCountDownTimer() {

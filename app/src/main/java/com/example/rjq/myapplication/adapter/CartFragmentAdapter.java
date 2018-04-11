@@ -80,7 +80,7 @@ public class CartFragmentAdapter extends RecyclerView.Adapter<CartFragmentAdapte
                                 resBuyItemNum.getBuyNum()*Double.parseDouble(df.format(resBuyItemNum.getItemPrice())))
                 );
                 sum += resBuyItemNum.getBuyNum() * resBuyItemNum.getItemPrice();
-                packageMoney += resBuyItemNum.getItemPackageMoney();
+                packageMoney += resBuyItemNum.getItemPackageMoney() * resBuyItemNum.getBuyNum();
                 list.add(resBuyItemNum);
             }
         }

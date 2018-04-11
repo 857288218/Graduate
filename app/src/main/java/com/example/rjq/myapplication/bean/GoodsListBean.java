@@ -11,9 +11,9 @@ import java.util.List;
 
 public class GoodsListBean implements Serializable {
     //商店id
-    @SerializedName("red_id")
+    @SerializedName("shop_id")
     private int resId;
-    @SerializedName("res_name")
+    @SerializedName("shop_name")
     private String resName;
 
     @SerializedName("goods_category")
@@ -48,7 +48,7 @@ public class GoodsListBean implements Serializable {
         private int categoryId;
         @SerializedName("category_name")
         private String name;
-        @SerializedName("category_description")
+        @SerializedName("category_des")
         private String categoryDescription;
         private int buyNum;                     //代码中设置的，不是server中取到的
         @SerializedName("goods_item")
@@ -113,21 +113,21 @@ public class GoodsListBean implements Serializable {
             private int id;                        //此id就是categoryId，是代码中设置的GoodsCategoryBean中的此id就是categoryId,不是再次通过server端取到的
             @SerializedName("category_id")
             private int categoryId;
-            @SerializedName("good_id")
+            @SerializedName("gs_id")
             private int goodId;                  //该商品的id ，唯一标识
-            @SerializedName("good_name")
+            @SerializedName("gs_name")
             private String name;
-            @SerializedName("good_price")
+            @SerializedName("gs_newprice")
             private double price;
-            @SerializedName("good_introduce")
+            @SerializedName("gs_des")
             private String introduce;
-            @SerializedName("good_img")
+            @SerializedName("gs_pic")
             private String goodsImgUrl;
-            @SerializedName("good_month_order")
+            @SerializedName("order_num")
             private int monthOrder;
-            @SerializedName("good_comment")
+            @SerializedName("gs_score")
             private int goodComment;
-            @SerializedName("good_package_money")
+            @SerializedName("gs_pack_money")
             private double goodPackageMoney;
             private int buyNum;                 //代码中设置的，不是server中取到的
 

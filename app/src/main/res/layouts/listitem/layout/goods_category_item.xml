@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:text="经典炒饭"
         android:textStyle="bold"
         android:id="@+id/goodsCategoryNameTV"
         android:layout_width="wrap_content"
@@ -13,7 +14,6 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
-        android:layout_marginRight="20dp"
         android:textSize="13sp"
         android:textColor="#666666"/>
 
@@ -21,7 +21,7 @@
         style="@style/red_radius_num_text"
         android:id="@+id/shopCartNumTV"
         android:visibility="visible"
-        android:layout_margin="3dp"
+        android:layout_margin="1.5dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"/>
 

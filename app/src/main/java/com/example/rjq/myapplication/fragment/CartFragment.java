@@ -103,7 +103,6 @@ public class CartFragment extends Fragment implements CartFragmentAdapter.ItemDe
             });
         }
 
-
     }
 
     @Override

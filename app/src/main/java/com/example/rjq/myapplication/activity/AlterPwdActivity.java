@@ -2,6 +2,7 @@ package com.example.rjq.myapplication.activity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -102,35 +103,39 @@ public class AlterPwdActivity extends BaseActivity {
                     if (newPwdEt.getText().toString().equals(list.get(0).getPassword())){
                         Toast.makeText(this, "新密码不能与当前密码相同", Toast.LENGTH_SHORT).show();
                     }else{
-                        if (newPwdEt.getText().toString().length()<=6){
+                        if (newPwdEt.getText().toString().length()<6){
                             Toast.makeText(this, "新密码必须大于6位！", Toast.LENGTH_SHORT).show();
                         }else{
-                            //存入本地数据库
-                            list.get(0).setPassword(newPwdEt.getText().toString());
-                            Toast.makeText(this, "修改密码成功!", Toast.LENGTH_SHORT).show();
                             //存入远程数据库
-//                        HashMap<String,String> hashMap = new HashMap<>();
-//                        hashMap.put("account",list.get(0).getUserPhone());
-//                        hashMap.put("password",newPwdEt.getText().toString());
-//                        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
-//                            @Override
-//                            public void onFailure(Call call, IOException e) {
-//                                Log.d("AlterPwdActivity",e.toString());
-//                            }
-//
-//                            @Override
-//                            public void onResponse(Call call, Response response) throws IOException {
-//                                String s = response.body().string();
-//                                try{
-//                                    JSONObject object = new JSONObject(s);
-//                                    Toast.makeText(AlterPwdActivity.this, (String)object.get("msg"), Toast.LENGTH_SHORT).show();
-//                                }catch (JSONException e){
-//                                    Log.d("AlterPwdActivity",e.toString());
-//                                }
-//
-//
-//                            }
-//                        });
+                            HashMap<String,String> hashMap = new HashMap<>();
+                            hashMap.put("user_phone",list.get(0).getUserPhone());
+                            hashMap.put("user_id", String.valueOf(PreferenceManager.getDefaultSharedPreferences(AlterPwdActivity.this).getInt("user_id",-1)));
+                            hashMap.put("password",newPwdEt.getText().toString());
+                            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.ALTER_USER_PWD, hashMap, new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+                                    Log.d("AlterPwdActivity",e.toString());
+                                }
+
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    final String s = response.body().string();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try{
+                                                JSONObject object = new JSONObject(s);
+                                                Toast.makeText(AlterPwdActivity.this, object.getString("msg"), Toast.LENGTH_SHORT).show();
+                                                DataSupport.deleteAll(UserBean.class);
+                                                finish();
+                                            }catch (JSONException e){
+                                                Log.d("AlterPwdActivity",e.getMessage());
+                                            }
+                                        }
+                                    });
+
+                                }
+                            });
                         }
                     }
                 }

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,9 @@ public class RegisterActivity extends BaseActivity {
     ImageView eyeIv;
     @BindView(R.id.identify_code_num)
     TextView identifyCodeNum;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
     private int a = 10000;
 
     private RegisterTextWatcher registerTextWatcher;
@@ -125,34 +129,36 @@ public class RegisterActivity extends BaseActivity {
             Toast.makeText(this, "验证码错误!", Toast.LENGTH_SHORT).show();
         }else{
             //假数据注册
-            Toast.makeText(this, "注册成功请去登陆", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "注册成功请去登陆", Toast.LENGTH_SHORT).show();
             //注册
-//        HashMap<String,String> hashMap = new HashMap<>();
-//        hashMap.put("account",account);
-//        hashMap.put("password",pwd);
-//        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                final String responseText = response.body().string();
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try{
-//                            JSONObject jsonObject = new JSONObject(responseText);
-//                            Toast.makeText(RegisterActivity.this, (String)jsonObject.get("msg"), Toast.LENGTH_SHORT).show();
-//                        }catch (JSONException e){
-//                            Log.d("RegisterActivity",e.toString());
-//                        }
-//
-//                    }
-//                });
-//            }
-//        });
+            progressBar.setVisibility(View.VISIBLE);
+            HashMap<String,String> hashMap = new HashMap<>();
+            hashMap.put("account",account);
+            hashMap.put("password",pwd);
+            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.REGISTER, hashMap, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    final String responseText = response.body().string();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            try{
+                                JSONObject jsonObject = new JSONObject(responseText);
+                                Toast.makeText(RegisterActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                            }catch (JSONException e){
+                                Log.d("RegisterActivity",e.toString());
+                            }
+
+                        }
+                    });
+                }
+            });
         }
     }
 

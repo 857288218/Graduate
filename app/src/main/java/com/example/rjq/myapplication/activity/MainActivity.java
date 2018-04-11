@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.bean.ResDetailBean;
+import com.example.rjq.myapplication.bean.WelcomeBean;
 import com.example.rjq.myapplication.view.BottomTabItem;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity {
     private long mExitTime = 0;
     private static final String TAG = "MainActivity";
+    private List<ResDetailBean> list;
 
     @BindView(android.R.id.tabhost)
     FragmentTabHost tabHost;
@@ -97,7 +99,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-
     }
 
     //对返回键进行监听

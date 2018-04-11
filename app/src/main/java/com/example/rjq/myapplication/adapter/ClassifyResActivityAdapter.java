@@ -90,23 +90,6 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
         String deliverTime = mContext.getResources().getString(R.string.res_deliver_time);
         deliverTime = String.format(deliverTime,homeRecResDetailBeanList.get(position).getResDeliverTime());
         holder.one_fragment_deliver_time.setText(deliverTime);
-        //设置优惠活动
-//        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResReduce())){
-//            holder.one_fragment_item_reduce_container.setVisibility(View.VISIBLE);
-//            holder.one_fragment_item_reduce.setText(homeRecResDetailBeanList.get(position).getResReduce());
-//        }
-//        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResSpecial())){
-//            holder.one_fragment_item_special_container.setVisibility(View.VISIBLE);
-//            holder.one_fragment_item_special.setText(homeRecResDetailBeanList.get(position).getResSpecial());
-//        }
-//        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResNew())){
-//            holder.one_fragment_item_new_container.setVisibility(View.VISIBLE);
-//            holder.one_fragment_item_new.setText(homeRecResDetailBeanList.get(position).getResNew());
-//        }
-//        if (!TextUtils.isEmpty(homeRecResDetailBeanList.get(position).getResGive())){
-//            holder.one_fragment_item_give_container.setVisibility(View.VISIBLE);
-//            holder.one_fragment_item_give.setText(homeRecResDetailBeanList.get(position).getResGive());
-//        }
         if (homeRecResDetailBeanList.get(position).getDiscountList()!= null && homeRecResDetailBeanList.get(position).getDiscountList().size()>0){
             holder.one_fragment_item_reduce_container.setVisibility(View.VISIBLE);
 

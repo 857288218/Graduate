@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.activity.LoginActivity;
@@ -34,6 +35,8 @@ import com.example.rjq.myapplication.util.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -139,11 +142,6 @@ public class OrderFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
     //请求订单数据
     private void requestListData(){
         orderList = new ArrayList<>();
@@ -160,38 +158,56 @@ public class OrderFragment extends Fragment {
         orderList.add(orderBean);orderList.add(orderBean2);orderList.add(orderBean3);orderList.add(orderBean4);orderList.add(orderBean5);
         adapter = new OrderFragmentAdapter(mContext,orderList);
         recyclerView.setAdapter(adapter);
-        HashMap<String,String> hashMap = new HashMap<>();
-        //用户登陆后，拿到user_id
-//        hashMap.put("user_id","user_id");
+
+        //请求数据
+//        HashMap<String,String> hashMap = new HashMap<>();
+//        hashMap.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(mContext).getInt("user_id",-1)));
 //        progressBar.setVisibility(View.VISIBLE);
 //        recyclerView.setVisibility(View.GONE);
 //        emptyImg.setVisibility(View.GONE);
-//        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+//        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hashMap, new Callback() {
 //            @Override
 //            public void onFailure(Call call, IOException e) {
 //                Log.d(TAG,e.toString());
+//                progressBar.setVisibility(View.GONE);
+//                emptyImg.setVisibility(View.VISIBLE);
 //            }
 //
 //            @Override
 //            public void onResponse(Call call, Response response) throws IOException {
-//                orderList = new Gson().fromJson(response.body().string(), new TypeToken<List<OrderBean>>(){}.getType());
-//                //主线程刷新ui
-//                new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                    @Override
-//                    public void run() {
+//                String jsonString = response.body().string();
+//                try{
+//                    JSONObject jsonObject = new JSONObject(jsonString);
+//                    int status = jsonObject.getInt("status");
+//                    if (status != 0){
+//                        orderList = new Gson().fromJson(jsonObject.getJSONArray("data").toString(), new TypeToken<List<OrderBean>>(){}.getType());
+//                        //主线程刷新ui
+//                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                progressBar.setVisibility(View.GONE);
+//                                if (orderList.size() == 0){
+//                                    recyclerView.setVisibility(View.GONE);
+//                                    emptyImg.setVisibility(View.VISIBLE);
+//                                }else{
+//                                    emptyImg.setVisibility(View.GONE);
+//                                    adapter = new OrderFragmentAdapter(mContext,orderList);
+//                                    recyclerView.setAdapter(adapter);
+//                                    recyclerView.setVisibility(View.VISIBLE);
+//                                }
+//
+//                            }
+//                        });
+//                    }else{
 //                        progressBar.setVisibility(View.GONE);
-//                        if (orderList.size() == 0){
-//                            recyclerView.setVisibility(View.GONE);
-//                            emptyImg.setVisibility(View.VISIBLE);
-//
-//                        }else{
-//                            emptyImg.setVisibility(View.GONE);
-//                            adapter = new OrderFragmentAdapter(mContext,orderList);
-//                            recyclerView.setAdapter(adapter);
-//                        }
-//
+//                        emptyImg.setVisibility(View.VISIBLE);
+//                        Toast.makeText(mContext, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
 //                    }
-//                });
+//                }catch (JSONException e){
+//                    progressBar.setVisibility(View.GONE);
+//                    emptyImg.setVisibility(View.VISIBLE);
+//                }
+//
 //            }
 //        });
     }

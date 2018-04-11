@@ -12,10 +12,10 @@ public class CouponBean implements Serializable{
     @SerializedName("luckymoney_id")
     private int redPaperId;
     //消费门槛
-    @SerializedName("mini_consum")
+    @SerializedName("mini_consume")
     private double miniPrice;
     //金额
-    @SerializedName("price")
+    @SerializedName("amount")
     private double price;
     //是否通用，1通用，0不通用
     @SerializedName("iscommon")

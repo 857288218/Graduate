@@ -12,15 +12,14 @@ import java.io.Serializable;
 
 public class AddressBean extends DataSupport implements Serializable{
     private int id;
-    @SerializedName("user_id")
+    @SerializedName("buyer_id")
     private int user_id;
     @SerializedName("receiver_address")
     private String address;
     @SerializedName("receiver_name")
     private String name;
-    @SerializedName("receiver_phone")
+    @SerializedName("receiver_tel")
     private String phone;
-    @SerializedName("receiver_selected")
     private int selected;
 
     public String getAddress() {

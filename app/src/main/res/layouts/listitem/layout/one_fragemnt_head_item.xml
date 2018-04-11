@@ -18,29 +18,30 @@
         android:layout_height="100dp"/>
 
     <com.zhy.autolayout.AutoLinearLayout
-        android:paddingBottom="@dimen/space_40px"
-        android:paddingTop="@dimen/space_40px"
-        android:orientation="vertical"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/space_40px"
+        android:paddingTop="@dimen/space_40px">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_food"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_des" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_food" />
@@ -48,17 +49,18 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_one"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_one" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_one" />
@@ -66,17 +68,18 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_two"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_two" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_two" />
@@ -84,17 +87,18 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_three"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_three" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_three" />
@@ -102,17 +106,18 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_sweet"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_sweet" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_sweet" />
@@ -122,22 +127,23 @@
         </com.zhy.autolayout.AutoLinearLayout>
 
         <com.zhy.autolayout.AutoLinearLayout
-            android:layout_marginTop="@dimen/space_30px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_30px">
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_deliver"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_deliver" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_deliver" />
@@ -145,35 +151,37 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_simple"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_ham" />
+
                 <TextView
                     style="@style/head_icon_text_style"
-                    android:text="@string/head_icon_simple" />
+                    android:text="@string/head_icon_ham" />
 
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_prefer"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_new" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_prefer" />
@@ -181,17 +189,18 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_fruit"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_fruit" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_fruit" />
@@ -199,17 +208,18 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_weight="1.0"
                 android:id="@+id/head_icon_cook"
-                android:gravity="center"
-                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:src="@mipmap/hotel"
                     android:layout_width="@dimen/space_90px"
-                    android:layout_height="@dimen/space_90px" />
+                    android:layout_height="@dimen/space_90px"
+                    android:src="@mipmap/head_icon_cook" />
+
                 <TextView
                     style="@style/head_icon_text_style"
                     android:text="@string/head_icon_cook" />
@@ -223,60 +233,75 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_marginTop="@dimen/space_25px"
         android:layout_marginBottom="@dimen/space_25px"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:background="@color/white"
-        android:padding="@dimen/space_25px"
+        android:padding="@dimen/space_20px"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="250dp">
 
         <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_weight="1"
+                android:src="@mipmap/head_one_iv"
                 android:id="@+id/head_one_iv"
-                android:scaleType="centerCrop"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/space_250px" />
-
-            <ImageView
-                android:id="@+id/head_two_iv"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/space_10px"
-                android:scaleType="centerCrop"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/space_250px" />
+                android:scaleType="fitXY"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 
         <com.zhy.autolayout.AutoLinearLayout
-            android:layout_marginTop="@dimen/space_10px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/space_10px"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
 
             <ImageView
+                android:layout_weight="1"
+                android:src="@mipmap/head_two_iv"
+                android:id="@+id/head_two_iv"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <ImageView
+                android:layout_marginTop="@dimen/space_10px"
+                android:src="@mipmap/head_three_iv"
                 android:layout_weight="1"
                 android:id="@+id/head_three_iv"
                 android:scaleType="centerCrop"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/space_250px" />
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_marginLeft="@dimen/space_10px"
+            android:orientation="vertical"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
 
             <ImageView
-                android:layout_marginLeft="@dimen/space_10px"
-                android:layout_weight="1"
                 android:id="@+id/head_four_iv"
+                android:src="@mipmap/head_four_iv"
+                android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/space_250px" />
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
 
             <ImageView
-                android:layout_marginLeft="@dimen/space_10px"
-                android:layout_weight="1"
                 android:id="@+id/head_five_iv"
+                android:layout_marginTop="@dimen/space_10px"
+                android:src="@mipmap/head_five_iv"
+                android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/space_250px" />
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 

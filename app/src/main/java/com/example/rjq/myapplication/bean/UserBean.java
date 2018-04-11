@@ -15,29 +15,29 @@ public class UserBean extends DataSupport{
     @SerializedName("user_id")
     private int userId;
     //用户名（昵称）
-    @SerializedName("nick_name")
+    @SerializedName("nickname")
     private String userName;
     //用户头像
-    @SerializedName("user_img")
+    @SerializedName("user_image")
     private String userImg;
-    @SerializedName("account")
+    @SerializedName("user_tel")
     //手机号(账号)
     private String userPhone;
     //密码
     @SerializedName("password")
     private String password;
-    @SerializedName("user_sex")
+    @SerializedName("sex")
     //性别
     private int userSex;
-    @SerializedName("user_money")
-    //钱包余额
-    private double userMoney;
-    @SerializedName("user_red_paper")
-    //红包个数
-    private int userRedPaper;
-    @SerializedName("gold_money")
-    //金币个数
-    private int goldMoney;
+//    @SerializedName("user_money")
+//    //钱包余额
+//    private double userMoney;
+//    @SerializedName("user_red_paper")
+//    //红包个数
+//    private int userRedPaper;
+//    @SerializedName("gold_money")
+//    //金币个数
+//    private int goldMoney;
 
 
     public String getUserImg() {
@@ -80,29 +80,29 @@ public class UserBean extends DataSupport{
         this.userSex = userSex;
     }
 
-    public double getUserMoney() {
-        return userMoney;
-    }
-
-    public void setUserMoney(double userMoney) {
-        this.userMoney = userMoney;
-    }
-
-    public int getUserRedPaper() {
-        return userRedPaper;
-    }
-
-    public void setUserRedPaper(int userRedPaper) {
-        this.userRedPaper = userRedPaper;
-    }
-
-    public int getGoldMoney() {
-        return goldMoney;
-    }
-
-    public void setGoldMoney(int goldMoney) {
-        this.goldMoney = goldMoney;
-    }
+//    public double getUserMoney() {
+//        return userMoney;
+//    }
+//
+//    public void setUserMoney(double userMoney) {
+//        this.userMoney = userMoney;
+//    }
+//
+//    public int getUserRedPaper() {
+//        return userRedPaper;
+//    }
+//
+//    public void setUserRedPaper(int userRedPaper) {
+//        this.userRedPaper = userRedPaper;
+//    }
+//
+//    public int getGoldMoney() {
+//        return goldMoney;
+//    }
+//
+//    public void setGoldMoney(int goldMoney) {
+//        this.goldMoney = goldMoney;
+//    }
 
     public String getPassword() {
         return password;

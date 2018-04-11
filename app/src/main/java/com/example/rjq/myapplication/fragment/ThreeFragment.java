@@ -58,6 +58,7 @@ import com.example.rjq.myapplication.activity.BaseActivity;
 import com.example.rjq.myapplication.activity.LoginActivity;
 import com.example.rjq.myapplication.activity.MainActivity;
 import com.example.rjq.myapplication.bean.AddressBean;
+import com.example.rjq.myapplication.bean.OrderBean;
 import com.example.rjq.myapplication.bean.UserBean;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.example.rjq.myapplication.util.permission.PermissionListener;
@@ -70,8 +71,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.util.FileStorage;
-import com.example.rjq.myapplication.util.lubanimage.Luban;
-import com.example.rjq.myapplication.util.lubanimage.OnCompressListener;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -166,6 +165,8 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     TextView userAddressText;
     @BindView(R.id.loading)
     ProgressBar progressBar;
+    @BindView(R.id.alter_user_pwd)
+    TextView alterUserPwdTv;
 
     @Nullable
     @Override
@@ -199,7 +200,6 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         buyPwd.setOnClickListener(this);
         headImg.setOnClickListener(this);
         logOut.setOnClickListener(this);
-        setUserInfo();
     }
 
     private void setUserInfo(){
@@ -215,9 +215,9 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             }else{
                 GlideUtil.load(getActivity(),userBean.getUserImg(),headImg,GlideUtil.REQUEST_OPTIONS);
             }
-            walletMoney.setText(userBean.getUserMoney()+"");
-            redPaperNum.setText(userBean.getUserRedPaper()+"");
-            goldMoney.setText(userBean.getGoldMoney()+"");
+//            walletMoney.setText(userBean.getUserMoney()+"");
+//            redPaperNum.setText(userBean.getUserRedPaper()+"");
+//            goldMoney.setText(userBean.getGoldMoney()+"");
             userNameText.setText(userBean.getUserName());
             if (addressList.size()>0){
                 userAddressText.setText(addressList.get(0).getAddress());
@@ -231,7 +231,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             }
             String phoneNumber = userBean.getUserPhone().substring(0, 3) + "****" + userBean.getUserPhone().substring(7, userBean.getUserPhone().length());
             userPhoneText.setText(phoneNumber);
-
+            alterUserPwdTv.setText("修改");
             ll.setClickable(false);
             userName.setClickable(true);
             userPhone.setClickable(true);
@@ -250,6 +250,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             buyPwd.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
 
         }else{
+            alterUserPwdTv.setText("");
             login.setVisibility(View.VISIBLE);
             walletMoney.setText(0+"");
             redPaperNum.setText(0+"");
@@ -300,7 +301,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             case R.id.user_phone:
                 Intent intentPhone = new Intent(getActivity(),AlterPhoneActivity.class);
                 intentPhone.putExtra("phone",userPhoneText.getText().toString());
-                startActivityForResult(intentPhone,REQUEST_ALTER_PHONE);
+                startActivity(intentPhone);
                 break;
             case R.id.user_sex:
                 alterUserSexDialog();
@@ -382,37 +383,57 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                 .setView(view)
                 .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        String input = edit.getText().toString();
+                        final String input = edit.getText().toString();
                         if (!TextUtils.isEmpty(input)) {
-                            userNameText.setText(input);
-                            Toast.makeText(getActivity(), "用户名修改成功", Toast.LENGTH_SHORT).show();
-                            List<UserBean> list = DataSupport.findAll(UserBean.class);
+//                            userNameText.setText(input);
+//                            Toast.makeText(getActivity(), "用户名修改成功", Toast.LENGTH_SHORT).show();
+                            final List<UserBean> list = DataSupport.findAll(UserBean.class);
                             if (list.size()>0){
-                                //将更改保存到本地数据库
                                 UserBean userBean = list.get(0);
-                                userBean.setUserName(input);
-                                userBean.save();
-                                //将更改保存到远程数据库
-//                                        HashMap<String,String> hash = new HashMap<String, String>();
-//                                        hash.put("user_id",String.valueOf(userBean.getUserId()));
-//                                        hash.put("user_name",userBean.getUserName());
-//                                        HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
-//                                            @Override
-//                                            public void onFailure(Call call, IOException e) {
-//                                                Log.d("ThreeFragment",e.toString());
-//                                            }
-//
-//                                            @Override
-//                                            public void onResponse(Call call, Response response) throws IOException {
-//                                                getActivity().runOnUiThread(new Runnable() {
-//                                                    @Override
-//                                                    public void run() {
-//                                                        Toast.makeText(getActivity(), "用户名修改成功", Toast.LENGTH_SHORT).show();
-//                                                    }
-//                                                });
-//
-//                                            }
-//                                        });
+//                                userBean.setUserName(input);
+//                                userBean.save();
+//                                将更改保存到远程数据库
+                                progressBar.setVisibility(View.VISIBLE);
+                                HashMap<String,String> hash = new HashMap<>();
+                                hash.put("user_id",String.valueOf(userBean.getUserId()));
+                                hash.put("user_name",input);
+                                HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.SAVE_USER_NAME, hash, new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+                                        Log.d("ThreeFragment",e.toString());
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        String responseText  = response.body().string();
+                                        try{
+                                            JSONObject jsonObject = new JSONObject(responseText);
+                                            final String msg = jsonObject.getString("msg");
+                                            final int status = jsonObject.getInt("status");
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                                                    progressBar.setVisibility(View.GONE);
+                                                    if (status != 0){
+                                                        userNameText.setText(input);
+                                                        //将更改保存到本地数据库
+                                                        UserBean userBean = list.get(0);
+                                                        userBean.setUserName(input);
+                                                        userBean.save();
+                                                    }
+                                                }
+                                            });
+                                        }catch(JSONException e){
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    progressBar.setVisibility(View.GONE);
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
                             }
                         }
                         else {
@@ -434,47 +455,71 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         }else{
             woman.setChecked(true);
         }
-        new AlertDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.user_sex))
+        new AlertDialog.Builder(getActivity())
+                .setTitle(getResources().getString(R.string.user_sex))
                 .setView(viewSex)
                 .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         RadioButton rb = (RadioButton) viewSex.findViewById(selected.getCheckedRadioButtonId());
-                        String sex = rb.getText().toString();
-                        userSexText.setText(sex);
+                        final String sex = rb.getText().toString();
+//                        userSexText.setText(sex);
                         //将修改保存到本地数据库
-                        List<UserBean> list = DataSupport.findAll(UserBean.class);
-                        if (list.size()>0){
-                            UserBean userBean = list.get(0);
-                            if (sex.equals("男")){
-                                userBean.setUserSex(1);
-                            }else{
-                                userBean.setUserSex(0);
-                            }
-                            userBean.save();
-                        }
-                        Toast.makeText(getActivity(), "用户性别修改成功", Toast.LENGTH_SHORT).show();
+                        final List<UserBean> list = DataSupport.findAll(UserBean.class);
+//                        if (list.size()>0){
+//                            UserBean userBean = list.get(0);
+//                            if (sex.equals("男")){
+//                                userBean.setUserSex(1);
+//                            }else{
+//                                userBean.setUserSex(0);
+//                            }
+//                            userBean.save();
+//                        }
+//                        Toast.makeText(getActivity(), "用户性别修改成功", Toast.LENGTH_SHORT).show();
                         //将更改保存到远程数据库
-//                                        HashMap<String,String> hash = new HashMap<String, String>();
-//                                        hash.put("user_id",String.valueOf(userBean.getUserId()));
-//                                        hash.put("user_sex",userBean.getUserSex());
-//                                        HttpUtil.sendOkHttpPostRequest("http://", hash, new Callback() {
-//                                            @Override
-//                                            public void onFailure(Call call, IOException e) {
-//                                                Log.d("ThreeFragment",e.toString());
-//                                            }
-//
-//                                            @Override
-//                                            public void onResponse(Call call, Response response) throws IOException {
-//                                                getActivity().runOnUiThread(new Runnable() {
-//                                                    @Override
-//                                                    public void run() {
-//                                                        Toast.makeText(getActivity(), "用户性别修改成功", Toast.LENGTH_SHORT).show();
-//                                                    }
-//                                                });
-//
-//                                            }
-//                                        });
+                        progressBar.setVisibility(View.VISIBLE);
+                        HashMap<String,String> hash = new HashMap<>();
+                        hash.put("user_id",String.valueOf(list.get(0).getUserId()));
+                        if (sex.equals("男")){
+                            hash.put("user_sex",1+"");
+                        }else{
+                            hash.put("user_sex",0+"");
+                        }
+                        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.SAVE_USER_SEX, hash, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Log.d("ThreeFragment",e.toString());
+                            }
 
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String responseText = response.body().string();
+                                try{
+                                    JSONObject jsonObject = new JSONObject(responseText);
+                                    final String msg = jsonObject.getString("msg");
+                                    final int status = jsonObject.getInt("status");
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            if (status != 0){
+                                                userSexText.setText(sex);
+                                                //保存到本地数据库
+                                                UserBean userBean = list.get(0);
+                                                if (sex.equals("男")){
+                                                    userBean.setUserSex(1);
+                                                }else{
+                                                    userBean.setUserSex(0);
+                                                }
+                                                userBean.save();
+                                            }
+                                        }
+                                    });
+                                }catch(JSONException e){
+
+                                }
+                            }
+                        });
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), null)
@@ -631,8 +676,10 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                     List<String> files = new ArrayList<>();
                     files.add(imagePath);
                     HashMap<String,String> hashMap = new HashMap<>();
-                    hashMap.put("user_id","1");
-                    hashMap.put("user_img",DataSupport.findAll(UserBean.class).get(0).getUserImg());
+                    hashMap.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("user_id",-1)));
+                    if (DataSupport.findAll(UserBean.class).get(0).getUserImg() != null){
+                        hashMap.put("user_img",DataSupport.findAll(UserBean.class).get(0).getUserImg());
+                    }
                     HttpUtil.upLoadImgsRequest(HttpUtil.HOME_PATH + HttpUtil.UPLOAD_IMG_API, hashMap ,files, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
@@ -645,6 +692,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                             final String responseText = response.body().string();
                             try{
                                 final JSONObject jsonObject = new JSONObject(responseText);
+                                //将新上传的图片的服务器路径保存到用户信息中
                                 List<UserBean> list = DataSupport.findAll(UserBean.class);
                                 final UserBean userBean = list.get(0);
                                 userBean.setUserImg((String)jsonObject.get("url"));
@@ -652,27 +700,26 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        try{
-                                            //保存本地图片头像的路径
-                                            PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString(userBean.getUserId()+"",imagePath).commit();
-                                            GlideUtil.load(getActivity(),jsonObject.get("url"),headImg,GlideUtil.REQUEST_OPTIONS);
-                                            progressBar.setVisibility(View.GONE);
-                                        }catch(Exception e){
-
-                                        }
+                                    //保存本地图片头像的路径
+                                    PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString(userBean.getUserId()+"",imagePath).commit();
+                                    GlideUtil.load(getActivity(),imagePath,headImg,GlideUtil.REQUEST_OPTIONS);
+                                    progressBar.setVisibility(View.GONE);
                                     }
                                 });
                             }catch (JSONException e){
+                                Log.d(TAG,e.getMessage());
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(getActivity(), "上传头像失败!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
 
                             }
                         }
                     });
 
-                }
-                break;
-            case REQUEST_ALTER_PHONE:
-                if (resultCode == Activity.RESULT_OK){
-                    setUserInfo();
                 }
                 break;
         }

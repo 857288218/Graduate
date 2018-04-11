@@ -289,7 +289,7 @@
 
     <ProgressBar
         android:visibility="gone"
-        android:layout_marginTop="@dimen/space_200px"
+        android:layout_marginTop="130dp"
         android:layout_centerHorizontal="true"
         android:id="@+id/first_load"
         android:layout_width="wrap_content"

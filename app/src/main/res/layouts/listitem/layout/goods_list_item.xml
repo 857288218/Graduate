@@ -17,7 +17,7 @@
             android:id="@+id/good_img"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@mipmap/b3"/>
+            />
 
         <LinearLayout
             android:id="@+id/good_info"

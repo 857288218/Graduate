@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -39,6 +37,7 @@ import com.example.rjq.myapplication.bean.DiscountBean;
 import com.example.rjq.myapplication.bean.ResBuyCategoryNum;
 import com.example.rjq.myapplication.bean.ResDetailBean;
 import com.example.rjq.myapplication.bean.UserBean;
+import com.example.rjq.myapplication.bean.WelcomeBean;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.google.gson.Gson;
@@ -81,16 +80,16 @@ import static com.example.rjq.myapplication.activity.AddressActivity.SELECTED_AD
 public class OneFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "homeFragment";
     public static final int ADDRESS_REQUEST = 1010;
-    public static final String DELICIOUS = "delicious";
-    public static final String ONE_FLOUR = "one_flour";
-    public static final String TWO_FLOUR = "two_flour";
-    public static final String THREE_FLOUR = "three_flour";
-    public static final String SWEET = "sweet";
-    public static final String DELIVER = "deliver";
-    public static final String SIMPLE = "simple";
-    public static final String FAVOUR = "favour";
-    public static final String FRUIT = "fruit";
-    public static final String COOK = "cook";
+    public static final String DELICIOUS = "美食";
+    public static final String ONE_FLOUR = "公寓一楼";
+    public static final String TWO_FLOUR = "公寓二楼";
+    public static final String THREE_FLOUR = "公寓三楼";
+    public static final String SWEET = "甜品饮品";
+    public static final String DELIVER = "众包专送";
+    public static final String SIMPLE = "炸鸡汉堡";
+    public static final String FAVOUR = "新店特惠";
+    public static final String FRUIT = "水果生鲜";
+    public static final String COOK = "家常菜";
     public static final String RES_TITLE = "res_title";
 
     private AutoRelativeLayout rootView;
@@ -132,15 +131,12 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 
     //首页数据
     private ResDetailBean homeDataBean;
-    private List<ResDetailBean> homeRecResDetailList;
-    private List<String> homeBannerImgUrl;
+    private List<ResDetailBean> homeRecResDetailList = new ArrayList<>();
     private int userId;
     String discountString;
 
-    //假数据
-    private List<String> imageUrl;
+    //本地banner图片
     private List<Integer> imageLocal;
-    private List<String> fiveImgList;
 
     @Nullable
     @Override
@@ -159,78 +155,49 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         return rootView;
     }
 
+
     private void initData(){
         ButterKnife.bind(this,rootView);
-        //网络请求数据
-//        progressBar.setVisibility(View.VISIBLE);
-//        homeRecyclerView.setVisibility(View.GONE);
-//        HttpUtil.sendOkHttpGetRequest(HttpUtil.HOME_PATH+HttpUtil.HOME_DATA_API, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d("oneFragment",e.getMessage());
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String responseText = response.body().string();
-//                Log.d("oneFragment",responseText.toString());
-//                homeRecResDetailList = new Gson().fromJson(responseText,new TypeToken<List<ResDetailBean>>(){}.getType());
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        progressBar.setVisibility(View.GONE);
-//                        homeRecyclerView.setVisibility(View.VISIBLE);
-//                    }
-//                });
-//            }
-//        });
+        Intent intent = getActivity().getIntent();
+        WelcomeBean welcomeBean = (WelcomeBean)intent.getSerializableExtra("data");
+        if (welcomeBean != null){
+            homeRecResDetailList = welcomeBean.getData();
+        }
 
         //假数据
-        homeDataBean = new ResDetailBean();
-        homeRecResDetailList = new ArrayList<>();
-        List<DiscountBean> discountBeanList = new ArrayList<>();
-        DiscountBean discountBean1 = new DiscountBean(25.0,5.5);DiscountBean discountBean2 = new DiscountBean(35.0,10.5);
-        discountBeanList.add(discountBean1);discountBeanList.add(discountBean2);
-        ResDetailBean homeRecResDetailBean2 = new ResDetailBean(2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
-                "瓦罐汤",4.8f,1212,35,3,"东院食堂",30,discountBeanList);
-        ResDetailBean homeRecResDetailBean1 = new ResDetailBean(1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",
-                "杨国福麻辣烫",4.9f,2343,23,5,"公寓三楼",20,null);
-        ResDetailBean homeRecResDetailBean3 = new ResDetailBean(4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
-                "杭州小笼包",4f,222,34,3,"公寓一楼",30,discountBeanList);
-        ResDetailBean homeRecResDetailBean4 = new ResDetailBean(3,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
-                "土家掉渣烧饼",4.9f,23234,29,6,"公寓一楼",45,discountBeanList);
-        ResDetailBean homeRecResDetailBean5 = new ResDetailBean(5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "北李妈妈菜",4.7f,3212,20,6,"东院食堂",27,discountBeanList);
-        ResDetailBean homeRecResDetailBean6 = new ResDetailBean(8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "重庆小面",4.7f,3212,20,6,"公寓二楼",43,null);
-        ResDetailBean homeRecResDetailBean7 = new ResDetailBean(7,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "兰州拉面",4.7f,3212,20,6,"民族餐厅",12,discountBeanList);
-        ResDetailBean homeRecResDetailBean8 = new ResDetailBean(6,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-                "三楼自助",4.7f,3212,20,6,"公寓三楼",67,discountBeanList);
-        homeRecResDetailList.add(homeRecResDetailBean1);homeRecResDetailList.add(homeRecResDetailBean2);homeRecResDetailList.add(homeRecResDetailBean3);
-        homeRecResDetailList.add(homeRecResDetailBean4);homeRecResDetailList.add(homeRecResDetailBean5);homeRecResDetailList.add(homeRecResDetailBean6);
-        homeRecResDetailList.add(homeRecResDetailBean7);homeRecResDetailList.add(homeRecResDetailBean8);
-
-        fiveImgList = new ArrayList<>();
-//        fiveImgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg");
-//        fiveImgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
-//        fiveImgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
-//        fiveImgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
-//        fiveImgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg");
-
-        //banner图片地址
-        imageUrl = new ArrayList<>();
-        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg");
-        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
-        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
-        imageUrl.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
+//        homeDataBean = new ResDetailBean();
+//        homeRecResDetailList = new ArrayList<>();
+//
+//        List<DiscountBean> discountBeanList = new ArrayList<>();
+//        DiscountBean discountBean1 = new DiscountBean(25.0,5.5);DiscountBean discountBean2 = new DiscountBean(35.0,10.5);
+//        discountBeanList.add(discountBean1);discountBeanList.add(discountBean2);
+//
+//        ResDetailBean homeRecResDetailBean2 = new ResDetailBean(2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
+//                "瓦罐汤",4.8f,1212,35,3,"东院食堂",30,discountBeanList);
+//        ResDetailBean homeRecResDetailBean1 = new ResDetailBean(1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",
+//                "杨国福麻辣烫",4.9f,2343,23,5,"公寓三楼",20,null);
+//        ResDetailBean homeRecResDetailBean3 = new ResDetailBean(4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
+//                "杭州小笼包",4f,222,34,3,"公寓一楼",30,discountBeanList);
+//        ResDetailBean homeRecResDetailBean4 = new ResDetailBean(3,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
+//                "土家掉渣烧饼",4.9f,23234,29,6,"公寓一楼",45,discountBeanList);
+//        ResDetailBean homeRecResDetailBean5 = new ResDetailBean(5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+//                "北李妈妈菜",4.7f,3212,20,6,"东院食堂",27,discountBeanList);
+//        ResDetailBean homeRecResDetailBean6 = new ResDetailBean(8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+//                "重庆小面",4.7f,3212,20,6,"公寓二楼",43,null);
+//        ResDetailBean homeRecResDetailBean7 = new ResDetailBean(7,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+//                "兰州拉面",4.7f,3212,20,6,"民族餐厅",12,discountBeanList);
+//        ResDetailBean homeRecResDetailBean8 = new ResDetailBean(6,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
+//                "三楼自助",4.7f,3212,20,6,"公寓三楼",67,discountBeanList);
+//        homeRecResDetailList.add(homeRecResDetailBean1);homeRecResDetailList.add(homeRecResDetailBean2);homeRecResDetailList.add(homeRecResDetailBean3);
+//        homeRecResDetailList.add(homeRecResDetailBean4);homeRecResDetailList.add(homeRecResDetailBean5);homeRecResDetailList.add(homeRecResDetailBean6);
+//        homeRecResDetailList.add(homeRecResDetailBean7);homeRecResDetailList.add(homeRecResDetailBean8);
 
         //banner本地图片
         imageLocal = new ArrayList<>();
-        imageLocal.add(R.mipmap.b1);
-        imageLocal.add(R.mipmap.b2);
-        imageLocal.add(R.mipmap.b3);
-        imageLocal.add(R.mipmap.b2);
+        imageLocal.add(R.mipmap.banner1);
+        imageLocal.add(R.mipmap.banner2);
+        imageLocal.add(R.mipmap.banner3);
+        imageLocal.add(R.mipmap.banner4);
     }
 
     private void initView(){
@@ -315,9 +282,13 @@ public class OneFragment extends Fragment implements View.OnClickListener{
                 helper.setText(R.id.one_fragment_deliver,deliverMoney);
 
                 //配送费
-                String extraMoney = mContext.getResources().getString(R.string.res_extra_money);
-                extraMoney = String.format(extraMoney,item.getResExtraMoney());
-                helper.setText(R.id.one_fragment_extra,extraMoney);
+                if (item.getResExtraMoney() > 0){
+                    String extraMoney = mContext.getResources().getString(R.string.res_extra_money);
+                    extraMoney = String.format(extraMoney,item.getResExtraMoney());
+                    helper.setText(R.id.one_fragment_extra,extraMoney);
+                }else{
+                    helper.setText(R.id.one_fragment_extra,"免配送费");
+                }
 
                 helper.setText(R.id.one_fragment_address,item.getResAddress());
                 //配送时间
@@ -360,58 +331,58 @@ public class OneFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
             }
         });
-        adapter.setEmptyView(LayoutInflater.from(getActivity()).inflate(R.layout.one_fragment_empty_view,null));
         adapter.addHeaderView(recycleHeadView);
-        //默认出现了头部就不会显示EmptyView和尾部，配置以下方法也支持同时显示
-        adapter.setHeaderFooterEmpty(true,true);
         homeRecyclerView.setAdapter(adapter);
-
+        if (homeRecResDetailList.size()>0){
+            homeRecyclerView.setAdapter(adapter);
+            homeRecyclerView.setVisibility(View.VISIBLE);
+            rootView.findViewById(R.id.empty_view).setVisibility(View.GONE);
+        }else{
+            homeRecyclerView.setVisibility(View.GONE);
+            rootView.findViewById(R.id.empty_view).setVisibility(View.VISIBLE);
+        }
     }
 
     private void initRefresh(){
         smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                mBanner.stopAutoPlay();
+            public void onRefresh(final RefreshLayout refreshlayout) {
                 //在这里进行网络请求，更新数据
-//                HttpUtil.sendOkHttpGetRequest(HttpUtil.home_path + "", new Callback() {
-//                    @Override
-//                    public void onFailure(Call call, IOException e) {
-//                        Log.d(TAG,e.toString());
-//                    }
-//
-//                    @Override
-//                    public void onResponse(Call call, Response response) throws IOException {
-//                        String responseText = response.body().string();
-//                        Gson gson = new Gson();
-//                        homeDataBean = gson.fromJson(responseText,HomeDataBean.class);
-//                        homeRecResDetailList = homeDataBean.getHomeRecResDetailList();
-//                        homeBannerBeanList = homeDataBean.getBannerList();
-//                        for (HomeBannerBean homeBannerBean : homeBannerBeanList){
-//                            homeBannerImgUrl.add(homeBannerBean.getBannerImgUrl());
-//                        }
-//                        //根据得到的新数据更新主线程ui
-//                        ((MainActivity)mContext).runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                adapter.notifyDataSetChanged();
-//                                mBanner.update(homeBannerImgUrl);
-//                                mBanner.startAutoPlay();
-//                            }
-//                        });
-//                    }
-//                });
-
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
+                mBanner.stopAutoPlay();
+                HttpUtil.sendOkHttpGetRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_RECOMMEND_SHOP, new Callback() {
                     @Override
-                    public void run() {
-                        mBanner.update(imageUrl);
-                        mBanner.startAutoPlay();
-                        adapter.notifyDataSetChanged();
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("oneFragment",e.getMessage());
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshlayout.finishRefresh();
+                            }
+                        });
                     }
-                },1000);
-                refreshlayout.finishRefresh(1000);
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responseText = response.body().string();
+                        homeRecResDetailList.clear();
+                        //只能使用addAll方式重新给homeRecResDetailList设置数据，
+                        // 直接用homeRecResDetailList=new Gson().fromJson(responseText,new TypeToken<List<ResDetailBean>>(){}.getType())会改变homeRecResDetailList引用的值
+                        //调用notifyDataSetChanged不会刷新数据
+                        homeRecResDetailList.addAll(new Gson().fromJson(responseText,WelcomeBean.class).getData());
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mBanner.startAutoPlay();
+                                homeRecyclerView.setVisibility(View.VISIBLE);
+                                rootView.findViewById(R.id.empty_view).setVisibility(View.GONE);
+                                adapter.notifyDataSetChanged();
+                                //刷新店铺红点
+                                new Thread(new NotifyResBuyNumRunnable()).start();
+                                refreshlayout.finishRefresh();
+                            }
+                        });
+                    }
+                });
             }
 
         });
@@ -438,7 +409,6 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         });
         //设置图片集合
         mBanner.setImages(imageLocal);
-        mBanner.setBannerAnimation(Transformer.Default);
         //设置点击事件，下标是从0开始
         mBanner.setOnBannerListener(new OnBannerListener() {
             @Override
@@ -514,7 +484,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ClassifyResActivity.class);
-                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_simple));
+                intent.putExtra(RES_TITLE,getResources().getString(R.string.head_icon_ham));
                 intent.putExtra(ClassifyResActivity.RES_CLASSIFY,SIMPLE);
                 startActivity(intent);
             }
@@ -552,11 +522,6 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initFiveImg(){
-        GlideUtil.load(mContext,R.mipmap.five_one,headOneIv,GlideUtil.REQUEST_OPTIONS);
-        GlideUtil.load(mContext,R.mipmap.five_two,headTwoIv,GlideUtil.REQUEST_OPTIONS);
-        GlideUtil.load(mContext,R.mipmap.five_three,headThreeIv,GlideUtil.REQUEST_OPTIONS);
-        GlideUtil.load(mContext,R.mipmap.five_four,headFourIv,GlideUtil.REQUEST_OPTIONS);
-        GlideUtil.load(mContext,R.mipmap.five_five,headFiveIv,GlideUtil.REQUEST_OPTIONS);
         headOneIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -608,7 +573,9 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 //            address.setText("选择收货地址");
 //        }
         //刷新店铺红点
-        new Thread(new NotifyResBuyNumRunnable()).start();
+        if (homeRecResDetailList != null && homeRecResDetailList.size()>0){
+            new Thread(new NotifyResBuyNumRunnable()).start();
+        }
         mBanner.startAutoPlay();
 
     }
@@ -617,15 +584,20 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         @Override
         public void run() {
             List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.findAll(ResBuyCategoryNum.class);
-            if (resBuyCategoryNumList.size() > 0){
+            List<String> resIdList = new ArrayList<>();
+            if (resBuyCategoryNumList != null && resBuyCategoryNumList.size() > 0){
                 Hashtable<String,Integer> resBuyNumTable = new Hashtable<>();
                 //将resBuyCategoryNumList中的添加到购物车的数量按resId设置给resBuyNumTable
                 for (int i=0;i<homeRecResDetailList.size();i++){
                     resBuyNumTable.put(String.valueOf(homeRecResDetailList.get(i).getResId()),0);
+                    resIdList.add(homeRecResDetailList.get(i).getResId()+"");
                 }
+
                 for (ResBuyCategoryNum resBuyCategoryNum : resBuyCategoryNumList){
-                    int num = resBuyNumTable.get(resBuyCategoryNum.getResId()) + resBuyCategoryNum.getBuyNum();
-                    resBuyNumTable.put(resBuyCategoryNum.getResId(),num);
+                    if (resIdList.contains(resBuyCategoryNum.getResId())){
+                        int num = resBuyNumTable.get(resBuyCategoryNum.getResId()) + resBuyCategoryNum.getBuyNum();
+                        resBuyNumTable.put(resBuyCategoryNum.getResId(),num);
+                    }
                 }
                 //得到resBuyNumTable中的keyList
                 List<String> keyList = new ArrayList<>();

@@ -33,7 +33,7 @@
                     android:maxLength="4"
                     android:layout_weight="2.0"
                     android:id="@+id/activity_set_password_now_pwd_et"
-                    android:inputType="textPassword"
+                    android:inputType="number"
                     style="@style/login_et_style"
                     android:cursorVisible="true"
                     android:layout_marginLeft="@dimen/space_25px"

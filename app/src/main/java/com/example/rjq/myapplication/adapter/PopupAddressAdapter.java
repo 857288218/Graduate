@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.bean.BuildingBean;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class PopupAddressAdapter extends RecyclerView.Adapter<PopupAddressAdapter.ViewHolder>{
     private Context mContext;
-    private List<String> list;
+    private List<BuildingBean> list;
     private int selected = -1;
     private OnItemClickListener onItemClickListener;
 
@@ -31,14 +32,14 @@ public class PopupAddressAdapter extends RecyclerView.Adapter<PopupAddressAdapte
         this.onItemClickListener = onItemClickListener;
     }
 
-    public PopupAddressAdapter(Context context,List<String> list){
+    public PopupAddressAdapter(Context context,List<BuildingBean> list){
         this.mContext = context;
         this.list = list;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.tv.setText(list.get(position));
+        holder.tv.setText(list.get(position).getBuilderName());
         if (position == selected){
             holder.selected.setVisibility(View.VISIBLE);
         }else{

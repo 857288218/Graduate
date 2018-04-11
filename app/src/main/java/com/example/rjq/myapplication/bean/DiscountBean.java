@@ -11,9 +11,9 @@ import java.io.Serializable;
 public class DiscountBean implements Serializable{
     @SerializedName("shop_id")
     private int resId;
-    @SerializedName("filled_val")
+    @SerializedName("filled_value")
     private double filledVal;
-    @SerializedName("reduce_val")
+    @SerializedName("reduce_value")
     private double reduceVal;
 
     public DiscountBean(double filledVal,double reduceVal){

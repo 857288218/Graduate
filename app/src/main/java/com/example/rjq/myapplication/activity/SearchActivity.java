@@ -2,8 +2,11 @@ package com.example.rjq.myapplication.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,8 +15,10 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.ClassifyResActivityAdapter;
@@ -67,12 +72,16 @@ public class SearchActivity extends BaseActivity {
     ProgressBar progressBar;
     @BindView(R.id.search_recycler)
     RecyclerView recyclerView;
+    @BindView(R.id.empty_view)
+    ImageView emptyImg;
 
     private TagAdapter<String> mHotFlowLayoutAdapter;
     private TagAdapter<SearchHistoricalBean> mHistoryFlowLayoutAdapter;
     private List<String> mHotData;
     private List<SearchHistoricalBean> mHistoryData;
-    List<ResDetailBean> list;
+    private List<ResDetailBean> list;
+    private LinearLayoutManager linearLayoutManager;
+    private  ClassifyResActivityAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,16 +92,22 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        list = new ArrayList<>();
+        linearLayoutManager = new LinearLayoutManager(this);
+        adapter = new ClassifyResActivityAdapter(SearchActivity.this,list);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+
         mHotData = new ArrayList<>();
         mHotData.add("麻辣烫");
-        mHotData.add("小笼包");
-        mHotData.add("重庆小面");
+        mHotData.add("拌饭");
+        mHotData.add("炒饭");
         mHotData.add("奶茶");
         mHotData.add("米线");
         mHotData.add("拉面");
         mHotData.add("水饺");
         mHotData.add("盖饭");
-        mHotData.add("土豆粉");
+        mHotData.add("自助餐");
 
         mHistoryData = DataSupport.order("time desc").find(SearchHistoricalBean.class);
     }
@@ -129,6 +144,25 @@ public class SearchActivity extends BaseActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+        ETsearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(s.toString())){
+                    LLhotAndHistory.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    emptyImg.setVisibility(View.GONE);
+
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
         TVclearHistory.setOnClickListener(this);
@@ -191,9 +225,10 @@ public class SearchActivity extends BaseActivity {
                 ETsearch.setText(mHotData.get(position));
                 ETsearch.setSelection(ETsearch.getText().length());
                 saveSearchHistoryBean(mHotData.get(position));
-                mHistoryData = DataSupport.order("time desc").find(SearchHistoricalBean.class);
-                initHistoryTag();
-                search(mHotData.get(position));
+                mHistoryData.clear();
+                mHistoryData.addAll(DataSupport.order("time desc").find(SearchHistoricalBean.class));
+                mHistoryFlowLayoutAdapter.notifyDataChanged();
+                search(ETsearch.getText().toString());
                 if (mHistoryFlowLayout.getVisibility() == View.GONE){
                     mHistoryFlowLayout.setVisibility(View.VISIBLE);
                     TVclearHistory.setVisibility(View.VISIBLE);
@@ -212,9 +247,10 @@ public class SearchActivity extends BaseActivity {
                 ETsearch.setText(mHistoryData.get(position).getName());
                 ETsearch.setSelection(ETsearch.getText().length());
                 saveSearchHistoryBean(mHistoryData.get(position).getName());
-                mHistoryData = DataSupport.order("time desc").find(SearchHistoricalBean.class);
-                initHistoryTag();
-                search(mHistoryData.get(position).getName());
+                mHistoryData.clear();
+                mHistoryData.addAll(DataSupport.order("time desc").find(SearchHistoricalBean.class));
+                mHistoryFlowLayoutAdapter.notifyDataChanged();
+                search(ETsearch.getText().toString());
                 return true;
             }
         });
@@ -229,28 +265,39 @@ public class SearchActivity extends BaseActivity {
         im.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
         LLhotAndHistory.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
-
+        progressBar.setVisibility(View.VISIBLE);
+        emptyImg.setVisibility(View.GONE);
         HashMap<String,String> hashMap = new HashMap<>();
-        hashMap.put("search_key",content);
-        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+        hashMap.put("label_name",content);
+        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_SHOP_BY_LABEL, hashMap, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        emptyImg.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(SearchActivity.this, "连接超时，请检查网络设置!", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 Log.d("SearchActivity",e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                list = new Gson().fromJson(response.toString(), new TypeToken<List<ResDetailBean>>(){}.getType());
-                notifyResBuyNum();
-                final ClassifyResActivityAdapter adapter = new ClassifyResActivityAdapter(SearchActivity.this,list);
+                list.clear();
+                list.addAll((List)new Gson().fromJson(response.body().string(), new TypeToken<List<ResDetailBean>>(){}.getType()));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        recyclerView.setAdapter(adapter);
                         progressBar.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
+                        if (list == null || list.size() == 0){
+                            emptyImg.setVisibility(View.VISIBLE);
+                        }else{
+                            recyclerView.setVisibility(View.VISIBLE);
+                            notifyResBuyNum();
+                        }
                     }
                 });
             }
@@ -259,15 +306,19 @@ public class SearchActivity extends BaseActivity {
 
     private void notifyResBuyNum(){
         List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.findAll(ResBuyCategoryNum.class);
-        if (resBuyCategoryNumList.size() > 0){
+        List<String> resIdList = new ArrayList<>();
+        if (resBuyCategoryNumList.size() > 0 && resBuyCategoryNumList != null && list != null){
             Hashtable<String,Integer> resBuyNumTable = new Hashtable<>();
             //将resBuyCategoryNumList中的添加到购物车的数量按resId设置给resBuyNumTable
             for (int i=0;i<list.size();i++){
                 resBuyNumTable.put(String.valueOf(list.get(i).getResId()),0);
+                resIdList.add(list.get(i).getResId()+"");
             }
             for (ResBuyCategoryNum resBuyCategoryNum : resBuyCategoryNumList){
-                int num = resBuyNumTable.get(resBuyCategoryNum.getResId()) + resBuyCategoryNum.getBuyNum();
-                resBuyNumTable.put(resBuyCategoryNum.getResId(),num);
+                if (resIdList.contains(resBuyCategoryNum.getResId())){
+                    int num = resBuyNumTable.get(resBuyCategoryNum.getResId()) + resBuyCategoryNum.getBuyNum();
+                    resBuyNumTable.put(resBuyCategoryNum.getResId(),num);
+                }
             }
             //得到resBuyNumTable中的keyList
             List<String> keyList = new ArrayList<>();
@@ -284,10 +335,13 @@ public class SearchActivity extends BaseActivity {
                     }
                 }
             }
-
+            adapter.notifyDataSetChanged();
         }else {
-            for (int i=0;i<list.size();i++){
-                list.get(i).setBuyNum(0);
+            if (list!=null){
+                for (int i=0;i<list.size();i++){
+                    list.get(i).setBuyNum(0);
+                }
+                adapter.notifyDataSetChanged();
             }
         }
     }
@@ -295,8 +349,9 @@ public class SearchActivity extends BaseActivity {
     private void searchUiChange(){
         if (!TextUtils.isEmpty(ETsearch.getText().toString())){
             saveSearchHistoryBean(ETsearch.getText().toString());
-            mHistoryData = DataSupport.order("time desc").find(SearchHistoricalBean.class);
-            initHistoryTag();
+            mHistoryData.clear();
+            mHistoryData.addAll(DataSupport.order("time desc").find(SearchHistoricalBean.class));
+            mHistoryFlowLayoutAdapter.notifyDataChanged();
             search(ETsearch.getText().toString());
             if (mHistoryFlowLayout.getVisibility() == View.GONE){
                 mHistoryFlowLayout.setVisibility(View.VISIBLE);
@@ -319,18 +374,9 @@ public class SearchActivity extends BaseActivity {
         }
     }
 
-    private void initHistoryTag(){
-        mHistoryFlowLayoutAdapter = new TagAdapter<SearchHistoricalBean>(mHistoryData) {
-            @Override
-            public View getView(FlowLayout parent, int position, SearchHistoricalBean searchHistoricalBean) {
-                //将tv.xml文件填充到标签内
-                TextView tv = (TextView) LayoutInflater.from(SearchActivity.this).inflate(R.layout.flow_layout_item,
-                        mHistoryFlowLayout, false);
-                //为标签设置对应的内容
-                tv.setText(searchHistoricalBean.getName());
-                return tv;
-            }
-        };
-        mHistoryFlowLayout.setAdapter(mHistoryFlowLayoutAdapter);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        notifyResBuyNum();
     }
 }

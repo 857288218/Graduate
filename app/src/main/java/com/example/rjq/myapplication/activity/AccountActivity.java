@@ -8,8 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -36,10 +38,13 @@ import com.google.gson.reflect.TypeToken;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -129,6 +134,7 @@ public class AccountActivity extends BaseActivity {
     private CouponBean couponBean;
     private double reduceMoney;
     private List<DiscountBean> discountBeanList;
+    DecimalFormat df = new DecimalFormat("#0.0");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,34 +171,53 @@ public class AccountActivity extends BaseActivity {
             if (reduceMoney > price){
                 reduceTv.setText("-￥"+reduceMoney);
             }else{
-                reduceTv.setText(price+"");
+                reduceTv.setText("-￥"+price);
             }
         }else{
 //            HashMap<String,String> hashMap = new HashMap<>();
-//            hashMap.put("res_id",String.valueOf(resId));
-//            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hashMap, new Callback() {
+//            hashMap.put("shop_id",String.valueOf(resId));
+//            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_SHOP_ACCOUNT, hashMap, new Callback() {
 //                @Override
 //                public void onFailure(Call call, IOException e) {
 //
 //                }
 //                @Override
 //                public void onResponse(Call call, Response response) throws IOException {
-//                    discountBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<DiscountBean>>(){}.getType());
-//                    if (discountBeanList != null && discountBeanList.size() > 0){
-//                        for (DiscountBean discountBean : discountBeanList){
-//                            if (allMoney >= discountBean.getFilledVal()){
-//                                reduceMoney = discountBean.getReduceVal();
+//                    try{
+//                        JSONObject jsonObject = new JSONObject(response.body().string());
+//                        if (jsonObject.getInt("status") == 1){
+//                            discountBeanList = new Gson().fromJson(jsonObject.getJSONArray("data").toString(),new TypeToken<List<DiscountBean>>(){}.getType());
+//                            for (DiscountBean discountBean : discountBeanList){
+//                                if (allMoney >= discountBean.getFilledVal()){
+//                                    reduceMoney = discountBean.getReduceVal();
+//                                }
 //                            }
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    int price = (int)reduceMoney;
+//                                    reduceRl.setVisibility(View.VISIBLE);
+//                                    if (reduceMoney > price){
+//                                        reduceTv.setText("-￥"+reduceMoney);
+//                                    }else{
+//                                        reduceTv.setText("-￥"+price);
+//                                    }
+//                                    allMoneyTv.setText(df.format(allMoney-reduceMoney));
+//                                    allPriceBottom.setText("￥"+df.format(allMoney-reduceMoney));
+//                                }
+//                            });
 //                        }
+//                    }catch(JSONException e){
+//
 //                    }
 //                }
 //            });
         }
 
-        allMoney -= reduceMoney;
+//        allMoney -= reduceMoney;
         deliverMoney.setText("￥"+list.get(0).getResExtraMoney());
-        allMoneyTv.setText(""+allMoney);
-        allPriceBottom.setText("￥"+allMoney);
+        allMoneyTv.setText(df.format(allMoney-reduceMoney));
+        allPriceBottom.setText("￥"+df.format(allMoney-reduceMoney));
         int price = (int) packageMoney;
         if (packageMoney>price){
             packageMoneyTv.setText("￥"+packageMoney);
@@ -261,40 +286,26 @@ public class AccountActivity extends BaseActivity {
                     new android.os.Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            //删除本地数据库中购物车信息
                             DataSupport.deleteAll(ResBuyItemNum.class,"resId = ?",list.get(0).getResId());
                             DataSupport.deleteAll(ResBuyCategoryNum.class,"resId = ?",list.get(0).getResId());
                             startActivity(new Intent(AccountActivity.this,SuccessBuyActivity.class));
+                            progressBar.setVisibility(View.GONE);
                             finish();
                         }
                     }, 500);
 
                     String orderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
-                    int userId = PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1);
+                    final long orderTimeId =  System.currentTimeMillis();
+                    final int userId = PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1);
                     progressBar.setVisibility(View.VISIBLE);
 
-//                    HashMap<String,String> hashMap = new HashMap<>();
-//                    hashMap.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
-//                    hashMap.put("coupon_id",String.valueOf(couponBean.getRedPaperId()));
-//                    HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hashMap, new Callback() {
-//                        @Override
-//                        public void onFailure(Call call, IOException e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onResponse(Call call, Response response) throws IOException {
-//
-//                        }
-//                    });
-                    //存到订单明细表
-//                    for (int i=0;i<list.size();i++){
-//                        HashMap<String,String> hash = new HashMap<>();
-//                        hash.put("order_detail_id",orderTime+userId);
-//                        hash.put("good_id",list.get(i).getGoodId());
-//                        hash.put("order_detail_order",i+"");
-//                        hash.put("order_detail_goods_num",list.get(i).getBuyNum()+"");
-//                        hash.put("order_detail_goods_price",list.get(i).getBuyNum()*list.get(i).getItemPrice()+"");
-//                        HttpUtil.sendOkHttpPostRequest("", hash, new Callback() {
+                    //红包
+//                    if (couponBean != null){
+//                        HashMap<String,String> hashMap = new HashMap<>();
+//                        hashMap.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
+//                        hashMap.put("coupon_id",String.valueOf(couponBean.getRedPaperId()));
+//                        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hashMap, new Callback() {
 //                            @Override
 //                            public void onFailure(Call call, IOException e) {
 //
@@ -306,33 +317,42 @@ public class AccountActivity extends BaseActivity {
 //                            }
 //                        });
 //                    }
-//
-//                    //存到订单表
+
+
+
+                    //存到订单表
 //                    HashMap<String,String> hashMap = new HashMap<>();
-//                    hashMap.put("order_id",orderTime+userId);
+//                    hashMap.put("order_id",String.valueOf(orderTimeId)+userId);
 //                    hashMap.put("user_id",String.valueOf(userId));
 //                    hashMap.put("res_id",list.get(0).getResId());
-//                    hashMap.put("order_time",orderTime);
 //                    hashMap.put("order_address",location.getText().toString());
-//                    hashMap.put("order_price",String.valueOf(allMoney));
-//                    hashMap.put("order_buy_way",paySelectedTv.getText().toString());
-//                    hashMap.put("order_extra_info",extraInfo.getText().toString());
-//                    String orderDescription = list.get(0).getItemName();
-//                    if (list.size()>1){
-//                        orderDescription = orderDescription + "等" +list.size()+"件商品";
+//                    hashMap.put("pay_way",paySelectedTv.getText().toString());
+//                    hashMap.put("order_amount",String.valueOf(allMoney));
+//                    //1代表已付款
+//                    hashMap.put("order_state",String.valueOf(1));
+//                    if (couponBean == null){
+//                        hashMap.put("pay_amount",String.valueOf(allMoney-reduceMoney));
 //                    }else{
-//                        orderDescription = orderDescription + "1件商品";
+//                        hashMap.put("pay_amount",String.valueOf(allMoney-reduceMoney-couponBean.getPrice()));
 //                    }
-//                    hashMap.put("order_description",list.get(0).getItemName()+orderDescription);
+//                    hashMap.put("order_remark",extraInfo.getText().toString());
+//
 //                    if (!deliverTime.getText().toString().equals("选择配送时间")){
 //                        hashMap.put("order_deliver",String.valueOf(1));   //外送则为1
+//                        if (!deliverTime.getText().toString().equals("立即配送")){
+//                            //预约时间
+//                            hashMap.put("order_service_time",deliverTime.getText().toString());
+//                        }
 //                    }else{
 //                        hashMap.put("order_deliver",String.valueOf(0));
-//                        //堂取时间
-//                        hashMap.put("order_taken_time",takenTime.getText().toString());
+//                        //预约时间
+//                        hashMap.put("order_service_time",takenTime.getText().toString());
 //                    }
 //
-//                    HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+//                    //订单明细表json数据
+//                    hashMap.put("data",new Gson().toJson(list));
+//
+//                    HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.SAVE_ORDER, hashMap, new Callback() {
 //                        @Override
 //                        public void onFailure(Call call, IOException e) {
 //
@@ -340,20 +360,24 @@ public class AccountActivity extends BaseActivity {
 //
 //                        @Override
 //                        public void onResponse(Call call, Response response) throws IOException {
-//                            Toast.makeText(AccountActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
-//                            progressBar.setVisibility(View.GONE);
-//                            //删除本地数据库购物车信息
-//                            DataSupport.deleteAll(ResBuyItemNum.class,"res_id = ? and user_id = ?",list.get(0).getResId(),
-//                                    String.valueOf(PreferenceManager.getDefaultSharedPreferences(AccountActivity.this).getInt("user_id",-1)));
-//                            DataSupport.deleteAll(ResBuyCategoryNum.class,"res_id = ? and user_id = ?",list.get(0).getResId(),
-//                                    String.valueOf(PreferenceManager.getDefaultSharedPreferences(AccountActivity.this).getInt("user_id",-1)));
-//                            Intent intent = new Intent(AccountActivity.this,SuccessBuyActivity.class);
-//                            startActivity(intent);
-//                            finish();
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    Toast.makeText(AccountActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+//                                    progressBar.setVisibility(View.GONE);
+//                                    //删除本地数据库购物车信息
+//                                    DataSupport.deleteAll(ResBuyItemNum.class,"res_id = ? and user_id = ?",list.get(0).getResId(),
+//                                            String.valueOf(PreferenceManager.getDefaultSharedPreferences(AccountActivity.this).getInt("user_id",-1)));
+//                                    DataSupport.deleteAll(ResBuyCategoryNum.class,"res_id = ? and user_id = ?",list.get(0).getResId(),
+//                                            String.valueOf(PreferenceManager.getDefaultSharedPreferences(AccountActivity.this).getInt("user_id",-1)));
+//                                    Intent intent = new Intent(AccountActivity.this,SuccessBuyActivity.class);
+//                                    startActivity(intent);
+//                                    finish();
+//                                }
+//                            });
 //                        }
 //                    });
                 }
-
                 break;
             case R.id.rl_own_taken:
                 showTimeSelectedDialog(false);
@@ -477,11 +501,11 @@ public class AccountActivity extends BaseActivity {
                     takenTime.setText("选择堂取时间");
                     deliverMoney.setText("￥"+list.get(0).getResExtraMoney());
                     if (couponBean == null){
-                        allMoneyTv.setText(allMoney+"");
-                        allPriceBottom.setText("￥"+allMoney);
+                        allMoneyTv.setText(df.format(allMoney-reduceMoney));
+                        allPriceBottom.setText("￥"+df.format(allMoney-reduceMoney));
                     }else{
-                        allMoneyTv.setText((allMoney-couponBean.getPrice())+"");
-                        allPriceBottom.setText("￥"+(allMoney-couponBean.getPrice()));
+                        allMoneyTv.setText(df.format((allMoney-couponBean.getPrice()-reduceMoney)));
+                        allPriceBottom.setText("￥"+df.format((allMoney-couponBean.getPrice()-reduceMoney)));
                     }
                     deliverTime.setText(timeList.get(position));
                     dialog.dismiss();
@@ -495,11 +519,11 @@ public class AccountActivity extends BaseActivity {
                     deliverTime.setText("选择配送时间");
                     deliverMoney.setText("免");
                     if (couponBean == null){
-                        allMoneyTv.setText((allMoney - list.get(0).getResExtraMoney())+"");
-                        allPriceBottom.setText("￥"+(allMoney - list.get(0).getResExtraMoney()));
+                        allMoneyTv.setText(df.format((allMoney - list.get(0).getResExtraMoney()-reduceMoney)));
+                        allPriceBottom.setText("￥"+df.format((allMoney - list.get(0).getResExtraMoney()-reduceMoney)));
                     }else{
-                        allMoneyTv.setText((allMoney - list.get(0).getResExtraMoney()-couponBean.getPrice())+"");
-                        allPriceBottom.setText("￥"+(allMoney - list.get(0).getResExtraMoney()-couponBean.getPrice()));
+                        allMoneyTv.setText(df.format((allMoney - list.get(0).getResExtraMoney()-couponBean.getPrice()-reduceMoney)));
+                        allPriceBottom.setText("￥"+df.format((allMoney - list.get(0).getResExtraMoney()-couponBean.getPrice()-reduceMoney)));
                     }
 
                     dialog.dismiss();
@@ -562,14 +586,15 @@ public class AccountActivity extends BaseActivity {
                     redPaperTv.setTextColor(getResources().getColor(R.color.colorRed));
                     redPaperTv.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                     if (takenTime.getText().toString().equals("选择堂取时间")){
-                        allMoneyTv.setText((allMoney - couponBean.getPrice())+"");
-                        allPriceBottom.setText("￥"+(allMoney - couponBean.getPrice()));
+                        allMoneyTv.setText(df.format((allMoney - couponBean.getPrice()-reduceMoney)));
+                        allPriceBottom.setText("￥"+df.format((allMoney - couponBean.getPrice()-reduceMoney)));
                     }else{
-                        allMoneyTv.setText((allMoney - list.get(0).getResExtraMoney()-couponBean.getPrice())+"");
-                        allPriceBottom.setText("￥"+(allMoney - list.get(0).getResExtraMoney()-couponBean.getPrice()));
+                        allMoneyTv.setText(df.format((allMoney - list.get(0).getResExtraMoney()-couponBean.getPrice()-reduceMoney)));
+                        allPriceBottom.setText("￥"+df.format((allMoney - list.get(0).getResExtraMoney()-couponBean.getPrice()-reduceMoney)));
                     }
                 }
                 break;
         }
     }
+
 }

@@ -29,6 +29,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,6 +58,8 @@ import com.zhy.autolayout.AutoLinearLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -137,6 +140,10 @@ public class ResActivity extends BaseActivity {
     TextView goToCheckOut;
     @BindView(R.id.pop_rl)
     RelativeLayout popRl;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @BindView(R.id.root)
+    View root;
 
     //优惠总数
     private int specialNum;
@@ -177,57 +184,83 @@ public class ResActivity extends BaseActivity {
         goToCheckOut.setOnClickListener(this);
         searchLl.setOnClickListener(this);
         popRl.setOnClickListener(this);
-        setViewPager();
+//        setViewPager();
     }
 
     @Override
     protected void initData() {
         super.initData();
+        goodsListBean = new GoodsListBean();
         Intent intent = getIntent();
         homeRecResDetailBean = (ResDetailBean) intent.getSerializableExtra(RES_DETAIL);
         if (homeRecResDetailBean == null){
+//            homeRecResDetailBean = new ResDetailBean();
+
             resId = Integer.parseInt(intent.getStringExtra(RES_ID));
             resName = intent.getStringExtra("res_name");
-            //假数据
-            homeRecResDetailBean = new ResDetailBean();
-            homeRecResDetailBean.setResId(resId);
-//            HashMap<String,String> hashMap = new HashMap<>();
-//            hashMap.put("resId",String.valueOf(resId));
-//            HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    Log.d("homeRecResDetail fail",e.toString());
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    homeRecResDetailBean = new Gson().fromJson(response.body().string(),ResDetailBean.class);
-//                    setResDetail();
-//                }
-//            });
+
+            //请求店铺信息
+            HashMap<String,String> hashMap = new HashMap<>();
+            hashMap.put("shop_id",intent.getStringExtra(RES_ID));
+            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_SHOP_BY_ID, hashMap, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d("homeRecResDetail fail",e.toString());
+                    Toast.makeText(ResActivity.this, "网络连接超时，请退出重试!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseText = response.body().string();
+                    try{
+                        JSONObject jsonObject = new JSONObject(responseText);
+                        int status = jsonObject.getInt("status");
+                        if (status == 1){
+                            homeRecResDetailBean = new Gson().fromJson(jsonObject.getJSONObject("data").toString(),ResDetailBean.class);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setResDetail();
+                                }
+                            });
+                        }
+                    }catch(JSONException e){
+
+                    }
+                }
+            });
         }else{
+            setResDetail();
             resId = homeRecResDetailBean.getResId();
             resName = homeRecResDetailBean.getResName();
         }
 
-        setResDetail();
-        //请求server端的店铺商品列表,
-//        HashMap<String,String> hashMap = new HashMap<>();
-//        hashMap.put("res_id",String.valueOf(resId));
-//        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d("GoodsListBean",e.toString());
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                categoryBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<GoodsListBean.GoodsCategoryBean>>(){}.getType());
-//                goodsListBean.setData(categoryBeanList);
-//                goodsListBean.setResName(resName);
-//                goodsListBean.setResId(resId);
-//            }
-//        });
+        //请求server端的店铺商品列表
+        progressBar.setVisibility(View.VISIBLE);
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("shop_id",String.valueOf(resId));
+        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_SHOP_GOODS, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("GoodsListBean",e.toString());
+                Toast.makeText(ResActivity.this, "网络连接超时，请退出重试!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                categoryBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<GoodsListBean.GoodsCategoryBean>>(){}.getType());
+                goodsListBean.setData(categoryBeanList);
+                goodsListBean.setResName(resName);
+                goodsListBean.setResId(resId);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        setViewPager();
+                    }
+                });
+            }
+        });
 
     }
 
@@ -317,8 +350,9 @@ public class ResActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.search_ll:
-                Intent intent = new Intent(this,SearchActivity.class);
-                startActivity(intent);
+                //应该启动店铺内搜索界面，只搜索该店铺内的商品;而不是启动SearchActivity去搜索店铺
+//                Intent intent = new Intent(this,SearchActivity.class);
+//                startActivity(intent);
                 break;
             case R.id.pop_rl:
                 showSelectedDetailDialog();
@@ -627,40 +661,17 @@ public class ResActivity extends BaseActivity {
 
         //设置星星评分
         float starNum = homeRecResDetailBean.getResStar();
-        ratingBar.setRating(starNum);
-        resScore.setText(starNum+"");
+        if (starNum>0){
+            ratingBar.setRating(starNum);
+            resScore.setText(starNum+"");
+            ratingBar.setVisibility(View.VISIBLE);
+        }
 
         //设置商家描述
         String resDescription = homeRecResDetailBean.getResDescription();
         if (!TextUtils.isEmpty(resDescription)){
             resDescriptionTv.setText(resDescription);
         }
-
-        //设置各个活动
-//        String resReduce = homeRecResDetailBean.getResReduce();
-//        if (!TextUtils.isEmpty(resReduce)){
-//            specialNum ++;
-//            resReduceContainer.setVisibility(View.VISIBLE);
-//            resReduceTv.setText(resReduce);
-//        }
-//        String resSpecial = homeRecResDetailBean.getResSpecial();
-//        if (!TextUtils.isEmpty(resSpecial)){
-//            specialNum ++;
-//            resSpecialContainer.setVisibility(View.VISIBLE);
-//            resSpecialTv.setText(resSpecial);
-//        }
-//        String resNew = homeRecResDetailBean.getResNew();
-//        if (!TextUtils.isEmpty(resNew)){
-//            specialNum ++;
-//            resNewContainer.setVisibility(View.VISIBLE);
-//            resNewTv.setText(resNew);
-//        }
-//        String resGive = homeRecResDetailBean.getResGive();
-//        if (!TextUtils.isEmpty(resGive)){
-//            specialNum ++;
-//            resGiveContainer.setVisibility(View.VISIBLE);
-//            resGiveTv.setText(resGive);
-//        }
 
     }
 }

@@ -84,11 +84,11 @@ public class GoodsFragment extends Fragment implements OnHeaderClickListener {
     }
 
     private void initData() {
-//       dataList = ((ResActivity)getActivity()).getGoodsListBean();   //这是得到ResActivity中网络请求到的数据
+       dataList = ((ResActivity)getActivity()).getGoodsListBean();   //这是得到ResActivity中网络请求到的数据
         //假数据
-        homeRecResDetailBean = ((ResActivity)getActivity()).getResDetailBean();
-        dataList = DataUtils.getGoodsListBean();
-        dataList.setResId(homeRecResDetailBean.getResId());
+//        homeRecResDetailBean = ((ResActivity)getActivity()).getResDetailBean();
+//        dataList = DataUtils.getGoodsListBean();
+//        dataList.setResId(homeRecResDetailBean.getResId());
 
         //从本地数据库中得到category的购买总数和每个category下item的购买数量,然后设置给请求得到的数据dataList
         List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.where("resId = ?",String.valueOf(dataList.getResId())).find(ResBuyCategoryNum.class);

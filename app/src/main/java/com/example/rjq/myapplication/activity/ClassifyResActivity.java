@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.ClassifyResActivityAdapter;
@@ -64,6 +66,8 @@ public class ClassifyResActivity extends BaseActivity {
     TextView filter;
     @BindView(R.id.divider)
     View view;
+    @BindView(R.id.empty_view)
+    ImageView emptyView;
 
     private ClassifyResActivityAdapter adapter;
     private List<ResDetailBean> list;
@@ -90,9 +94,9 @@ public class ClassifyResActivity extends BaseActivity {
         adapter = new ClassifyResActivityAdapter(ClassifyResActivity.this,list);
         recyclerView.setAdapter(adapter);
         //刚进入界面请求商家列表数据
-//        HashMap<String,String> hashMap = new HashMap<>();
-//        hashMap.put(RES_CLASSIFY,resClassify);
-//        notifyResList(hashMap);
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("label_name",resClassify);
+        notifyResList(hashMap);
 
         final List<String> list = new ArrayList<>();
         list.add(getResources().getString(R.string.multiple_order));list.add(getResources().getString(R.string.sale_highest));
@@ -159,8 +163,7 @@ public class ClassifyResActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        notifyResBuyNum();
-
+        notifyResBuyNum();
     }
 
     @Override
@@ -214,24 +217,38 @@ public class ClassifyResActivity extends BaseActivity {
         progressBar.setVisibility(View.VISIBLE);
         order.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
-        HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+        emptyView.setVisibility(View.GONE);
+        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_SHOP_BY_LABEL, hashMap, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        emptyView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(ClassifyResActivity.this, "连接超时，请检查网络设置!", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 Log.d(TAG,e.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                list = new Gson().fromJson(response.body().string(), new TypeToken<List<ResDetailBean>>(){}.getType());
+                list.clear();
+                list.addAll((List)new Gson().fromJson(response.body().string(), new TypeToken<List<ResDetailBean>>(){}.getType()));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //请求完数据在UI线程更新ui
-                        notifyResBuyNum();
                         progressBar.setVisibility(View.GONE);
-                        order.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.VISIBLE);
-
+                        if (list.size() ==0 || list == null){
+                            order.setVisibility(View.GONE);
+                            emptyView.setVisibility(View.VISIBLE);
+                        }else{
+                            notifyResBuyNum();
+                            order.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
             }
@@ -240,40 +257,45 @@ public class ClassifyResActivity extends BaseActivity {
 
     private void notifyResBuyNum(){
         List<ResBuyCategoryNum> resBuyCategoryNumList = DataSupport.findAll(ResBuyCategoryNum.class);
-        if (resBuyCategoryNumList.size() > 0){
-            Hashtable<String,Integer> resBuyNumTable = new Hashtable<>();
-            //将resBuyCategoryNumList中的添加到购物车的数量按resId设置给resBuyNumTable
-            for (int i=0;i<list.size();i++){
-                resBuyNumTable.put(String.valueOf(list.get(i).getResId()),0);
-            }
-            for (ResBuyCategoryNum resBuyCategoryNum : resBuyCategoryNumList){
-                int num = resBuyNumTable.get(resBuyCategoryNum.getResId()) + resBuyCategoryNum.getBuyNum();
-                resBuyNumTable.put(resBuyCategoryNum.getResId(),num);
-            }
-            //得到resBuyNumTable中的keyList
-            List<String> keyList = new ArrayList<>();
-            Iterator<String> itr = resBuyNumTable.keySet().iterator();
-            while (itr.hasNext()){
-                String str = itr.next();
-                keyList.add(str);
-            }
-            //遍历设置homeRecResDetailList各项的buyNum
-            for (int i=0;i<list.size();i++){
-                for (int j=0;j<keyList.size();j++){
-                    if (list.get(i).getResId() == Integer.parseInt(keyList.get(j))){
-                        list.get(i).setBuyNum(resBuyNumTable.get(keyList.get(j)));
+        List<String> resIdList = new ArrayList<>();
+        if (list != null){
+            if (resBuyCategoryNumList != null && resBuyCategoryNumList.size() > 0){
+                Hashtable<String,Integer> resBuyNumTable = new Hashtable<>();
+                //将resBuyCategoryNumList中的添加到购物车的数量按resId设置给resBuyNumTable
+                for (int i=0;i<list.size();i++){
+                    resBuyNumTable.put(String.valueOf(list.get(i).getResId()),0);
+                    resIdList.add(list.get(i).getResId()+"");
+                }
+                for (ResBuyCategoryNum resBuyCategoryNum : resBuyCategoryNumList){
+                    if (resIdList.contains(resBuyCategoryNum.getResId())){
+                        int num = resBuyNumTable.get(resBuyCategoryNum.getResId()) + resBuyCategoryNum.getBuyNum();
+                        resBuyNumTable.put(resBuyCategoryNum.getResId(),num);
                     }
                 }
-            }
+                //得到resBuyNumTable中的keyList
+                List<String> keyList = new ArrayList<>();
+                Iterator<String> itr = resBuyNumTable.keySet().iterator();
+                while (itr.hasNext()){
+                    String str = itr.next();
+                    keyList.add(str);
+                }
+                //遍历设置homeRecResDetailList各项的buyNum
+                for (int i=0;i<list.size();i++){
+                    for (int j=0;j<keyList.size();j++){
+                        if (list.get(i).getResId() == Integer.parseInt(keyList.get(j))){
+                            list.get(i).setBuyNum(resBuyNumTable.get(keyList.get(j)));
+                        }
+                    }
+                }
 
-        }else {
-            for (int i=0;i<list.size();i++){
-                list.get(i).setBuyNum(0);
+            }else {
+                for (int i=0;i<list.size();i++){
+                    list.get(i).setBuyNum(0);
+                }
             }
+            //刷新商家列表，显示红点数量
+            adapter.notifyDataSetChanged();
         }
-        //刷新商家列表，显示红点数量
-        adapter.notifyDataSetChanged();
     }
-
 
 }

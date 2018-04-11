@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.AddressAdapter;
@@ -22,6 +23,8 @@ import com.example.rjq.myapplication.util.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -126,19 +129,13 @@ public class AddressActivity extends BaseActivity {
 
         addressAapter.setOnItemDeleteListener(new AddressAdapter.OnItemDeleteListener() {
             @Override
-            public void onItemDelete(int position) {
-                //删除本地数据库中的该项地址信息
-                DataSupport.deleteAll(AddressBean.class,"user_id = ? and address = ?",String.valueOf(userId),list.get(position).getAddress());
-                //删除某一项地址
-                list.remove(position);
-                addressAapter.notifyItemRemoved(position);
-                addressAapter.notifyItemRangeChanged(0,list.size());
+            public void onItemDelete(final int position) {
                 //删除远程数据库中的该项地址信息
                 hashMap.put("receiver_address",list.get(position).getAddress());
                 hashMap.put("user_id",String.valueOf(userId));
                 hashMap.put("name",list.get(position).getName());
                 hashMap.put("phone",list.get(position).getPhone());
-                HttpUtil.sendOkHttpPostRequest("http://", hashMap, new Callback() {
+                HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.DELETE_USER_ADDRESS, hashMap, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d(TAG,e.toString());
@@ -146,7 +143,27 @@ public class AddressActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        Log.d(TAG,response.body().toString());
+                        final String responseText = response.body().string();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try{
+                                    JSONObject jsonObject = new JSONObject(responseText);
+                                    Toast.makeText(AddressActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                                    if (jsonObject.getInt("status") == 1){
+                                        //删除本地数据库中的该项地址信息
+                                        DataSupport.deleteAll(AddressBean.class,"user_id = ? and address = ? and name = ? and phone = ?",
+                                                String.valueOf(userId),list.get(position).getAddress(),list.get(position).getName(),list.get(position).getPhone());
+                                        //删除某一项地址
+                                        list.remove(position);
+                                        addressAapter.notifyItemRemoved(position);
+                                        addressAapter.notifyItemRangeChanged(0,list.size());
+                                    }
+                                }catch(JSONException e){
+
+                                }
+                            }
+                        });
                     }
                 });
             }

@@ -19,6 +19,9 @@ import com.example.rjq.myapplication.util.permission.PermissionFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +65,7 @@ public class CouponActivity extends BaseActivity {
 
         resName = getIntent().getStringExtra("res_name");
         allMoney = getIntent().getDoubleExtra("all_money",0);
+        //得到用户还未使用的红包
 //        HashMap<String,String> hashMap = new HashMap<>();
 //        hashMap.put("res_id",getIntent().getStringExtra("res_id"));
 //        hashMap.put("user_id", String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
@@ -74,7 +78,15 @@ public class CouponActivity extends BaseActivity {
 //            @Override
 //            public void onResponse(Call call, Response response) throws IOException {
 //                String responseText = response.body().string();
-//                list = new Gson().fromJson(responseText,new TypeToken<List<CouponBean>>(){}.getType());
+//                try{
+//                    JSONObject jsonObject = new JSONObject(responseText);
+//                    if (jsonObject.getInt("status") == 1){
+//                        list = new Gson().fromJson(jsonObject.getJSONArray("msg").toString(),new TypeToken<List<CouponBean>>(){}.getType());
+//                    }
+//                }catch (JSONException e){
+//
+//                }
+//
 //            }
 //        });
         adapter = new CouponAdapter(this,resName,allMoney,list);

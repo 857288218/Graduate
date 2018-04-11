@@ -12,6 +12,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <include layout="@layout/one_fragment_empty_view"
+            android:visibility="gone"
+            android:id="@+id/empty_view"/>
+
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             app:srlEnablePreviewInEditMode="true"
             android:id="@+id/one_fragment_sml"

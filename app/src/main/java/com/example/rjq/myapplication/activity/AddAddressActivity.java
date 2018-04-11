@@ -27,6 +27,7 @@ import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.adapter.PopupAddressAdapter;
 import com.example.rjq.myapplication.adapter.PopupPayWayAdapter;
 import com.example.rjq.myapplication.bean.AddressBean;
+import com.example.rjq.myapplication.bean.BuildingBean;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -75,8 +76,7 @@ public class AddAddressActivity extends BaseActivity {
     private String address;
     private String num;
     private int sex = -1;
-    private Dialog addressDialog;
-    private List<String> addressList;
+    private List<BuildingBean> addressList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,27 +100,35 @@ public class AddAddressActivity extends BaseActivity {
         backBtn.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
         llAddress.setOnClickListener(this);
-        initAddressDialog();
     }
 
     @Override
     protected void initData() {
         super.initData();
-//        HttpUtil.sendOkHttpPostRequest("http://", null, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d("AddAddressActivity",e.toString());
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                addressList = new Gson().fromJson(response.body().string(),new TypeToken<List<String>>(){}.getType());
-//            }
-//        });
-        addressList = new ArrayList<>();
-        addressList.add("天津财经大学15号楼");addressList.add("天津财经大学14号楼");addressList.add("天津财经大学13号楼");
-        addressList.add("天津财经大学12号楼");addressList.add("天津财经大学11号楼");addressList.add("天津财经大学公寓园厅");
-        addressList.add("天津财经大学韵达快递");addressList.add("天津财经大学10号楼");addressList.add("天津财经大学9号楼");
+        //获取标志性建筑物
+        HttpUtil.sendOkHttpGetRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_BUILDING, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("AddAddressActivity",e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try{
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    if (jsonObject.getInt("status") == 1){
+                        addressList = new Gson().fromJson(jsonObject.getJSONArray("data").toString(),new TypeToken<List<BuildingBean>>(){}.getType());
+                    }
+                }catch (JSONException e){
+
+                }
+
+            }
+        });
+        //假数据
+//        addressList.add(new BuildingBean("天津财经大学15号楼"));addressList.add(new BuildingBean("天津财经大学14号楼"));addressList.add(new BuildingBean("天津财经大学13号楼"));
+//        addressList.add(new BuildingBean("天津财经大学12号楼"));addressList.add(new BuildingBean("天津财经大学11号楼"));addressList.add(new BuildingBean("园厅"));
+//        addressList.add(new BuildingBean("韵达快递"));addressList.add(new BuildingBean("天津财经大学10号楼"));addressList.add(new BuildingBean("天津财经大学9号楼"));
     }
 
     @Override
@@ -134,7 +142,7 @@ public class AddAddressActivity extends BaseActivity {
                 saveAddress();
                 break;
             case R.id.ll_address:
-                addressDialog.show();
+                initAddressDialog();
                 break;
         }
     }
@@ -160,57 +168,73 @@ public class AddAddressActivity extends BaseActivity {
         }else{
 //            progressBar.setVisibility(View.VISIBLE);
             //将地址信息添加到本地数据库
-            final AddressBean addressBean = new AddressBean();
-            addressBean.setUser_id(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1));
-            addressBean.setName(name);
-            addressBean.setPhone(phone);
-            addressBean.setAddress(address+" "+num);
-            addressBean.save();
+//            final AddressBean addressBean = new AddressBean();
+//            addressBean.setUser_id(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1));
+//            addressBean.setName(name);
+//            addressBean.setPhone(phone);
+//            addressBean.setAddress(address+" "+num);
+//            addressBean.save();
             //将地址添加到远程数据库
-//            HashMap<String,String> hash = new HashMap<>();
-//            hash.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
-//            hash.put("build_name",address);
-//            hash.put("name",name);
-//            hash.put("phone",phone);
-//            hash.put("addr_detail",num);
-//            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hash, new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    progressBar.setVisibility(View.GONE);
-//                    Toast.makeText(AddAddressActivity.this, "新收货地址添加失败，请重新添加", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    String responseText = response.body().string();
-//                    progressBar.setVisibility(View.GONE);
-//                    try{
-//                        JSONObject object = new JSONObject(responseText);
-//                        if ((Integer)object.get("state") == 1){
-//                            Toast.makeText(AddAddressActivity.this, "新收货地址添加成功", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent();
-//                            intent.putExtra("new_address",addressBean);
-//                            setResult(RESULT_OK,intent);
-//                            finish();
-//                        }else{
-//                            Toast.makeText(AddAddressActivity.this, "新收货地址添加失败，请重新添加", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }catch(JSONException e){
-//
-//                    }
-//
-//                }
-//            });
-            Intent intent = new Intent();
-            intent.putExtra("new_address",addressBean);
-            setResult(RESULT_OK,intent);
-            finish();
-            Toast.makeText(this, "新收货地址添加成功", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.VISIBLE);
+            HashMap<String,String> hash = new HashMap<>();
+            hash.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
+            hash.put("build_name",address);
+            hash.put("name",name);
+            hash.put("phone",phone);
+            hash.put("addr_detail",num);
+            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.ADD_USER_ADDRESS, hash, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(AddAddressActivity.this, "收货地址添加失败，请重新添加", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    final String responseText = response.body().string();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            try{
+                                JSONObject object = new JSONObject(responseText);
+                                if (object.getInt("status") == 1){
+                                    Toast.makeText(AddAddressActivity.this, object.getString("msg"), Toast.LENGTH_SHORT).show();
+                                    AddressBean addressBean = new AddressBean();
+                                    addressBean.setUser_id(PreferenceManager.getDefaultSharedPreferences(AddAddressActivity.this).getInt("user_id",-1));
+                                    addressBean.setName(name);
+                                    addressBean.setPhone(phone);
+                                    addressBean.setAddress(address+" "+num);
+                                    addressBean.save();
+                                    Intent intent = new Intent();
+                                    intent.putExtra("new_address",addressBean);
+                                    setResult(RESULT_OK,intent);
+                                    finish();
+                                }else{
+                                    Toast.makeText(AddAddressActivity.this, object.getString("msg"), Toast.LENGTH_SHORT).show();
+                                }
+                            }catch(JSONException e){
+
+                            }
+                        }
+                    });
+                }
+            });
+//            Intent intent = new Intent();
+//            intent.putExtra("new_address",addressBean);
+//            setResult(RESULT_OK,intent);
+//            finish();
+//            Toast.makeText(this, "新收货地址添加成功", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void initAddressDialog(){
-        addressDialog = new Dialog(this,R.style.ActionSheetDialogStyle);
+        final Dialog addressDialog = new Dialog(this,R.style.ActionSheetDialogStyle);
         //填充对话框的布局
         View view = LayoutInflater.from(this).inflate(R.layout.popup_address_from_bottom, null);
         RecyclerView recycler = (RecyclerView) view.findViewById(R.id.recycler);
@@ -227,7 +251,7 @@ public class AddAddressActivity extends BaseActivity {
                 new android.os.Handler(getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        etAddress.setText(addressList.get(position));
+                        etAddress.setText(addressList.get(position).getBuilderName());
                         progressBar.setVisibility(View.GONE);
                     }
                 },500);
@@ -250,5 +274,6 @@ public class AddAddressActivity extends BaseActivity {
         lp.width = d.getWidth();
         //将属性设置给窗体
         dialogWindow.setAttributes(lp);
+        addressDialog.show();
     }
 }

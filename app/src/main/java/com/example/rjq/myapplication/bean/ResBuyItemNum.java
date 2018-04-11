@@ -21,9 +21,12 @@ public class ResBuyItemNum extends DataSupport implements Serializable{
     //包装费
     private double itemPackageMoney;
     private String categoryId;
+    @SerializedName("gs_id")
     private String goodId;
+    @SerializedName("quantity")
     private int buyNum;
     private String itemName;
+    @SerializedName("good_price")
     private double itemPrice;
     private String itemImg;
 
