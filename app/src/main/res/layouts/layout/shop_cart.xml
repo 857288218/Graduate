@@ -67,7 +67,6 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="¥20起送"
             android:textColor="#999999"
             android:textSize="16sp"/>
 
@@ -81,7 +80,6 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@color/account_bg"
-            android:text="@string/go_to_account"
             android:visibility="gone"
             android:textColor="@color/white"
             android:textSize="16sp"
@@ -94,7 +92,6 @@
             android:layout_centerVertical="true"
             android:id="@+id/tv_all_price_bottom"
             android:textColor="@color/white"
-            android:text="￥78"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

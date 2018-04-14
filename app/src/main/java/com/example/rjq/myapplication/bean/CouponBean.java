@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 
 public class CouponBean implements Serializable{
-    @SerializedName("luckymoney_id")
+    @SerializedName("red_packet_id")
     private int redPaperId;
     //消费门槛
     @SerializedName("mini_consume")

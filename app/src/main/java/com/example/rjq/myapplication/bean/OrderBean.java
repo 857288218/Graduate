@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by rjq on 2018/2/14.
@@ -30,6 +31,8 @@ public class OrderBean implements Serializable{
     private int orderState;
     @SerializedName("order_description")
     private String orderDescription;
+    @SerializedName("order_detail")
+    private List<ResBuyItemNum> orderDetail;
 
     public OrderBean(int userId,int resId,String resImg,String resName,String orderTime,double orderPrice,String orderDescription){
         this.resId = resId;
@@ -111,5 +114,13 @@ public class OrderBean implements Serializable{
 
     public void setOrderState(int orderState) {
         this.orderState = orderState;
+    }
+
+    public List<ResBuyItemNum> getOrderDetail() {
+        return orderDetail;
+    }
+
+    public void setOrderDetail(List<ResBuyItemNum> orderDetail) {
+        this.orderDetail = orderDetail;
     }
 }

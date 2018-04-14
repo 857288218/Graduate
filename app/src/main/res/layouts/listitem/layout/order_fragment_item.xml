@@ -54,6 +54,7 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/order_state"
         android:textColor="@color/black_2e"
         android:textSize="12.5sp"
         android:layout_alignParentRight="true"

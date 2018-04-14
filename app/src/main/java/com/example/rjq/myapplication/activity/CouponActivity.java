@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.rjq.myapplication.R;
@@ -39,6 +40,8 @@ public class CouponActivity extends BaseActivity {
     TextView title;
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     private CouponAdapter adapter;
     private String resName;
@@ -55,48 +58,51 @@ public class CouponActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        list = new ArrayList<>();
         //假数据
-        CouponBean bean1 = new CouponBean();
-        CouponBean bean2 = new CouponBean();
-        bean1.setDeadline("2018.4.10");bean1.setIscommon(1);bean1.setMiniPrice(35);bean1.setRedPaperId(1);bean1.setPrice(7);
-        bean2.setDeadline("2018.3.30");bean2.setIscommon(1);bean2.setMiniPrice(40);bean2.setRedPaperId(2);bean2.setPrice(10);
-        list.add(bean1);list.add(bean2);
+        //        list = new ArrayList<>();
+//        CouponBean bean1 = new CouponBean();
+//        CouponBean bean2 = new CouponBean();
+//        bean1.setDeadline("2018.4.10");bean1.setIscommon(1);bean1.setMiniPrice(35);bean1.setRedPaperId(1);bean1.setPrice(7);
+//        bean2.setDeadline("2018.3.30");bean2.setIscommon(1);bean2.setMiniPrice(40);bean2.setRedPaperId(2);bean2.setPrice(10);
+//        list.add(bean1);list.add(bean2);
 
         resName = getIntent().getStringExtra("res_name");
         allMoney = getIntent().getDoubleExtra("all_money",0);
         //得到用户还未使用的红包
-//        HashMap<String,String> hashMap = new HashMap<>();
-//        hashMap.put("res_id",getIntent().getStringExtra("res_id"));
-//        hashMap.put("user_id", String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
-//        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hashMap, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d("CouponActivity",e.getMessage());
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String responseText = response.body().string();
-//                try{
-//                    JSONObject jsonObject = new JSONObject(responseText);
-//                    if (jsonObject.getInt("status") == 1){
-//                        list = new Gson().fromJson(jsonObject.getJSONArray("msg").toString(),new TypeToken<List<CouponBean>>(){}.getType());
-//                    }
-//                }catch (JSONException e){
-//
-//                }
-//
-//            }
-//        });
-        adapter = new CouponAdapter(this,resName,allMoney,list);
-        adapter.setOnUseBtnClickListener(new CouponAdapter.OnUseBtnClickListener() {
+        progressBar.setVisibility(View.VISIBLE);
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("shop_id",getIntent().getStringExtra("res_id"));
+        hashMap.put("buyer_id", String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
+        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_USER_RED_PACKET_BY_SHOP, hashMap, new Callback() {
             @Override
-            public void useBtnClickListener(int position, CouponBean couponBean) {
-                setResult(RESULT_OK,new Intent().putExtra("coupon",couponBean));
-                finish();
+            public void onFailure(Call call, IOException e) {
+                Log.d("CouponActivity",e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseText = response.body().string();
+                list = new Gson().fromJson((responseText),new TypeToken<List<CouponBean>>(){}.getType());
+                adapter = new CouponAdapter(CouponActivity.this,resName,allMoney,list);
+                adapter.setOnUseBtnClickListener(new CouponAdapter.OnUseBtnClickListener() {
+                    @Override
+                    public void useBtnClickListener(int position, CouponBean couponBean) {
+                        setResult(RESULT_OK,new Intent().putExtra("coupon",couponBean));
+                        finish();
+                    }
+                });
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(CouponActivity.this));
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+
             }
         });
+
     }
 
     @Override
@@ -104,9 +110,6 @@ public class CouponActivity extends BaseActivity {
         super.initView();
         title.setText("红包");
         backBtn.setOnClickListener(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Override

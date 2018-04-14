@@ -3,6 +3,9 @@ package com.example.rjq.myapplication.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -49,6 +52,7 @@ import com.example.rjq.myapplication.fragment.EvaluateFragment;
 import com.example.rjq.myapplication.fragment.GoodsFragment;
 import com.example.rjq.myapplication.fragment.ResDetailFragment;
 import com.example.rjq.myapplication.util.AnimationUtil;
+import com.example.rjq.myapplication.util.FileStorage;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.util.HttpUtil;
 import com.example.rjq.myapplication.view.GoodsDetailPopWin;
@@ -362,15 +366,15 @@ public class ResActivity extends BaseActivity {
                     Intent accountIntent = new Intent(this,AccountActivity.class);
                     accountIntent.putExtra("res_id",resId);
                     accountIntent.putExtra("res_name",resName);
-                    if (discountBeanList != null && discountBeanList.size() > 0){
-                        double reduceMoney = 0;
-                        for (DiscountBean discountBean : discountBeanList){
-                            if (totalMoney >= discountBean.getFilledVal()){
-                                reduceMoney = discountBean.getReduceVal();
-                            }
-                        }
-                        accountIntent.putExtra("reduce_money",reduceMoney);
-                    }
+//                    if (discountBeanList != null && discountBeanList.size() > 0){
+//                        double reduceMoney = 0;
+//                        for (DiscountBean discountBean : discountBeanList){
+//                            if (totalMoney >= discountBean.getFilledVal()){
+//                                reduceMoney = discountBean.getReduceVal();
+//                            }
+//                        }
+//                        accountIntent.putExtra("reduce_money",reduceMoney);
+//                    }
                     startActivity(accountIntent);
                 }else{
                     Intent loginIntent = new Intent(this,LoginActivity.class);
@@ -406,6 +410,7 @@ public class ResActivity extends BaseActivity {
                 if (event.price >= homeRecResDetailBean.getResDeliverMoney()){
                     howMoneyToDelivery.setVisibility(View.GONE);
                     goToCheckOut.setVisibility(View.VISIBLE);
+                    goToCheckOut.setText(getString(R.string.go_to_account));
                 }else{
                     goToCheckOut.setVisibility(View.GONE);
                     howMoneyToDelivery.setVisibility(View.VISIBLE);
@@ -642,10 +647,26 @@ public class ResActivity extends BaseActivity {
         deliverMoney = String.format(deliverMoney,homeRecResDetailBean.getResDeliverMoney());
         howMoneyToDelivery.setText(deliverMoney);
 
-        //设置图片
-        String resImg = homeRecResDetailBean.getResImg();
-//      GlideUtil.load(this,resImg,resImgIv,GlideUtil.REQUEST_OPTIONS);
-//      collapsingToolbarLayout.setContentScrim(getResources().getDrawable(R.mipmap.background));
+        //设置店铺顶部图片
+        final String resImg = homeRecResDetailBean.getShopPic();
+        if (!TextUtils.isEmpty(resImg)){
+            GlideUtil.load(this,resImg,resImgIv,GlideUtil.REQUEST_OPTIONS);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //该方法必须在子线程中执行
+                    final Drawable drawable = FileStorage.loadImageFromNetwork(resImg);
+                    //回到主线程更新ui
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            collapsingToolbarLayout.setContentScrim(drawable);
+                        }
+                    });
+
+                }
+            }).start();
+        }
 
         //设置月售多少单
         int monthOrder = homeRecResDetailBean.getResOrderNum();

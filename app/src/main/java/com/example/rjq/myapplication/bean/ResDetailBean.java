@@ -21,6 +21,8 @@ public class ResDetailBean extends DataSupport implements Serializable{
     private int resId;
     @SerializedName("shop_logo")
     private String resImg;
+    @SerializedName("shop_pic")
+    private String shopPic;
     @SerializedName("shop_name")
     private String resName;
     //星级
@@ -175,6 +177,14 @@ public class ResDetailBean extends DataSupport implements Serializable{
 
     public void setPackExpense(double packExpense) {
         this.packExpense = packExpense;
+    }
+
+    public String getShopPic() {
+        return shopPic;
+    }
+
+    public void setShopPic(String shopPic) {
+        this.shopPic = shopPic;
     }
 }
 

@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
-                    app:contentScrim="@mipmap/background"
+                    app:contentScrim="@mipmap/bg"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
                     app:statusBarScrim="@color/transparent">
 
@@ -47,7 +47,7 @@
                             android:id="@+id/res_img"
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
-                            android:background="@mipmap/background"
+                            android:background="@mipmap/bg"
                             android:fitsSystemWindows="true"
                             android:scaleType="centerCrop" />
 

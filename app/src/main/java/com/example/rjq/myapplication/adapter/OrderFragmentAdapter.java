@@ -50,14 +50,65 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
         holder.order_fragment_item_res_item_price.setText("￥"+orderList.get(position).getOrderPrice());
         holder.order_fragment_item_res_item_name.setText(orderList.get(position).getOrderDescription());
 
-        holder.order_fragment_item_buy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ResActivity.class);
-                intent.putExtra(ResActivity.RES_ID,String.valueOf(orderList.get(position).getResId()));
-                mContext.startActivity(intent);
-            }
-        });
+        switch (orderList.get(position).getOrderState()){
+            case 2:
+                holder.order_state.setText("商家待接单");
+                holder.order_fragment_item_buy.setText("取消订单");
+                break;
+            case 3:
+                holder.order_state.setText("商家制作中");
+                holder.order_fragment_item_buy.setText("再来一单");
+                holder.order_fragment_item_buy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, ResActivity.class);
+                        intent.putExtra(ResActivity.RES_ID,String.valueOf(orderList.get(position).getResId()));
+                        mContext.startActivity(intent);
+                    }
+                });
+                break;
+            case 4:
+                holder.order_state.setText("商家派送中");
+                holder.order_fragment_item_buy.setText("再来一单");
+                holder.order_fragment_item_buy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, ResActivity.class);
+                        intent.putExtra(ResActivity.RES_ID,String.valueOf(orderList.get(position).getResId()));
+                        mContext.startActivity(intent);
+                    }
+                });
+                break;
+            case 5:
+                holder.order_state.setText("订单已完成");
+                holder.order_fragment_item_buy.setText("再来一单");
+                holder.order_fragment_item_buy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, ResActivity.class);
+                        intent.putExtra(ResActivity.RES_ID,String.valueOf(orderList.get(position).getResId()));
+                        mContext.startActivity(intent);
+                    }
+                });
+                break;
+            case 6:
+                holder.order_state.setText("待评价");
+                holder.order_fragment_item_buy.setText("去评价");
+                break;
+            case 0:
+                holder.order_state.setText("订单取消");
+                holder.order_fragment_item_buy.setText("再来一单");
+                holder.order_fragment_item_buy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, ResActivity.class);
+                        intent.putExtra(ResActivity.RES_ID,String.valueOf(orderList.get(position).getResId()));
+                        mContext.startActivity(intent);
+                    }
+                });
+                break;
+        }
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -67,6 +118,7 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
         TextView order_fragment_item_res_item_name;
         TextView order_fragment_item_res_item_price;
         TextView order_fragment_item_buy;
+        TextView order_state;
 
         public ViewHolder(View root){
             super(root);
@@ -76,6 +128,7 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
             order_fragment_item_res_item_name = (TextView) root.findViewById(R.id.order_fragment_item_res_item_name);
             order_fragment_item_res_item_price = (TextView) root.findViewById(R.id.order_fragment_item_res_item_price);
             order_fragment_item_buy = (TextView) root.findViewById(R.id.order_fragment_item_buy);
+            order_state = (TextView) root.findViewById(R.id.order_state);
         }
     }
 }

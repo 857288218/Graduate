@@ -33,6 +33,4 @@ public class GlideUtil {
                 .apply(requestOptions)
                 .into(imageView);
     }
-
-
 }

@@ -147,7 +147,6 @@ public class AccountActivity extends BaseActivity {
         super.initData();
         resId = getIntent().getIntExtra("res_id",-1);
         resNameText = getIntent().getStringExtra("res_name");
-        reduceMoney = getIntent().getDoubleExtra("reduce_money",0);
 
         list = DataSupport.where("resId = ?",String.valueOf(resId)).find(ResBuyItemNum.class);
         addressList = DataSupport.where("selected = ?","1").find(AddressBean.class);
@@ -162,62 +161,51 @@ public class AccountActivity extends BaseActivity {
             allMoney += resBuyItemNum.getBuyNum() * resBuyItemNum.getItemPrice();
             packageMoney += resBuyItemNum.getItemPackageMoney() * resBuyItemNum.getBuyNum();
         }
-        allMoney += list.get(0).getResExtraMoney();
         allMoney += packageMoney;
 
-        if (reduceMoney > 0){
-            int price = (int)reduceMoney;
-            reduceRl.setVisibility(View.VISIBLE);
-            if (reduceMoney > price){
-                reduceTv.setText("-￥"+reduceMoney);
-            }else{
-                reduceTv.setText("-￥"+price);
-            }
-        }else{
-//            HashMap<String,String> hashMap = new HashMap<>();
-//            hashMap.put("shop_id",String.valueOf(resId));
-//            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_SHOP_ACCOUNT, hashMap, new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//
-//                }
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    try{
-//                        JSONObject jsonObject = new JSONObject(response.body().string());
-//                        if (jsonObject.getInt("status") == 1){
-//                            discountBeanList = new Gson().fromJson(jsonObject.getJSONArray("data").toString(),new TypeToken<List<DiscountBean>>(){}.getType());
-//                            for (DiscountBean discountBean : discountBeanList){
-//                                if (allMoney >= discountBean.getFilledVal()){
-//                                    reduceMoney = discountBean.getReduceVal();
-//                                }
-//                            }
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    int price = (int)reduceMoney;
-//                                    reduceRl.setVisibility(View.VISIBLE);
-//                                    if (reduceMoney > price){
-//                                        reduceTv.setText("-￥"+reduceMoney);
-//                                    }else{
-//                                        reduceTv.setText("-￥"+price);
-//                                    }
-//                                    allMoneyTv.setText(df.format(allMoney-reduceMoney));
-//                                    allPriceBottom.setText("￥"+df.format(allMoney-reduceMoney));
-//                                }
-//                            });
-//                        }
-//                    }catch(JSONException e){
-//
-//                    }
-//                }
-//            });
-        }
+        //网络请求店铺满减信息并设置
+        progressBar.setVisibility(View.VISIBLE);
+        goToAccount.setClickable(false);
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("shop_id",String.valueOf(resId));
+        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_SHOP_ACCOUNT, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
 
-//        allMoney -= reduceMoney;
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                discountBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<DiscountBean>>(){}.getType());
+                for (DiscountBean discountBean : discountBeanList){
+                    if (allMoney >= discountBean.getFilledVal()){
+                        reduceMoney = discountBean.getReduceVal();
+                    }
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (reduceMoney>0){
+                            int price = (int)reduceMoney;
+                            reduceRl.setVisibility(View.VISIBLE);
+                            if (reduceMoney > price){
+                                reduceTv.setText("-￥"+reduceMoney);
+                            }else{
+                                reduceTv.setText("-￥"+price);
+                            }
+                        }
+                        allMoney += list.get(0).getResExtraMoney();
+                        allMoneyTv.setText(df.format(allMoney-reduceMoney));
+                        allPriceBottom.setText("￥"+df.format(allMoney-reduceMoney));
+                        goToAccount.setText("确认支付");
+                        goToAccount.setOnClickListener(AccountActivity.this);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
+
         deliverMoney.setText("￥"+list.get(0).getResExtraMoney());
-        allMoneyTv.setText(df.format(allMoney-reduceMoney));
-        allPriceBottom.setText("￥"+df.format(allMoney-reduceMoney));
+        //设置包装费
         int price = (int) packageMoney;
         if (packageMoney>price){
             packageMoneyTv.setText("￥"+packageMoney);
@@ -238,7 +226,6 @@ public class AccountActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         middleTitle.setText("提交订单");
-        goToAccount.setText("确认支付");
         goToAccount.setVisibility(View.VISIBLE);
         howMoneyToDelivery.setVisibility(View.GONE);
         noShop.setVisibility(View.GONE);
@@ -247,7 +234,6 @@ public class AccountActivity extends BaseActivity {
         allPriceBottom.setVisibility(View.VISIBLE);
         resName.setText(resNameText);
         paySelectedTv.setText(payTvList.get(0));
-        goToAccount.setOnClickListener(this);
         backBtn.setOnClickListener(this);
         rlOwnToken.setOnClickListener(this);
         address.setOnClickListener(this);
@@ -282,101 +268,109 @@ public class AccountActivity extends BaseActivity {
                 } else if (location.getText().equals("请选择收货地址")){
                     Toast.makeText(this, "请选择收货地址!", Toast.LENGTH_SHORT).show();
                 } else{
-                    progressBar.setVisibility(View.VISIBLE);
-                    new android.os.Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //删除本地数据库中购物车信息
-                            DataSupport.deleteAll(ResBuyItemNum.class,"resId = ?",list.get(0).getResId());
-                            DataSupport.deleteAll(ResBuyCategoryNum.class,"resId = ?",list.get(0).getResId());
-                            startActivity(new Intent(AccountActivity.this,SuccessBuyActivity.class));
-                            progressBar.setVisibility(View.GONE);
-                            finish();
-                        }
-                    }, 500);
+//                    progressBar.setVisibility(View.VISIBLE);
+//                    new android.os.Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            //删除本地数据库中购物车信息
+//                            DataSupport.deleteAll(ResBuyItemNum.class,"resId = ?",list.get(0).getResId());
+//                            DataSupport.deleteAll(ResBuyCategoryNum.class,"resId = ?",list.get(0).getResId());
+//                            startActivity(new Intent(AccountActivity.this,SuccessBuyActivity.class));
+//                            progressBar.setVisibility(View.GONE);
+//                            finish();
+//                        }
+//                    }, 500);
 
-                    String orderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
                     final long orderTimeId =  System.currentTimeMillis();
                     final int userId = PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1);
                     progressBar.setVisibility(View.VISIBLE);
 
-                    //红包
-//                    if (couponBean != null){
-//                        HashMap<String,String> hashMap = new HashMap<>();
-//                        hashMap.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1)));
-//                        hashMap.put("coupon_id",String.valueOf(couponBean.getRedPaperId()));
-//                        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hashMap, new Callback() {
-//                            @Override
-//                            public void onFailure(Call call, IOException e) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onResponse(Call call, Response response) throws IOException {
-//
-//                            }
-//                        });
-//                    }
+                    //用户使用红包后需要在数据库中将该用户的红包使用状态改变
+                    if (couponBean != null){
+                        HashMap<String,String> hashMap = new HashMap<>();
+                        hashMap.put("buyer_id",String.valueOf(userId));
+                        hashMap.put("red_packet_id",String.valueOf(couponBean.getRedPaperId()));
+                        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.ALTER_USER_RED_PACKET, hashMap, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
 
+                            }
 
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                Log.d("AccountActivity",response.body().string());
+                            }
+                        });
+                    }
 
                     //存到订单表
-//                    HashMap<String,String> hashMap = new HashMap<>();
-//                    hashMap.put("order_id",String.valueOf(orderTimeId)+userId);
-//                    hashMap.put("user_id",String.valueOf(userId));
-//                    hashMap.put("res_id",list.get(0).getResId());
-//                    hashMap.put("order_address",location.getText().toString());
-//                    hashMap.put("pay_way",paySelectedTv.getText().toString());
-//                    hashMap.put("order_amount",String.valueOf(allMoney));
-//                    //1代表已付款
-//                    hashMap.put("order_state",String.valueOf(1));
+                    HashMap<String,String> hashMap = new HashMap<>();
+                    //orderId为当前时间戳+用户Id
+                    hashMap.put("order_id",String.valueOf(orderTimeId)+userId);
+                    hashMap.put("buyer_id",String.valueOf(userId));
+                    hashMap.put("shop_id",list.get(0).getResId());
+                    hashMap.put("order_address",location.getText().toString());
+                    hashMap.put("pay_way",paySelectedTv.getText().toString());
+
+                    //2代表待接单
+                    hashMap.put("order_state",String.valueOf(2));
 //                    if (couponBean == null){
 //                        hashMap.put("pay_amount",String.valueOf(allMoney-reduceMoney));
 //                    }else{
 //                        hashMap.put("pay_amount",String.valueOf(allMoney-reduceMoney-couponBean.getPrice()));
 //                    }
-//                    hashMap.put("order_remark",extraInfo.getText().toString());
-//
-//                    if (!deliverTime.getText().toString().equals("选择配送时间")){
-//                        hashMap.put("order_deliver",String.valueOf(1));   //外送则为1
-//                        if (!deliverTime.getText().toString().equals("立即配送")){
-//                            //预约时间
-//                            hashMap.put("order_service_time",deliverTime.getText().toString());
-//                        }
-//                    }else{
-//                        hashMap.put("order_deliver",String.valueOf(0));
-//                        //预约时间
-//                        hashMap.put("order_service_time",takenTime.getText().toString());
-//                    }
-//
-//                    //订单明细表json数据
-//                    hashMap.put("data",new Gson().toJson(list));
-//
-//                    HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.SAVE_ORDER, hashMap, new Callback() {
-//                        @Override
-//                        public void onFailure(Call call, IOException e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onResponse(Call call, Response response) throws IOException {
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    Toast.makeText(AccountActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
-//                                    progressBar.setVisibility(View.GONE);
-//                                    //删除本地数据库购物车信息
-//                                    DataSupport.deleteAll(ResBuyItemNum.class,"res_id = ? and user_id = ?",list.get(0).getResId(),
-//                                            String.valueOf(PreferenceManager.getDefaultSharedPreferences(AccountActivity.this).getInt("user_id",-1)));
-//                                    DataSupport.deleteAll(ResBuyCategoryNum.class,"res_id = ? and user_id = ?",list.get(0).getResId(),
-//                                            String.valueOf(PreferenceManager.getDefaultSharedPreferences(AccountActivity.this).getInt("user_id",-1)));
-//                                    Intent intent = new Intent(AccountActivity.this,SuccessBuyActivity.class);
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//                            });
-//                        }
-//                    });
+                    hashMap.put("order_remark",extraInfo.getText().toString());
+
+                    if (!deliverTime.getText().toString().equals("选择配送时间")){
+                        hashMap.put("isdeliver",String.valueOf(1));   //外送则为1
+                        hashMap.put("order_amount",String.valueOf(allMoney));//外送则加上配送费
+                        if (!deliverTime.getText().toString().equals("立即配送")){
+                            //预约时间
+                            hashMap.put("servicetime",deliverTime.getText().toString());
+                        }
+                        if (couponBean == null){
+                            hashMap.put("pay_amount",String.valueOf(allMoney-reduceMoney));
+                        }else{
+                            hashMap.put("pay_amount",String.valueOf(allMoney-reduceMoney-couponBean.getPrice()));
+                        }
+                    }else{
+                        hashMap.put("isdeliver",String.valueOf(0));
+                        hashMap.put("order_amount",String.valueOf(allMoney-list.get(0).getResExtraMoney()));//堂取减去配送费
+                        //预约时间
+                        hashMap.put("servicetime",takenTime.getText().toString());
+                        if (couponBean == null){
+                            hashMap.put("pay_amount",String.valueOf(allMoney-reduceMoney-list.get(0).getResExtraMoney()));
+                        }else{
+                            hashMap.put("pay_amount",String.valueOf(allMoney-reduceMoney-couponBean.getPrice()-list.get(0).getResExtraMoney()));
+                        }
+                    }
+
+                    //订单明细表json数据
+                    hashMap.put("data",new Gson().toJson(list));
+
+                    HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.SAVE_ORDER, hashMap, new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(Call call, final Response response) throws IOException {
+                            String responseText = response.body().string();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(AccountActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.GONE);
+                                    //删除本地数据库购物车信息
+                                    DataSupport.deleteAll(ResBuyItemNum.class,"resId = ?",list.get(0).getResId());
+                                    DataSupport.deleteAll(ResBuyCategoryNum.class,"resId = ?",list.get(0).getResId());
+                                    startActivity(new Intent(AccountActivity.this,SuccessBuyActivity.class));
+                                    finish();
+                                }
+                            });
+                        }
+                    });
                 }
                 break;
             case R.id.rl_own_taken:

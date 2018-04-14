@@ -3,9 +3,13 @@ package com.example.rjq.myapplication.util;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -13,7 +17,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Created by rjq on 2017/12/28.
@@ -206,6 +213,55 @@ public class FileStorage {
             }
         }
         dir.delete();
+    }
+
+    /**
+     * @param imageUrl
+     * @return Bitmap
+     * 根据网络图片的url获取布局背景的对象,此方法要在子线程中执行
+     */
+    public static Drawable loadImageFromNetwork(String imageUrl)
+    {
+        Drawable drawable = null;
+        try {
+            // 可以在这里通过文件名来判断，是否本地有此图片
+            drawable = Drawable.createFromStream(
+                    new URL(imageUrl).openStream(), "image.jpg");
+        } catch (IOException e) {
+            Log.d("loadImageFromNetwork", e.getMessage());
+        }
+        if (drawable == null) {
+            Log.d("loadImageFromNetwork", "null drawable");
+        }
+        return drawable ;
+    }
+
+    //srcPath是本地手机中图片的路径
+    public static Bitmap compressImageFromFile(String srcPath, float num) {
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        newOpts.inJustDecodeBounds = true;//只读边,不读内容
+        Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
+
+        newOpts.inJustDecodeBounds = false;
+        int w = newOpts.outWidth;
+        int h = newOpts.outHeight;
+        float hh = num;//
+        float ww = num;//
+        int be = 1;
+        if (w > h && w > ww) {
+            be = (int) (newOpts.outWidth / ww);
+        } else if (w < h && h > hh) {
+            be = (int) (newOpts.outHeight / hh);
+        }
+        if (be <= 0)
+            be = 1;
+        newOpts.inSampleSize = be;//设置采样率
+
+        newOpts.inPurgeable = true;// 同时设置才会有效
+        newOpts.inInputShareable = true;//。当系统内存不够时候图片自动被回收
+
+        bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
+        return bitmap;
     }
 
 }

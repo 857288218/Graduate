@@ -4,11 +4,12 @@ buildscript {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        google()
     }
     dependencies {
         classpath 'com.novoda:bintray-release:0.3.4'
-        classpath 'com.android.tools.build:gradle:2.2.0'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.android.tools.build:gradle:3.1.1'
+//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         //banner里需要的
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'

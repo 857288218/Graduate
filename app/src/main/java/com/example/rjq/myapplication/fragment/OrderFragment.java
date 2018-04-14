@@ -133,83 +133,85 @@ public class OrderFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case REQUEST_LOGIN:
-                if (resultCode == Activity.RESULT_OK){
-                    initView();
-                }
-                break;
-        }
+//        switch (requestCode){
+//            case REQUEST_LOGIN:
+//                if (resultCode == Activity.RESULT_OK){
+//                    initView();
+//                }
+//                break;
+//        }
     }
 
     //请求订单数据
     private void requestListData(){
-        orderList = new ArrayList<>();
-        OrderBean orderBean = new OrderBean(1001,2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg","瓦罐汤","2018-01-06 17:05",20.5,
-                "宫保鸡丁等3件商品");
-        OrderBean orderBean2 = new OrderBean(1001,4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg","杭州小笼包","2018-02-06 18:07",10.5,
-                "小笼包2笼");
-        OrderBean orderBean3 = new OrderBean(1001,5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg","北李妈妈菜","2018-02-12 20:05",120,
-                "鱼香肉丝等13件商品");
-        OrderBean orderBean4 = new OrderBean(1001,1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg","杨国福麻辣烫","2018-02-12 12:08",18.6,
-                "麻辣烫一份");
-        OrderBean orderBean5 = new OrderBean(1001,8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg","重庆小面","2018-02-014 12:35",7,
-                "排骨面");
-        orderList.add(orderBean);orderList.add(orderBean2);orderList.add(orderBean3);orderList.add(orderBean4);orderList.add(orderBean5);
-        adapter = new OrderFragmentAdapter(mContext,orderList);
-        recyclerView.setAdapter(adapter);
+//        orderList = new ArrayList<>();
+//        OrderBean orderBean = new OrderBean(1001,2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg","瓦罐汤","2018-01-06 17:05",20.5,
+//                "宫保鸡丁等3件商品");
+//        OrderBean orderBean2 = new OrderBean(1001,4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg","杭州小笼包","2018-02-06 18:07",10.5,
+//                "小笼包2笼");
+//        OrderBean orderBean3 = new OrderBean(1001,5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg","北李妈妈菜","2018-02-12 20:05",120,
+//                "鱼香肉丝等13件商品");
+//        OrderBean orderBean4 = new OrderBean(1001,1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg","杨国福麻辣烫","2018-02-12 12:08",18.6,
+//                "麻辣烫一份");
+//        OrderBean orderBean5 = new OrderBean(1001,8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg","重庆小面","2018-02-014 12:35",7,
+//                "排骨面");
+//        orderList.add(orderBean);orderList.add(orderBean2);orderList.add(orderBean3);orderList.add(orderBean4);orderList.add(orderBean5);
+//        adapter = new OrderFragmentAdapter(mContext,orderList);
+//        recyclerView.setAdapter(adapter);
 
         //请求数据
-//        HashMap<String,String> hashMap = new HashMap<>();
-//        hashMap.put("user_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(mContext).getInt("user_id",-1)));
-//        progressBar.setVisibility(View.VISIBLE);
-//        recyclerView.setVisibility(View.GONE);
-//        emptyImg.setVisibility(View.GONE);
-//        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH, hashMap, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d(TAG,e.toString());
-//                progressBar.setVisibility(View.GONE);
-//                emptyImg.setVisibility(View.VISIBLE);
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String jsonString = response.body().string();
-//                try{
-//                    JSONObject jsonObject = new JSONObject(jsonString);
-//                    int status = jsonObject.getInt("status");
-//                    if (status != 0){
-//                        orderList = new Gson().fromJson(jsonObject.getJSONArray("data").toString(), new TypeToken<List<OrderBean>>(){}.getType());
-//                        //主线程刷新ui
-//                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                progressBar.setVisibility(View.GONE);
-//                                if (orderList.size() == 0){
-//                                    recyclerView.setVisibility(View.GONE);
-//                                    emptyImg.setVisibility(View.VISIBLE);
-//                                }else{
-//                                    emptyImg.setVisibility(View.GONE);
-//                                    adapter = new OrderFragmentAdapter(mContext,orderList);
-//                                    recyclerView.setAdapter(adapter);
-//                                    recyclerView.setVisibility(View.VISIBLE);
-//                                }
-//
-//                            }
-//                        });
-//                    }else{
-//                        progressBar.setVisibility(View.GONE);
-//                        emptyImg.setVisibility(View.VISIBLE);
-//                        Toast.makeText(mContext, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
-//                    }
-//                }catch (JSONException e){
-//                    progressBar.setVisibility(View.GONE);
-//                    emptyImg.setVisibility(View.VISIBLE);
-//                }
-//
-//            }
-//        });
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("buyer_id",String.valueOf(PreferenceManager.getDefaultSharedPreferences(mContext).getInt("user_id",-1)));
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        emptyImg.setVisibility(View.GONE);
+        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.GET_ORDER, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d(TAG,e.toString());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        emptyImg.setVisibility(View.VISIBLE);
+                        Toast.makeText(mContext, "网络错误，请检查网络设置！", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String jsonString = response.body().string();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        try{
+                            JSONObject jsonObject = new JSONObject(jsonString);
+                            int status = jsonObject.getInt("status");
+                            if (status != 0){
+                                orderList = new Gson().fromJson(jsonObject.getJSONArray("data").toString(), new TypeToken<List<OrderBean>>(){}.getType());
+//                                Log.d("OrderFragment",orderList.get(0).getOrderDetail().get(0).getItemName()+" "+);
+                                if (orderList.size() == 0){
+                                    recyclerView.setVisibility(View.GONE);
+                                    emptyImg.setVisibility(View.VISIBLE);
+                                }else{
+                                    adapter = new OrderFragmentAdapter(mContext,orderList);
+                                    recyclerView.setAdapter(adapter);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                }
+                            }else{
+                                emptyImg.setVisibility(View.VISIBLE);
+                                Toast.makeText(mContext, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (JSONException e){
+                            emptyImg.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
 }

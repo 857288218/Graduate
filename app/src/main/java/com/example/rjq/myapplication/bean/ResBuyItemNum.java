@@ -19,15 +19,18 @@ public class ResBuyItemNum extends DataSupport implements Serializable{
     //配送费
     private int resExtraMoney;
     //包装费
+    @SerializedName("gs_pack_money")
     private double itemPackageMoney;
     private String categoryId;
     @SerializedName("gs_id")
     private String goodId;
     @SerializedName("quantity")
     private int buyNum;
+    @SerializedName("gs_name")
     private String itemName;
-    @SerializedName("good_price")
+    @SerializedName("gs_newprice")
     private double itemPrice;
+    @SerializedName("gs_pic")
     private String itemImg;
 
     public static void add(String resId,String categoryId,String goodId,int buyNum,String itemName,double itemPrice,String itemImg,String resName,

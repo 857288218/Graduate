@@ -22,7 +22,7 @@ import okhttp3.RequestBody;
 
 public class HttpUtil {
     //如果可以在界面中设置服务器地址，则把final去掉 ，在登陆界面getconfig中给HOME_PATH赋值
-    public static final String HOME_PATH = "http://192.168.30.84/restaurant/index.php";
+    public static final String HOME_PATH = "http://192.168.0.109/restaurant/index.php";
 
     //首页API
     public static final String OBTAIN_RECOMMEND_SHOP = "/HomePage/obtainShopByRecommend";
@@ -43,14 +43,12 @@ public class HttpUtil {
     public static final String ADD_USER_ADDRESS = "/UserInfo/addUserAddress";
     public static final String DELETE_USER_ADDRESS = "/UserInfo/deleteUserAddress";
     public static final String ALTER_USER_PWD = "/UserInfo/alterUserPwd";
+    public static final String OBTAIN_USER_RED_PACKET_BY_SHOP = "/UserInfo/obtainUserRedPacket";
+    public static final String ALTER_USER_RED_PACKET = "/UserInfo/alterUserRedPacket";
 
     //订单信息API
     public static final String SAVE_ORDER = "/Order/saveToOrder";
     public static final String GET_ORDER = "/Order/getOrder";
-    public static final String REDUCE_BUYER_LUCKEY_MONEY = "/Order/reduceBuyerLuckyMoney";
-    public static final String GET_BUYER_AVAILABLE_LUCKEY_MONEY = "/Order/getBuyerAvailableLuckyMoney";
-
-
 
     private static final MediaType MEDIA_TYPE_IMAGE = MediaType.parse("image/*");
 
