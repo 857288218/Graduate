@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.bean.ResDetailBean;
@@ -30,6 +31,12 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         HttpUtil.sendOkHttpGetRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_RECOMMEND_SHOP, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -37,9 +44,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                        Toast.makeText(WelcomeActivity.this, "网络连接错误，请输入正确的服务器地址!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(WelcomeActivity.this, ConfigActivity.class);
                         startActivity(intent);
-                        finish();
                     }
                 });
             }
@@ -49,16 +56,28 @@ public class WelcomeActivity extends AppCompatActivity {
                 String responseText = response.body().string();
                 Log.d("WelcomeActivity",responseText.toString());
                 //请求首页数据
-                final WelcomeBean welcomeBean = new Gson().fromJson(responseText,WelcomeBean.class);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                        intent.putExtra("data",welcomeBean);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
+                try{
+                    final WelcomeBean welcomeBean = new Gson().fromJson(responseText,WelcomeBean.class);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                            intent.putExtra("data",welcomeBean);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                }catch(Exception e){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(WelcomeActivity.this, "网络连接错误，请输入正确的服务器地址!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(WelcomeActivity.this,ConfigActivity.class));
+                        }
+                    });
+
+                }
+
             }
         });
     }

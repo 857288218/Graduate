@@ -97,7 +97,6 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setStateBarColor(R.color.my_fragment_status_bar_color);
-
     }
 
     @Override
@@ -216,61 +215,70 @@ public class LoginActivity extends BaseActivity {
 //            } else {
 //                Toast.makeText(this, "账号或密码错误!", Toast.LENGTH_SHORT).show();
 //            }
-            progressBar.setVisibility(View.VISIBLE);
-            hash.put("user_tel",userName.getText().toString().replace(" ", ""));
-            hash.put("password",password.getText().toString());
-            //用户名密码校验(实现)
-            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.LOGIN_BY_PWD, hash, new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.d("LoginActivity",e.toString());
-                    Toast.makeText(LoginActivity.this, "登陆失败，请检查网络!", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    final String responseText = response.body().string();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setVisibility(View.GONE);
-                            try{
-                                final JSONObject jsonObject = new JSONObject(responseText);
-                                int state = jsonObject.getInt("status");
-                                String msg = jsonObject.getString("msg");
-                                if (state == 1){
-                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                                    //保存用户信息
-                                    UserBean userBean = new Gson().fromJson(jsonObject.getJSONObject("user_info").toString(),UserBean.class);
-                                    userBean.save();
-                                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
-                                    editor.putInt("user_id", userBean.getUserId());
-                                    editor.commit();
-                                    try{
-                                        addressBeanList = new Gson().fromJson(jsonObject.getJSONArray("address").toString(),new TypeToken<List<AddressBean>>(){}.getType());
-                                        //将地址添加到本地数据库
-                                        DataSupport.deleteAll(AddressBean.class);
-                                        for (AddressBean addressBean : addressBeanList){
-                                            addressBean.save();
-                                        }
-                                    }catch(JSONException e){
-                                        Toast.makeText(LoginActivity.this, "收货地址获取失败！", Toast.LENGTH_SHORT).show();
-                                    }
-                                    setResult(RESULT_OK);
-                                    finish();
-                                }else{
-                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                                }
-                            }catch (JSONException e){
-                                Log.d("LoginActivity",e.getMessage());
+            if (userName.getText().toString().equals("get conf ig")){
+                startActivity(new Intent(this,ConfigActivity.class));
+            }else{
+                progressBar.setVisibility(View.VISIBLE);
+                hash.put("user_tel",userName.getText().toString().replace(" ", ""));
+                hash.put("password",password.getText().toString());
+                //用户名密码校验(实现)
+                HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.LOGIN_BY_PWD, hash, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("LoginActivity",e.toString());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
                                 Toast.makeText(LoginActivity.this, "登陆失败，请检查网络!", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
                             }
-                        }
-                    });
+                        });
+                    }
 
-                }
-            });
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        final String responseText = response.body().string();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                                try{
+                                    final JSONObject jsonObject = new JSONObject(responseText);
+                                    int state = jsonObject.getInt("status");
+                                    String msg = jsonObject.getString("msg");
+                                    if (state == 1){
+                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                        //保存用户信息
+                                        UserBean userBean = new Gson().fromJson(jsonObject.getJSONObject("user_info").toString(),UserBean.class);
+                                        userBean.save();
+                                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
+                                        editor.putInt("user_id", userBean.getUserId());
+                                        editor.commit();
+                                        try{
+                                            addressBeanList = new Gson().fromJson(jsonObject.getJSONArray("address").toString(),new TypeToken<List<AddressBean>>(){}.getType());
+                                            //将地址添加到本地数据库
+                                            DataSupport.deleteAll(AddressBean.class);
+                                            for (AddressBean addressBean : addressBeanList){
+                                                addressBean.save();
+                                            }
+                                        }catch(JSONException e){
+                                            Toast.makeText(LoginActivity.this, "收货地址获取失败！", Toast.LENGTH_SHORT).show();
+                                        }
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }else{
+                                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                }catch (JSONException e){
+                                    Log.d("LoginActivity",e.getMessage());
+                                    Toast.makeText(LoginActivity.this, "登陆失败，请检查网络!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
+                    }
+                });
+            }
         } else {
             //手机验证码登陆
             if (Integer.parseInt(loginIdentifyCodeEt.getText().toString()) == a) {
@@ -299,7 +307,13 @@ public class LoginActivity extends BaseActivity {
                 HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.LOGIN_BY_CODE, hash, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this, "登陆失败，请检查网络!", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
                     }
 
                     @Override

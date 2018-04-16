@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ConfigActivity">
+
+    <EditText
+        android:id="@+id/et_host"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginLeft="@dimen/space_20px"
+        android:layout_marginRight="@dimen/space_20px"
+        android:text="请输入完整的服务器地址，默认端口80，一般情况下不需要修改"
+        android:id="@+id/show"
+        android:layout_below="@+id/et_host"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_below="@+id/show"
+        android:background="@drawable/login_selected_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/confirm_btn"
+        android:layout_marginTop="@dimen/space_30px"
+        android:padding="@dimen/space_25px"
+        android:textSize="@dimen/space_35px"
+        android:textColor="@color/white"
+        android:layout_marginLeft="@dimen/space_20px"
+        android:layout_marginRight="@dimen/space_20px"
+        android:text="确定" />
+
+</RelativeLayout>

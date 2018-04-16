@@ -684,6 +684,13 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.d(TAG,e.getMessage());
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getContext(), "网络错误，请检查网络状态!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
 
                         @Override

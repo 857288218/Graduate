@@ -183,12 +183,12 @@ public class ResActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-//        collapsingToolbarLayout.setContentScrim(getResources().getDrawable(R.mipmap.background));
+
         returnBtn.setOnClickListener(this);
         goToCheckOut.setOnClickListener(this);
         searchLl.setOnClickListener(this);
         popRl.setOnClickListener(this);
-//        setViewPager();
+
     }
 
     @Override
@@ -198,7 +198,6 @@ public class ResActivity extends BaseActivity {
         Intent intent = getIntent();
         homeRecResDetailBean = (ResDetailBean) intent.getSerializableExtra(RES_DETAIL);
         if (homeRecResDetailBean == null){
-//            homeRecResDetailBean = new ResDetailBean();
 
             resId = Integer.parseInt(intent.getStringExtra(RES_ID));
             resName = intent.getStringExtra("res_name");
@@ -210,7 +209,6 @@ public class ResActivity extends BaseActivity {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Log.d("homeRecResDetail fail",e.toString());
-                    Toast.makeText(ResActivity.this, "网络连接超时，请退出重试!", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -247,22 +245,36 @@ public class ResActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("GoodsListBean",e.toString());
-                Toast.makeText(ResActivity.this, "网络连接超时，请退出重试!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                categoryBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<GoodsListBean.GoodsCategoryBean>>(){}.getType());
-                goodsListBean.setData(categoryBeanList);
-                goodsListBean.setResName(resName);
-                goodsListBean.setResId(resId);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Toast.makeText(ResActivity.this, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
-                        setViewPager();
                     }
                 });
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            categoryBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<GoodsListBean.GoodsCategoryBean>>(){}.getType());
+                            goodsListBean.setData(categoryBeanList);
+                            goodsListBean.setResName(resName);
+                            goodsListBean.setResId(resId);
+                            progressBar.setVisibility(View.GONE);
+                            setViewPager();
+                        }catch(Exception e){
+                            Toast.makeText(ResActivity.this, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+
+                        }
+                    }
+                });
+
+
             }
         });
 

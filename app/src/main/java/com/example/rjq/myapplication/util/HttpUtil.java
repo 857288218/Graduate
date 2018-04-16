@@ -1,6 +1,11 @@
 package com.example.rjq.myapplication.util;
 
 
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+
+import com.example.rjq.myapplication.MyApplication;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,9 +26,14 @@ import okhttp3.RequestBody;
  */
 
 public class HttpUtil {
-    //如果可以在界面中设置服务器地址，则把final去掉 ，在登陆界面getconfig中给HOME_PATH赋值
-    public static final String HOME_PATH = "http://192.168.0.109/restaurant/index.php";
-
+    public static final String SERVER_HOST = "server_host";
+    public static String HOME_PATH = "http://192.168.30.84/restaurant/index.php";
+    static{
+        String serverHost = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getString(SERVER_HOST,"");
+        if (!TextUtils.isEmpty(serverHost)){
+            HOME_PATH = serverHost+"/restaurant/index.php";
+        }
+    }
     //首页API
     public static final String OBTAIN_RECOMMEND_SHOP = "/HomePage/obtainShopByRecommend";
     public static final String OBTAIN_SHOP_BY_LABEL = "/HomePage/obtainShopByLabel";
