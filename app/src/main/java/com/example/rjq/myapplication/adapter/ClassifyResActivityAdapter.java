@@ -90,9 +90,10 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
         String deliverTime = mContext.getResources().getString(R.string.res_deliver_time);
         deliverTime = String.format(deliverTime,homeRecResDetailBeanList.get(position).getResDeliverTime());
         holder.one_fragment_deliver_time.setText(deliverTime);
+
         if (homeRecResDetailBeanList.get(position).getDiscountList()!= null && homeRecResDetailBeanList.get(position).getDiscountList().size()>0){
             holder.one_fragment_item_reduce_container.setVisibility(View.VISIBLE);
-
+            holder.divider.setVisibility(View.VISIBLE);
             StringBuffer sb = new StringBuffer();
 
             for (DiscountBean discountBean : homeRecResDetailBeanList.get(position).getDiscountList()){
@@ -111,6 +112,9 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
             }
 
             holder.one_fragment_item_reduce.setText(sb.toString().substring(0,sb.length()-1));
+        }else{
+            holder.divider.setVisibility(View.GONE);
+            holder.one_fragment_item_reduce_container.setVisibility(View.GONE);
         }
 
         //设置每个item的点击事件
@@ -145,10 +149,11 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
         public TextView one_fragment_item_new;
         public AutoLinearLayout one_fragment_item_give_container;
         public TextView one_fragment_item_give;
-
+        public View divider;
         public ViewHolder(View root) {
             super(root);
             this.root = root;
+            divider = root.findViewById(R.id.divider);
             one_fragment_star = (RatingBar) root.findViewById(R.id.one_fragment_star);
             one_fragment_item_reduce_container = (AutoLinearLayout) root.findViewById(R.id.one_fragment_item_reduce_container);
             one_fragment_item_special_container = (AutoLinearLayout) root.findViewById(R.id.one_fragment_item_special_container);

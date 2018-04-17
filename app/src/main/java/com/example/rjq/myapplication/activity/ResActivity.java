@@ -106,20 +106,8 @@ public class ResActivity extends BaseActivity {
     TextView resDescriptionTv;
     @BindView(R.id.res_reduce_container)
     AutoLinearLayout resReduceContainer;
-    @BindView(R.id.res_special_container)
-    AutoLinearLayout resSpecialContainer;
-    @BindView(R.id.res_new_container)
-    AutoLinearLayout resNewContainer;
-    @BindView(R.id.res_give_container)
-    AutoLinearLayout resGiveContainer;
     @BindView(R.id.res_reduce)
     TextView resReduceTv;
-    @BindView(R.id.res_special)
-    TextView resSpecialTv;
-    @BindView(R.id.res_new)
-    TextView resNewTv;
-    @BindView(R.id.res_give)
-    TextView resGiveTv;
     @BindView(R.id.res_special_num)
     TextView resSpecialNum;
     @BindView(R.id.return_btn)
@@ -256,11 +244,11 @@ public class ResActivity extends BaseActivity {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                categoryBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<GoodsListBean.GoodsCategoryBean>>(){}.getType());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try{
-                            categoryBeanList = new Gson().fromJson(response.body().string(),new TypeToken<List<GoodsListBean.GoodsCategoryBean>>(){}.getType());
                             goodsListBean.setData(categoryBeanList);
                             goodsListBean.setResName(resName);
                             goodsListBean.setResId(resId);

@@ -53,7 +53,7 @@
                     android:layout_toRightOf="@+id/userNameText"
                     android:id="@+id/login_user_name"
                     android:maxLength="13"
-                    android:inputType=""
+                    android:inputType="textVisiblePassword"
                     android:cursorVisible="true"
                     android:layout_marginLeft="@dimen/space_60px"
                     android:hint="您的手机号" />

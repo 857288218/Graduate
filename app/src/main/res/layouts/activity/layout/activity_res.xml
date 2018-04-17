@@ -132,7 +132,6 @@
                             android:layout_height="wrap_content">
 
                             <com.zhy.autolayout.AutoLinearLayout
-                                android:layout_toLeftOf="@+id/res_special_num"
                                 android:layout_alignParentLeft="true"
                                 android:id="@+id/res_favour"
                                 android:visibility="visible"
@@ -164,97 +163,6 @@
                                         android:id="@+id/res_reduce"
                                         android:layout_marginLeft="@dimen/space_8px"
                                         style="@style/one_fragment_num_style"
-                                        android:text="满22减17，满35减23，满55减"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content" />
-
-                                </com.zhy.autolayout.AutoLinearLayout>
-
-                                <com.zhy.autolayout.AutoLinearLayout
-                                    android:id="@+id/res_special_container"
-                                    android:visibility="gone"
-                                    android:layout_marginTop="@dimen/space_15px"
-                                    android:gravity="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:includeFontPadding="false"
-                                        android:gravity="center"
-                                        android:background="@drawable/one_fragment_item_special"
-                                        android:textSize="@dimen/one_fragment_item_reduce"
-                                        android:textColor="@color/white"
-                                        android:text="@string/special"
-                                        android:layout_width="@dimen/space_30px"
-                                        android:layout_height="@dimen/space_30px" />
-
-                                    <TextView
-                                        android:maxLines="1"
-                                        android:ellipsize="end"
-                                        android:id="@+id/res_special"
-                                        android:layout_marginLeft="@dimen/space_8px"
-                                        style="@style/one_fragment_num_style"
-                                        android:text="暖心三人餐A"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content" />
-
-                                </com.zhy.autolayout.AutoLinearLayout>
-
-                                <com.zhy.autolayout.AutoLinearLayout
-                                    android:id="@+id/res_new_container"
-                                    android:visibility="gone"
-                                    android:layout_marginTop="@dimen/space_15px"
-                                    android:gravity="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:includeFontPadding="false"
-                                        android:gravity="center"
-                                        android:background="@drawable/one_fragment_item_new"
-                                        android:textSize="@dimen/one_fragment_item_reduce"
-                                        android:textColor="@color/white"
-                                        android:text="@string/first"
-                                        android:layout_width="@dimen/space_30px"
-                                        android:layout_height="@dimen/space_30px" />
-
-                                    <TextView
-                                        android:maxLines="1"
-                                        android:ellipsize="end"
-                                        android:id="@+id/res_new"
-                                        android:layout_marginLeft="@dimen/space_8px"
-                                        style="@style/one_fragment_num_style"
-                                        android:text="新用户下单立减19"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content" />
-
-                                </com.zhy.autolayout.AutoLinearLayout>
-
-                                <com.zhy.autolayout.AutoLinearLayout
-                                    android:id="@+id/res_give_container"
-                                    android:visibility="gone"
-                                    android:layout_marginTop="@dimen/space_15px"
-                                    android:gravity="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:includeFontPadding="false"
-                                        android:gravity="center"
-                                        android:background="@drawable/one_fragment_item_give"
-                                        android:textSize="@dimen/one_fragment_item_reduce"
-                                        android:textColor="@color/white"
-                                        android:text="@string/give"
-                                        android:layout_width="@dimen/space_30px"
-                                        android:layout_height="@dimen/space_30px" />
-
-                                    <TextView
-                                        android:maxLines="1"
-                                        android:ellipsize="end"
-                                        android:id="@+id/res_give"
-                                        android:layout_marginLeft="@dimen/space_8px"
-                                        style="@style/one_fragment_num_style"
-                                        android:text="满23赠送鸡蛋汤一份"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content" />
 

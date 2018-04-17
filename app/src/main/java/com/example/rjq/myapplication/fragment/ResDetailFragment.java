@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.example.rjq.myapplication.R;
 
 /**
- * Created by Dell on 2018/1/29.
+ * Created by rjq on 2018/1/29.
  */
 
 public class ResDetailFragment extends Fragment {

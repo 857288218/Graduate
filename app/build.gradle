@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'android-apt'
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.example.rjq.myapplication"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -47,11 +47,11 @@ dependencies {
     compile project(':library')
     compile 'com.zhy:autolayout:1.4.3'
     compile 'com.hyman:flowlayout-lib:1.1.2'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:26.0.1'
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-v4:26.0.1'
+    compile 'com.android.support:appcompat-v7:26.0.1'
+    compile 'com.android.support:design:26.0.1'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile 'org.litepal.android:core:1.6.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'

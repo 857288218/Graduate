@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <RatingBar
+            <android.support.v7.widget.AppCompatRatingBar
                 android:id="@+id/one_fragment_star"
                 android:numStars="5"
                 style="@style/one_fragment_rating_style"

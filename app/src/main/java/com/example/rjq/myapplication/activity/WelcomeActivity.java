@@ -53,6 +53,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                //这行代码也要放在子线程中执行，不能放在主线程中，response.body()还会进行网络请求
                 String responseText = response.body().string();
                 Log.d("WelcomeActivity",responseText.toString());
                 //请求首页数据

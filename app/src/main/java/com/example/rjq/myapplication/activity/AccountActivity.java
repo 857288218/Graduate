@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -268,19 +269,6 @@ public class AccountActivity extends BaseActivity {
                 } else if (location.getText().equals("请选择收货地址")){
                     Toast.makeText(this, "请选择收货地址!", Toast.LENGTH_SHORT).show();
                 } else{
-//                    progressBar.setVisibility(View.VISIBLE);
-//                    new android.os.Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            //删除本地数据库中购物车信息
-//                            DataSupport.deleteAll(ResBuyItemNum.class,"resId = ?",list.get(0).getResId());
-//                            DataSupport.deleteAll(ResBuyCategoryNum.class,"resId = ?",list.get(0).getResId());
-//                            startActivity(new Intent(AccountActivity.this,SuccessBuyActivity.class));
-//                            progressBar.setVisibility(View.GONE);
-//                            finish();
-//                        }
-//                    }, 500);
-
                     final long orderTimeId =  System.currentTimeMillis();
                     final int userId = PreferenceManager.getDefaultSharedPreferences(this).getInt("user_id",-1);
                     progressBar.setVisibility(View.VISIBLE);
