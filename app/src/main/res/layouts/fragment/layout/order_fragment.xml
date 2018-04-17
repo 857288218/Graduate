@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="match_parent">
 
-    <include layout="@layout/common_bar"/>
+    <include layout="@layout/common_bar"
+        android:id="@+id/header"/>
 
     <Button
+        android:layout_centerInParent="true"
         android:textColor="@color/white"
         android:visibility="gone"
         android:id="@+id/login_btn"
@@ -20,6 +22,7 @@
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/header"
         android:visibility="visible"
         android:id="@+id/order_fragment_recycler"
         android:background="@color/grey_background"
@@ -27,6 +30,7 @@
         android:layout_height="match_parent"/>
 
     <ImageView
+        android:layout_centerInParent="true"
         android:id="@+id/list_empty"
         android:visibility="gone"
         android:layout_marginTop="@dimen/space_300px"
@@ -36,6 +40,7 @@
         android:layout_height="wrap_content" />
 
     <ProgressBar
+        android:layout_centerInParent="true"
         android:visibility="gone"
         android:id="@+id/first_load"
         android:layout_marginTop="220dp"
@@ -43,6 +48,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-
-
-</com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoRelativeLayout>

@@ -59,6 +59,7 @@ public class HttpUtil {
     //订单信息API
     public static final String SAVE_ORDER = "/Order/saveToOrder";
     public static final String GET_ORDER = "/Order/getOrder";
+    public static final String ORDER_CANCEL = "/Order/cancel";
 
     private static final MediaType MEDIA_TYPE_IMAGE = MediaType.parse("image/*");
 

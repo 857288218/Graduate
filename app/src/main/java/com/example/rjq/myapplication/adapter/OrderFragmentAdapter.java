@@ -25,6 +25,11 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
 
     private Context mContext;
     private List<OrderBean> orderList;
+    private OnItemBtnClickListener onItemBtnClickListener;
+
+    public void setOnItemBtnClickListener(OnItemBtnClickListener onItemBtnClickListener) {
+        this.onItemBtnClickListener = onItemBtnClickListener;
+    }
 
     public OrderFragmentAdapter(Context mContext, List<OrderBean> orderList){
         this.mContext = mContext;
@@ -43,7 +48,7 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         GlideUtil.load(mContext,orderList.get(position).getResImg(),holder.order_fragment_item_res_img,GlideUtil.REQUEST_OPTIONS);
         holder.order_fragment_item_res_name.setText(orderList.get(position).getResName());
         holder.order_fragment_item_res_buy_time.setText(orderList.get(position).getOrderTime());
@@ -54,6 +59,14 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
             case 2:
                 holder.order_state.setText("商家待接单");
                 holder.order_fragment_item_buy.setText("取消订单");
+                holder.order_fragment_item_buy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onItemBtnClickListener != null){
+                            onItemBtnClickListener.onItemBtnClick(position,2);
+                        }
+                    }
+                });
                 break;
             case 3:
                 holder.order_state.setText("商家制作中");
@@ -92,11 +105,11 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
                 });
                 break;
             case 6:
-                holder.order_state.setText("待评价");
+                holder.order_state.setText("订单待评价");
                 holder.order_fragment_item_buy.setText("去评价");
                 break;
             case 0:
-                holder.order_state.setText("订单取消");
+                holder.order_state.setText("订单已取消");
                 holder.order_fragment_item_buy.setText("再来一单");
                 holder.order_fragment_item_buy.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -130,5 +143,9 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
             order_fragment_item_buy = (TextView) root.findViewById(R.id.order_fragment_item_buy);
             order_state = (TextView) root.findViewById(R.id.order_state);
         }
+    }
+
+    public interface OnItemBtnClickListener{
+        void onItemBtnClick(int position, int state);
     }
 }

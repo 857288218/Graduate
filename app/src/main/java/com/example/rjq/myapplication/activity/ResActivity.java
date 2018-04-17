@@ -134,8 +134,6 @@ public class ResActivity extends BaseActivity {
     RelativeLayout popRl;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
-    @BindView(R.id.root)
-    View root;
 
     //优惠总数
     private int specialNum;
@@ -171,7 +169,6 @@ public class ResActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-
         returnBtn.setOnClickListener(this);
         goToCheckOut.setOnClickListener(this);
         searchLl.setOnClickListener(this);
@@ -262,9 +259,10 @@ public class ResActivity extends BaseActivity {
                     }
                 });
 
-
             }
         });
+
+
 
     }
 

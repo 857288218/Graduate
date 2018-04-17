@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
@@ -88,7 +89,61 @@ public class OrderFragment extends Fragment {
         ButterKnife.bind(this,root);
         mContext = getActivity();
         title.setText(getResources().getString(R.string.list));
+        orderList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(mContext);
+        adapter = new OrderFragmentAdapter(getActivity(),orderList);
+        adapter.setOnItemBtnClickListener(new OrderFragmentAdapter.OnItemBtnClickListener() {
+            @Override
+            public void onItemBtnClick(int position, int state) {
+                switch (state){
+                    //订单取消
+                    case 2:
+                        progressBar.setVisibility(View.VISIBLE);
+                        HashMap<String,String> hashMap = new HashMap<>();
+                        hashMap.put("order_id",orderList.get(position).getOrderId());
+                        hashMap.put("buyer_id",PreferenceManager.getDefaultSharedPreferences(mContext).getInt("user_id",-1)+"");
+                        HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.ORDER_CANCEL, hashMap, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(mContext, "网络错误，请检查网络!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                final String responseText = response.body().string();
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try{
+                                            JSONObject jsonObject = new JSONObject(responseText);
+                                            if (jsonObject.getInt("state") == 1){
+                                                orderList.clear();
+                                                orderList.addAll((List)new Gson().fromJson(jsonObject.getJSONArray("data").toString(), new TypeToken<List<OrderBean>>(){}.getType()));
+                                                adapter.notifyDataSetChanged();
+                                                Toast.makeText(mContext, "订单已取消!", Toast.LENGTH_SHORT).show();
+                                            }else{
+                                                Toast.makeText(mContext, "失败!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }catch(JSONException e){
+                                            Toast.makeText(mContext, "失败!", Toast.LENGTH_SHORT).show();
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+                            }
+                        });
+                        break;
+                }
+            }
+        });
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
     }
 
     private void initView(){
@@ -169,14 +224,13 @@ public class OrderFragment extends Fragment {
                             JSONObject jsonObject = new JSONObject(jsonString);
                             int status = jsonObject.getInt("status");
                             if (status != 0){
-                                orderList = new Gson().fromJson(jsonObject.getJSONArray("data").toString(), new TypeToken<List<OrderBean>>(){}.getType());
-//                                Log.d("OrderFragment",orderList.get(0).getOrderDetail().get(0).getItemName()+" "+);
+                                orderList.clear();
+                                orderList.addAll((List)new Gson().fromJson(jsonObject.getJSONArray("data").toString(), new TypeToken<List<OrderBean>>(){}.getType()));
                                 if (orderList.size() == 0){
                                     recyclerView.setVisibility(View.GONE);
                                     emptyImg.setVisibility(View.VISIBLE);
                                 }else{
-                                    adapter = new OrderFragmentAdapter(mContext,orderList);
-                                    recyclerView.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
                                     recyclerView.setVisibility(View.VISIBLE);
                                     //置顶RecyclerView
                                     linearLayoutManager.scrollToPositionWithOffset(0,0);
