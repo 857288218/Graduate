@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Process;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -92,6 +93,7 @@ public class LoginActivity extends BaseActivity {
     private LoginTextWatcher loginTextWatcher;
     private int a = 1000000000;
     List<AddressBean> addressBeanList;
+    private LocalBroadcastManager localBroadcastManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class LoginActivity extends BaseActivity {
     protected void initData() {
         super.initData();
         loginTextWatcher = new LoginTextWatcher();
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
     }
 
     @Override
@@ -190,32 +193,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login() {
-//        progressBar.setVisibility(View.VISIBLE);
         HashMap<String, String> hash = new HashMap<>();
         //密码登陆
         if (loginByPasswordLl.getVisibility() == View.VISIBLE) {
-            //假数据账号密码登陆
-//            if (userName.getText().toString().replace(" ", "").equals("13622179395")) {
-//                UserBean userBean = new UserBean();
-//                userBean.setUserId(1001);
-//                userBean.setPassword(password.getText().toString());
-//                userBean.setUserImg("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
-//                userBean.setUserPhone("13622179395");
-////                userBean.setUserRedPaper(5);
-////                userBean.setUserMoney(53.2);
-////                userBean.setGoldMoney(192);
-//                userBean.setUserName("订餐用户" + 1001);
-//                userBean.setUserSex(1);
-//                userBean.save();
-//                Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
-//                setResult(RESULT_OK);
-//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-//                editor.putInt("user_id", userBean.getUserId());
-//                editor.commit();
-//                finish();
-//            } else {
-//                Toast.makeText(this, "账号或密码错误!", Toast.LENGTH_SHORT).show();
-//            }
             if (userName.getText().toString().equals("get conf ig")){
                 startActivity(new Intent(this,ConfigActivity.class));
             }else{
@@ -255,6 +235,17 @@ public class LoginActivity extends BaseActivity {
                                         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
                                         editor.putInt("user_id", userBean.getUserId());
                                         editor.commit();
+//                                        new Thread(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                Intent intent = new Intent("com.rjq");
+//                                                sendBroadcast(intent);
+//                                                for (int i=0;i<8000;i++)
+//                                                    Log.d("tid", Process.myTid()+"");
+//                                            }
+//                                        }).start();
+//                                        for (int i=0;i<8000;i++)
+//                                            Log.d("tid",android.os.Process.myTid()+"");
                                         try{
                                             addressBeanList = new Gson().fromJson(jsonObject.getJSONArray("address").toString(),new TypeToken<List<AddressBean>>(){}.getType());
                                             //将地址添加到本地数据库
@@ -267,6 +258,7 @@ public class LoginActivity extends BaseActivity {
                                         }
                                         setResult(RESULT_OK);
                                         finish();
+
                                     }else{
                                         Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
                                     }
@@ -283,26 +275,6 @@ public class LoginActivity extends BaseActivity {
         } else {
             //手机验证码登陆
             if (Integer.parseInt(loginIdentifyCodeEt.getText().toString()) == a) {
-                //假数据验证码登陆
-//                UserBean userBean = new UserBean();
-//                userBean.setUserId(1001);
-//                userBean.setPassword(password.getText().toString());
-//                userBean.setUserImg("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
-//                userBean.setUserPhone("13622179395");
-////                userBean.setUserRedPaper(5);
-////                userBean.setUserMoney(53.2);
-////                userBean.setGoldMoney(192);
-//                userBean.setUserName("订餐用户" + 1001);
-//                userBean.setUserSex(1);
-//                userBean.save();
-//                Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
-//                setResult(RESULT_OK);
-//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-//                editor.putInt("user_id", userBean.getUserId());
-//                editor.commit();
-//                finish();
-
-                //手机号校验(实现)
                 progressBar.setVisibility(View.VISIBLE);
                 hash.put("user_tel",loginPhoneEt.getText().toString().replace(" ",""));
                 HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.LOGIN_BY_CODE, hash, new Callback() {
@@ -335,6 +307,7 @@ public class LoginActivity extends BaseActivity {
                                         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit();
                                         editor.putInt("user_id", userBean.getUserId());
                                         editor.commit();
+
                                         try{
                                             addressBeanList = new Gson().fromJson(jsonObject.getJSONArray("address").toString(),new TypeToken<List<AddressBean>>(){}.getType());
                                             //将地址添加到本地数据库

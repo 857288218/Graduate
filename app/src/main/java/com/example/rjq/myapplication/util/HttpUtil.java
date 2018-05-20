@@ -53,7 +53,8 @@ public class HttpUtil {
     public static final String ADD_USER_ADDRESS = "/UserInfo/addUserAddress";
     public static final String DELETE_USER_ADDRESS = "/UserInfo/deleteUserAddress";
     public static final String ALTER_USER_PWD = "/UserInfo/alterUserPwd";
-    public static final String OBTAIN_USER_RED_PACKET_BY_SHOP = "/UserInfo/obtainUserRedPacket";
+    public static final String OBTAIN_USER_RED_PACKET_BY_SHOP = "/UserInfo/obtainUserRedPacketByShopId";
+    public static final String OBTAIN_USER_RED_PACKET = "/UserInfo/obtainUserRedPacket";
     public static final String ALTER_USER_RED_PACKET = "/UserInfo/alterUserRedPacket";
 
     //订单信息API

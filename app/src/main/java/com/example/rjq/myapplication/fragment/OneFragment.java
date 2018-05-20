@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -163,35 +164,14 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         if (welcomeBean != null){
             homeRecResDetailList = welcomeBean.getData();
         }
-
-        //假数据
-//        homeDataBean = new ResDetailBean();
-//        homeRecResDetailList = new ArrayList<>();
-//
-//        List<DiscountBean> discountBeanList = new ArrayList<>();
-//        DiscountBean discountBean1 = new DiscountBean(25.0,5.5);DiscountBean discountBean2 = new DiscountBean(35.0,10.5);
-//        discountBeanList.add(discountBean1);discountBeanList.add(discountBean2);
-//
-//        ResDetailBean homeRecResDetailBean2 = new ResDetailBean(2,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
-//                "瓦罐汤",4.8f,1212,35,3,"东院食堂",30,discountBeanList);
-//        ResDetailBean homeRecResDetailBean1 = new ResDetailBean(1,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",
-//                "杨国福麻辣烫",4.9f,2343,23,5,"公寓三楼",20,null);
-//        ResDetailBean homeRecResDetailBean3 = new ResDetailBean(4,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
-//                "杭州小笼包",4f,222,34,3,"公寓一楼",30,discountBeanList);
-//        ResDetailBean homeRecResDetailBean4 = new ResDetailBean(3,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
-//                "土家掉渣烧饼",4.9f,23234,29,6,"公寓一楼",45,discountBeanList);
-//        ResDetailBean homeRecResDetailBean5 = new ResDetailBean(5,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-//                "北李妈妈菜",4.7f,3212,20,6,"东院食堂",27,discountBeanList);
-//        ResDetailBean homeRecResDetailBean6 = new ResDetailBean(8,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-//                "重庆小面",4.7f,3212,20,6,"公寓二楼",43,null);
-//        ResDetailBean homeRecResDetailBean7 = new ResDetailBean(7,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-//                "兰州拉面",4.7f,3212,20,6,"民族餐厅",12,discountBeanList);
-//        ResDetailBean homeRecResDetailBean8 = new ResDetailBean(6,"http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
-//                "三楼自助",4.7f,3212,20,6,"公寓三楼",67,discountBeanList);
-//        homeRecResDetailList.add(homeRecResDetailBean1);homeRecResDetailList.add(homeRecResDetailBean2);homeRecResDetailList.add(homeRecResDetailBean3);
-//        homeRecResDetailList.add(homeRecResDetailBean4);homeRecResDetailList.add(homeRecResDetailBean5);homeRecResDetailList.add(homeRecResDetailBean6);
-//        homeRecResDetailList.add(homeRecResDetailBean7);homeRecResDetailList.add(homeRecResDetailBean8);
-
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Toast.makeText(mContext, "postdelay", Toast.LENGTH_SHORT).show();
+//                Log.d("postdelay","postdelay");
+//            }
+//        },1500);
+//        Toast.makeText(mContext, "initdata", Toast.LENGTH_SHORT).show();
         //banner本地图片
         imageLocal = new ArrayList<>();
         imageLocal.add(R.mipmap.banner1);
@@ -226,6 +206,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             }
         });
 
+
 //        address.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -240,6 +221,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 //        });
         initRecyclerView();
         initRefresh();
+//        Toast.makeText(mContext, "initView", Toast.LENGTH_SHORT).show();
     }
 
     private void initRecyclerView(){

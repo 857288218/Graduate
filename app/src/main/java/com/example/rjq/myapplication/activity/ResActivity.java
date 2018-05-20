@@ -115,7 +115,7 @@ public class ResActivity extends BaseActivity {
     @BindView(R.id.search_ll)
     RelativeLayout searchLl;
     @BindView(R.id.more_iv)
-    ImageView moveIv;
+    ImageView moreIv;
     @BindView(R.id.vp)
     ViewPager viewPager;
     @BindView(R.id.shop_cart_main)
@@ -164,6 +164,21 @@ public class ResActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_res);
         setStatusBarTransparent();
+        Log.d("process test","main process :"+android.os.Process.myPid());
+        Log.d("process test","main process current thread:"+android.os.Process.myTid());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("process test","main process son thread:"+android.os.Process.myTid());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("process test","main process main thread:"+android.os.Process.myTid());
+                    }
+                });
+            }
+        }).start();
+
     }
 
     @Override
@@ -173,7 +188,7 @@ public class ResActivity extends BaseActivity {
         goToCheckOut.setOnClickListener(this);
         searchLl.setOnClickListener(this);
         popRl.setOnClickListener(this);
-
+        moreIv.setOnClickListener(this);
     }
 
     @Override
@@ -188,12 +203,20 @@ public class ResActivity extends BaseActivity {
             resName = intent.getStringExtra("res_name");
 
             //请求店铺信息
+            progressBar.setVisibility(View.VISIBLE);
             HashMap<String,String> hashMap = new HashMap<>();
             hashMap.put("shop_id",intent.getStringExtra(RES_ID));
             HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_SHOP_BY_ID, hashMap, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Log.d("homeRecResDetail fail",e.toString());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ResActivity.this, "网络连接超时，请检查网络!", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
                 }
 
                 @Override
@@ -208,6 +231,7 @@ public class ResActivity extends BaseActivity {
                                 @Override
                                 public void run() {
                                     setResDetail();
+                                    requestResGoods();
                                 }
                             });
                         }
@@ -220,8 +244,11 @@ public class ResActivity extends BaseActivity {
             setResDetail();
             resId = homeRecResDetailBean.getResId();
             resName = homeRecResDetailBean.getResName();
+            requestResGoods();
         }
+    }
 
+    private void requestResGoods(){
         //请求server端的店铺商品列表
         progressBar.setVisibility(View.VISIBLE);
         HashMap<String,String> hashMap = new HashMap<>();
@@ -261,9 +288,6 @@ public class ResActivity extends BaseActivity {
 
             }
         });
-
-
-
     }
 
     private void setViewPager() {
@@ -355,9 +379,14 @@ public class ResActivity extends BaseActivity {
                 //应该启动店铺内搜索界面，只搜索该店铺内的商品;而不是启动SearchActivity去搜索店铺
 //                Intent intent = new Intent(this,SearchActivity.class);
 //                startActivity(intent);
+                Intent intent = new Intent(this,OtherProcessActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 break;
             case R.id.pop_rl:
                 showSelectedDetailDialog();
+                break;
+            case R.id.more_iv:
                 break;
             case R.id.go_to_account:
                 if (DataSupport.findAll(UserBean.class).size() > 0){

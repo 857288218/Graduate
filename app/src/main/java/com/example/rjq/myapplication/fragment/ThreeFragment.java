@@ -4,10 +4,12 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -15,6 +17,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
@@ -55,9 +58,11 @@ import com.example.rjq.myapplication.activity.AddressActivity;
 import com.example.rjq.myapplication.activity.AlterPhoneActivity;
 import com.example.rjq.myapplication.activity.AlterPwdActivity;
 import com.example.rjq.myapplication.activity.BaseActivity;
+import com.example.rjq.myapplication.activity.CouponActivity;
 import com.example.rjq.myapplication.activity.LoginActivity;
 import com.example.rjq.myapplication.activity.MainActivity;
 import com.example.rjq.myapplication.bean.AddressBean;
+import com.example.rjq.myapplication.bean.CouponBean;
 import com.example.rjq.myapplication.bean.OrderBean;
 import com.example.rjq.myapplication.bean.UserBean;
 import com.example.rjq.myapplication.util.HttpUtil;
@@ -147,6 +152,8 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     TextView walletMoney;
     @BindView(R.id.fragment_my_red_paper)
     TextView redPaperNum;
+    @BindView(R.id.fragment_my_coupon_ll)
+    AutoLinearLayout redPaperLl;
     @BindView(R.id.gold_money_num)
     TextView goldMoney;
     @BindView(R.id.user_name_text)
@@ -167,6 +174,38 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     ProgressBar progressBar;
     @BindView(R.id.alter_user_pwd)
     TextView alterUserPwdTv;
+
+    private ArrayList<CouponBean> couponBeanList;
+    private int redPacketNum;
+    private boolean isSetUserInfo;
+    private BroadcastReceiver receiver;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                receiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        Log.d("tid", "onReceive"+android.os.Process.myTid());
+                        //可以弹出土司，说明该广播接收器即时是在子线程中注册的，但是onReceive方法也是运行在主线程中
+                    }
+                };
+                IntentFilter intentFilter = new IntentFilter();
+                intentFilter.addAction("com.rjq");
+                getActivity().registerReceiver(receiver,intentFilter);
+            }
+        }).start();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(receiver);
+    }
 
     @Nullable
     @Override
@@ -200,12 +239,12 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
         buyPwd.setOnClickListener(this);
         headImg.setOnClickListener(this);
         logOut.setOnClickListener(this);
+        redPaperLl.setOnClickListener(this);
+        setUserInfo();
     }
 
     private void setUserInfo(){
         List<UserBean> userList = DataSupport.findAll(UserBean.class);
-        List<AddressBean> addressList = DataSupport.where("user_id = ? and selected = ?",
-                String.valueOf(PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("user_id",-1)),"1").find(AddressBean.class);
         if (userList.size() > 0){
             login.setVisibility(View.GONE);
             logOut.setVisibility(View.VISIBLE);
@@ -215,15 +254,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             }else{
                 GlideUtil.load(getActivity(),userBean.getUserImg(),headImg,GlideUtil.REQUEST_OPTIONS);
             }
-//            walletMoney.setText(userBean.getUserMoney()+"");
-//            redPaperNum.setText(userBean.getUserRedPaper()+"");
-//            goldMoney.setText(userBean.getGoldMoney()+"");
             userNameText.setText(userBean.getUserName());
-            if (addressList.size()>0){
-                userAddressText.setText(addressList.get(0).getAddress());
-            }else{
-                userAddressText.setText("");
-            }
             if (userBean.getUserSex() == 0){
                 userSexText.setText("女");
             }else{
@@ -241,6 +272,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             userPassword.setClickable(true);
             buyPwd.setClickable(true);
             headImg.setClickable(true);
+            redPaperLl.setClickable(true);
             userName.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
             userPhone.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
             userSex.setBackground(getResources().getDrawable(R.drawable.one_fragment_content_item_bg));
@@ -269,6 +301,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             userPassword.setClickable(false);
             buyPwd.setClickable(false);
             headImg.setClickable(false);
+            redPaperLl.setClickable(false);
             userName.setBackground(getResources().getDrawable(R.color.white));
             userPhone.setBackground(getResources().getDrawable(R.color.white));
             userSex.setBackground(getResources().getDrawable(R.color.white));
@@ -289,7 +322,40 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        setUserInfo();
+        if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("user_id",-1) != -1 && !isSetUserInfo){
+            setUserInfo();
+
+            HashMap<String,String> hashMap = new HashMap<>();
+            hashMap.put("buyer_id",PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("user_id",-1)+"");
+            HttpUtil.sendOkHttpPostRequest(HttpUtil.HOME_PATH + HttpUtil.OBTAIN_USER_RED_PACKET, hashMap, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String responseText = response.body().string();
+                    couponBeanList = new Gson().fromJson(responseText,new TypeToken<List<CouponBean>>(){}.getType());
+                    redPacketNum = couponBeanList.size();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            redPaperNum.setText(redPacketNum+"");
+                            isSetUserInfo = true;
+                        }
+                    });
+                }
+            });
+        }
+        //设置默认收货地址
+        List<AddressBean> addressList = DataSupport.where("user_id = ? and selected = ?",
+                String.valueOf(PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt("user_id",-1)),"1").find(AddressBean.class);
+        if (addressList.size()>0){
+            userAddressText.setText(addressList.get(0).getAddress());
+        }else{
+            userAddressText.setText("");
+        }
     }
 
     @Override
@@ -322,12 +388,18 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
             case R.id.my_head_img:
                 initPicPopWindow();
                 break;
+            case R.id.fragment_my_coupon_ll:
+                Intent intentRedPaper = new Intent(getActivity(), CouponActivity.class);
+                intentRedPaper.putExtra("coupon_list",couponBeanList);
+                startActivity(intentRedPaper);
+                break;
             case R.id.log_out:
                 DataSupport.deleteAll(UserBean.class);
                 setUserInfo();
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
                 editor.putInt("user_id",-1);
                 editor.commit();
+                isSetUserInfo = false;
                 break;
             case R.id.tx_1:
                 dialog.dismiss();

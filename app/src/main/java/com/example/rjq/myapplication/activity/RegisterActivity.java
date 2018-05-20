@@ -128,8 +128,6 @@ public class RegisterActivity extends BaseActivity {
         if (Integer.parseInt(identifyCode.getText().toString()) != a){
             Toast.makeText(this, "验证码错误!", Toast.LENGTH_SHORT).show();
         }else{
-            //假数据注册
-//            Toast.makeText(this, "注册成功请去登陆", Toast.LENGTH_SHORT).show();
             //注册
             progressBar.setVisibility(View.VISIBLE);
             HashMap<String,String> hashMap = new HashMap<>();

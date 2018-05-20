@@ -1,6 +1,7 @@
 package com.example.rjq.myapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.activity.ResActivity;
 import com.example.rjq.myapplication.bean.CouponBean;
 
 import java.text.DecimalFormat;
@@ -21,13 +23,11 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.ViewHolder
     private Context mContext;
     private List<CouponBean> list;
     private OnUseBtnClickListener onUseBtnClickListener;
-    private String resName;
     private double allMoney;
 
-    public CouponAdapter(Context context, String resName,double allMoney,List<CouponBean> list){
+    public CouponAdapter(Context context, double allMoney,List<CouponBean> list){
         this.mContext = context;
         this.list = list;
-        this.resName = resName;
         this.allMoney = allMoney;
     }
 
@@ -52,23 +52,39 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.ViewHolder
         }else{
             holder.couponMoney.setText(price+"");
         }
-        holder.couponName.setText(resName+"红包");
+        holder.couponName.setText(list.get(position).getShopName()+"红包");
         holder.couponData.setText(list.get(position).getDeadline());
         holder.minUse.setText("满"+list.get(position).getMiniPrice()+"元可用");
-        if (allMoney>=list.get(position).getMiniPrice()){
-            if (onUseBtnClickListener != null){
-                holder.use.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onUseBtnClickListener.useBtnClickListener(position,list.get(position));
-                    }
-                });
-            }
-            holder.use.setBackground(mContext.getResources().getDrawable(R.drawable.red_ban_yuan));
-        }else{
-            holder.use.setBackground(mContext.getResources().getDrawable(R.drawable.grey_ban_yuany));
-        }
+        //从我的界面进入红包，查看拥有的全部店铺红包
+        if (allMoney == 0){
+            holder.use.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ResActivity.class);
+                    intent.putExtra("res_id",list.get(position).getShopId()+"");
+                    intent.putExtra("res_name",list.get(position).getShopName());
+                    mContext.startActivity(intent);
+                }
+            });
 
+        }
+        //从相应店铺进入红包界面，查看该店铺红包
+        else{
+            holder.use.setVisibility(View.VISIBLE);
+            if (allMoney>=list.get(position).getMiniPrice()){
+                if (onUseBtnClickListener != null){
+                    holder.use.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onUseBtnClickListener.useBtnClickListener(position,list.get(position));
+                        }
+                    });
+                }
+                holder.use.setBackground(mContext.getResources().getDrawable(R.drawable.red_ban_yuan));
+            }else{
+                holder.use.setBackground(mContext.getResources().getDrawable(R.drawable.grey_ban_yuany));
+            }
+        }
     }
 
     @Override

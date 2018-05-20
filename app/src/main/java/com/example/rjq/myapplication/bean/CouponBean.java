@@ -9,6 +9,10 @@ import java.io.Serializable;
  */
 
 public class CouponBean implements Serializable{
+    @SerializedName("shop_name")
+    private String shopName;
+    @SerializedName("shop_id")
+    private int shopId;
     @SerializedName("red_packet_id")
     private int redPaperId;
     //消费门槛
@@ -63,5 +67,21 @@ public class CouponBean implements Serializable{
 
     public void setRedPaperId(int redPaperId) {
         this.redPaperId = redPaperId;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public int getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
     }
 }
