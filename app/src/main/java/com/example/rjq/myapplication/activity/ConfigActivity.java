@@ -36,7 +36,7 @@ public class ConfigActivity extends BaseActivity {
             public void onClick(View v) {
                 if (host.getText().toString().length() > 7 && host.getText().toString().substring(0,7).equals("http://")){
                     PreferenceManager.getDefaultSharedPreferences(ConfigActivity.this).edit().putString(HttpUtil.SERVER_HOST,host.getText().toString()).commit();
-                    HOME_PATH = host.getText().toString()+"/restaurant/index.php";
+                    HOME_PATH = host.getText().toString()+"/restaurant";
                     finish();
                 }else{
                     Toast.makeText(ConfigActivity.this, "请输入正确的服务器地址，“http://”开头", Toast.LENGTH_SHORT).show();

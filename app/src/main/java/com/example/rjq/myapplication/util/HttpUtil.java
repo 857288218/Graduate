@@ -27,11 +27,11 @@ import okhttp3.RequestBody;
 
 public class HttpUtil {
     public static final String SERVER_HOST = "server_host";
-    public static String HOME_PATH = "http://192.168.30.84/restaurant/index.php";
+    public static String HOME_PATH = "http://45.78.12.159/restaurant";
     static{
         String serverHost = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getString(SERVER_HOST,"");
         if (!TextUtils.isEmpty(serverHost)){
-            HOME_PATH = serverHost+"/restaurant/index.php";
+            HOME_PATH = serverHost+"/restaurant";
         }
     }
     //首页API
