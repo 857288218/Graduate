@@ -6,3 +6,18 @@ RecycerView联动
 </br>
 ![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/首页分类.jpg)
 ![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/首页推荐店铺.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/分类店铺信息.jpg)
+<br />
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/店铺详情.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/浏览菜品信息界面.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/购物车.jpg)
+<br />
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/搜索界面.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/搜索界面搜索到商家.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/结算.jpg)
+<br />
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/订单界面.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/我的界面显示默认收货地址.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/新增收货地址.jpg)
+<br />
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/退出登录后界面.jpg)
