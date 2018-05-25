@@ -23,3 +23,4 @@ RecycerView联动
 ![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/新增收货地址.jpg)
 <br />
 ![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/退出登录后界面.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/收货地址展示.jpg)
