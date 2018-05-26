@@ -10,7 +10,7 @@ RecycerView联动
 ![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/首页推荐店铺.jpg)
 ![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/分类店铺信息.jpg)
 <br />
-![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/店铺详情.jpg)
+![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/店铺信息.jpg)
 ![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/浏览菜品信息界面.jpg)
 ![image](https://github.com/857288218/Graduate/blob/fragmentTabHost/introduce-img/购物车.jpg)
 <br />
