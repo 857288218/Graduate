@@ -30,26 +30,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
-                <!--<com.zhy.autolayout.AutoLinearLayout-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content">-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/coupon_num"-->
-                        <!--android:textSize="@dimen/space_25px"-->
-                        <!--android:layout_gravity="right"-->
-                        <!--android:layout_marginRight="@dimen/space_25px"-->
-                        <!--android:textColor="@color/color_666"-->
-                        <!--android:paddingTop="@dimen/space_10px"-->
-                        <!--android:paddingBottom="@dimen/space_10px"-->
-                        <!--android:paddingLeft="@dimen/space_15px"-->
-                        <!--android:text="2张"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content" />-->
-
-                <!--</com.zhy.autolayout.AutoLinearLayout>-->
-
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoRelativeLayout

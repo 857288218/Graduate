@@ -1,55 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:paddingLeft="@dimen/dimen_15dp"
     android:layout_height="70dp">
+    
+    <android.support.constraint.Guideline
+        android:id="@+id/gl"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:layout_centerVertical="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:layout_marginBottom="2.5dp"
+        app:layout_constraintBottom_toTopOf="@id/gl"
+        android:id="@+id/tv_address"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:text="天津国际贸易中心B座 2705"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/tv_address"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="天津国际贸易中心B座 2705"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="2.5dp"
+        app:layout_constraintTop_toBottomOf="@id/gl"
+        android:id="@+id/tv_name"
+        android:text="任俊清先生"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_marginTop="5dp"
-            android:layout_below="@+id/tv_address"
-            android:text="任俊清先生"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <TextView
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_name"
+        app:layout_constraintLeft_toRightOf="@id/tv_name"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:text="13622179395"
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_5dp"
-            android:text="13622179395"
-            android:layout_below="@+id/tv_address"
-            android:layout_toRightOf="@+id/tv_name"
-            android:id="@+id/tv_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </com.zhy.autolayout.AutoRelativeLayout>
 
     <ImageButton
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@null"
         android:id="@+id/address_delete"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:src="@mipmap/icon_delete"
         android:layout_width="60dp"
         android:layout_height="@dimen/dimen_50dp" />
 
     <View
+        app:layout_constraintTop_toBottomOf="parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/tv_phone"
         style="@style/grey_divider" />
 
-</com.zhy.autolayout.AutoRelativeLayout>
+</android.support.constraint.ConstraintLayout>

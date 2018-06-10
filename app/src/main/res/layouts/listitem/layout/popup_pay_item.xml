@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:id="@+id/root"
     android:background="@color/white"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <android.support.constraint.Guideline
+        android:id="@+id/gl"
+        app:layout_constraintGuide_begin="@dimen/dimen_50dp"
         android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:id="@+id/iv_ll"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <ImageButton
-            android:layout_gravity="center"
-            android:background="@null"
-            android:id="@+id/iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+    <ImageButton
+        app:layout_constraintRight_toLeftOf="@id/gl"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@mipmap/ali_pay"
+        android:background="@null"
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
+        app:layout_constraintLeft_toLeftOf="@id/divider"
         android:id="@+id/tv"
         android:paddingTop="17dp"
         android:paddingBottom="17dp"
-        android:layout_toRightOf="@+id/iv_ll"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:text="支付宝"
@@ -33,20 +37,22 @@
         android:layout_height="wrap_content" />
 
     <ImageButton
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"
         android:id="@+id/selected"
         android:padding="@dimen/dimen_15dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:background="@null"
         android:src="@mipmap/icon_select_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <View
+        android:id="@+id/divider"
         android:layout_marginLeft="@dimen/dimen_50dp"
-        android:layout_below="@+id/tv"
+        app:layout_constraintBottom_toBottomOf="parent"
         style="@style/grey_divider"
         />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
