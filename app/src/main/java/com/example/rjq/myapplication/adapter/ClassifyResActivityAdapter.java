@@ -51,9 +51,6 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.one_fragment_item_reduce_container.setVisibility(View.GONE);
-        holder.one_fragment_item_special_container.setVisibility(View.GONE);
-        holder.one_fragment_item_new_container.setVisibility(View.GONE);
-        holder.one_fragment_item_give_container.setVisibility(View.GONE);
 
         //设置添加到购物车的数量，红点显示
         if (homeRecResDetailBeanList.get(position).getBuyNum() > 0){
@@ -143,12 +140,6 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
         public TextView one_fragment_deliver_time;
         public AutoLinearLayout one_fragment_item_reduce_container;
         public TextView one_fragment_item_reduce;
-        public AutoLinearLayout one_fragment_item_special_container;
-        public TextView one_fragment_item_special;
-        public AutoLinearLayout one_fragment_item_new_container;
-        public TextView one_fragment_item_new;
-        public AutoLinearLayout one_fragment_item_give_container;
-        public TextView one_fragment_item_give;
         public View divider;
         public ViewHolder(View root) {
             super(root);
@@ -156,9 +147,6 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
             divider = root.findViewById(R.id.divider);
             one_fragment_star = (RatingBar) root.findViewById(R.id.one_fragment_star);
             one_fragment_item_reduce_container = (AutoLinearLayout) root.findViewById(R.id.one_fragment_item_reduce_container);
-            one_fragment_item_special_container = (AutoLinearLayout) root.findViewById(R.id.one_fragment_item_special_container);
-            one_fragment_item_new_container = (AutoLinearLayout) root.findViewById(R.id.one_fragment_item_new_container);
-            one_fragment_item_give_container = (AutoLinearLayout) root.findViewById(R.id.one_fragment_item_give_container);
             one_content_item_iv = (ImageView) root.findViewById(R.id.one_content_item_iv);
             one_content_item_buy_num = (TextView) root.findViewById(R.id.one_content_item_buy_num);
             one_fragment_content_item_name = (TextView) root.findViewById(R.id.one_fragment_content_item_name);
@@ -168,9 +156,6 @@ public class ClassifyResActivityAdapter extends RecyclerView.Adapter<ClassifyRes
             one_fragment_address = (TextView) root.findViewById(R.id.one_fragment_address);
             one_fragment_deliver_time = (TextView) root.findViewById(R.id.one_fragment_deliver_time);
             one_fragment_item_reduce = (TextView) root.findViewById(R.id.one_fragment_item_reduce);
-            one_fragment_item_special = (TextView) root.findViewById(R.id.one_fragment_item_special);
-            one_fragment_item_new = (TextView) root.findViewById(R.id.one_fragment_item_new);
-            one_fragment_item_give = (TextView) root.findViewById(R.id.one_fragment_item_give);
             one_fragment_deliver = (TextView) root.findViewById(R.id.one_fragment_deliver);
 
         }

@@ -148,7 +148,6 @@ public class AccountActivity extends BaseActivity {
         super.initData();
         resId = getIntent().getIntExtra("res_id",-1);
         resNameText = getIntent().getStringExtra("res_name");
-
         list = DataSupport.where("resId = ?",String.valueOf(resId)).find(ResBuyItemNum.class);
         addressList = DataSupport.where("selected = ?","1").find(AddressBean.class);
         if (addressList.size()>0){

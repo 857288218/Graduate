@@ -39,7 +39,6 @@
         android:includeFontPadding="false"
         app:layout_constraintBottom_toBottomOf="@id/order_fragment_item_res_img"
         app:layout_constraintLeft_toLeftOf="@id/order_fragment_item_res_name"
-        android:layout_alignParentBottom="true"
         android:id="@+id/order_fragment_item_res_buy_time"
         android:textSize="10sp"
         android:textColor="@color/color_666"
@@ -60,22 +59,21 @@
         android:layout_marginTop="@dimen/dimen_15dp"
         app:layout_constraintTop_toBottomOf="@id/order_fragment_item_res_buy_time"
         app:layout_constraintLeft_toLeftOf="@id/order_fragment_item_res_buy_time"
+        app:layout_constraintRight_toLeftOf="@id/order_fragment_item_res_item_price"
         android:textSize="14sp"
         android:text="宫保鸡丁"
         android:id="@+id/order_fragment_item_res_item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <TextView
         app:layout_constraintBaseline_toBaselineOf="@id/order_fragment_item_res_item_name"
-        app:layout_constraintLeft_toRightOf="@id/order_fragment_item_res_item_name"
         app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/order_fragment_item_res_item_price"
-        android:gravity="right"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:text="￥20.5"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
