@@ -37,49 +37,53 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        HttpUtil.sendOkHttpGetRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_RECOMMEND_SHOP, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("oneFragment",e.getMessage());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(WelcomeActivity.this, "网络连接错误，请输入正确的服务器地址!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(WelcomeActivity.this, ConfigActivity.class);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                //这行代码也要放在子线程中执行，不能放在主线程中，response.body()还会进行网络请求
-                String responseText = response.body().string();
-                Log.d("WelcomeActivity",responseText.toString());
-                //请求首页数据
-                try{
-                    final WelcomeBean welcomeBean = new Gson().fromJson(responseText,WelcomeBean.class);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                            intent.putExtra("data",welcomeBean);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-                }catch(Exception e){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(WelcomeActivity.this, "网络连接错误，请输入正确的服务器地址!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(WelcomeActivity.this,ConfigActivity.class));
-                        }
-                    });
-
-                }
-
-            }
-        });
+        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+        intent.putExtra("data","");
+        startActivity(intent);
+        finish();
+//        HttpUtil.sendOkHttpGetRequest(HttpUtil.HOME_PATH+HttpUtil.OBTAIN_RECOMMEND_SHOP, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.d("oneFragment",e.getMessage());
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(WelcomeActivity.this, "网络连接错误，请输入正确的服务器地址!", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(WelcomeActivity.this, ConfigActivity.class);
+//                        startActivity(intent);
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                //这行代码也要放在子线程中执行，不能放在主线程中，response.body()还会进行网络请求
+//                String responseText = response.body().string();
+//                Log.d("WelcomeActivity",responseText.toString());
+//                //请求首页数据
+//                try{
+//                    final WelcomeBean welcomeBean = new Gson().fromJson(responseText,WelcomeBean.class);
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+//                            intent.putExtra("data",welcomeBean);
+//                            startActivity(intent);
+//                            finish();
+//                        }
+//                    });
+//                }catch(Exception e){
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(WelcomeActivity.this, "网络连接错误，请输入正确的服务器地址!", Toast.LENGTH_SHORT).show();
+//                            startActivity(new Intent(WelcomeActivity.this,ConfigActivity.class));
+//                        }
+//                    });
+//
+//                }
+//
+//            }
+//        });
     }
 }

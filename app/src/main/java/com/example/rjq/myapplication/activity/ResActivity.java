@@ -163,6 +163,7 @@ public class ResActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_res);
+//        setTheme(R.style.AppTheme_Fullscreen);
         setStatusBarTransparent();
         Log.d("process test","main process :"+android.os.Process.myPid());
         Log.d("process test","main process current thread:"+android.os.Process.myTid());

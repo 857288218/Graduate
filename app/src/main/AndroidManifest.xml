@@ -68,10 +68,12 @@
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask" />
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.AlterPwdActivity" />
+        <activity android:name=".activity.AlterPwdActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activity.AccountActivity"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
+            android:windowSoftInputMode="adjustNothing"
+            />
         <activity android:name=".activity.AddressActivity" />
         <activity android:name=".activity.AddAddressActivity" />
         <activity android:name=".activity.SuccessBuyActivity" />

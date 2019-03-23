@@ -160,10 +160,10 @@ public class OneFragment extends Fragment implements View.OnClickListener{
     private void initData(){
         ButterKnife.bind(this,rootView);
         Intent intent = getActivity().getIntent();
-        WelcomeBean welcomeBean = (WelcomeBean)intent.getSerializableExtra("data");
-        if (welcomeBean != null){
-            homeRecResDetailList = welcomeBean.getData();
-        }
+//        WelcomeBean welcomeBean = (WelcomeBean)intent.getSerializableExtra("data");
+//        if (welcomeBean != null){
+//            homeRecResDetailList = welcomeBean.getData();
+//        }
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {

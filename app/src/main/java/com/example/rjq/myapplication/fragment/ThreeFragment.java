@@ -451,7 +451,7 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
     private void alterUserNameDialog(){
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.alter_edit,null);
         final EditText edit = (EditText) view.findViewById(R.id.edit);
-        new AlertDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.user_name))
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.user_name))
                 .setView(view)
                 .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -514,7 +514,9 @@ public class ThreeFragment extends Fragment implements View.OnClickListener{
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.cancel), null)
-                .show();
+                .create();
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        alertDialog.show();
     }
 
     private void alterUserSexDialog(){

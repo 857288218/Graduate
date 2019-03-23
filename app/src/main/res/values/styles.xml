@@ -15,6 +15,12 @@
         <item name="android:windowBackground">@mipmap/start_img</item>
     </style>
 
+    <style name="AppTheme.Fullscreen" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
     <style name="SearchTheme" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">#c1c1c1</item>
@@ -67,7 +73,7 @@
         <item name="android:windowIsFloating">true</item>
         <!-- 边框 -->
         <item name="android:windowFrame">@null</item>
-        <!-- Dialog以外的区域模糊效果 -->
+        <!-- Dialog以外的区域阴影效果 -->
         <item name="android:backgroundDimEnabled">true</item>
         <!-- 无标题 -->
         <item name="android:windowNoTitle">true</item>

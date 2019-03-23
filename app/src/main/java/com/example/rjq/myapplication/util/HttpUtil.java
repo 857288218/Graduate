@@ -3,29 +3,35 @@ package com.example.rjq.myapplication.util;
 
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 
 import com.example.rjq.myapplication.MyApplication;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.CacheControl;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by rjq on 2018/1/21.
  */
 
 public class HttpUtil {
+
     public static final String SERVER_HOST = "server_host";
     public static String HOME_PATH = "http://45.78.12.159/restaurant/index.php";
 
@@ -65,17 +71,23 @@ public class HttpUtil {
 
     private static final MediaType MEDIA_TYPE_IMAGE = MediaType.parse("image/*");
 
+    private HttpUtil(){}
+
+    private static class SingHolder{
+        private static final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(10,TimeUnit.SECONDS)
+                .build();
+    }
+
     public static void sendOkHttpGetRequest(String address, Callback callback){
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(8, TimeUnit.SECONDS).build();
         Request request = new Request.Builder()
                 .url(address)
                 .build();
-        okHttpClient.newCall(request).enqueue(callback);
+        SingHolder.okHttpClient.newCall(request).enqueue(callback);
     }
 
     //第三个方法可以代替第二个方法
     public static void sendOkHttpPostRequest(String address, HashMap<String,String> hashMap, Callback callback){
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(8,TimeUnit.SECONDS).build();
         FormBody.Builder builder = new FormBody.Builder();
         Set set = hashMap.keySet();
         Iterator iterator = set.iterator();
@@ -86,15 +98,15 @@ public class HttpUtil {
         //传递json字符串,后台用$_POST['json']获取,然后用json_decode()解析成数组或对象;
 //        builder.add("json",new Gson().toJson());
 
+
         Request request = new Request.Builder()
                 .url(address)
                 .post(builder.build())
                 .build();
-        okHttpClient.newCall(request).enqueue(callback);
+        SingHolder.okHttpClient.newCall(request).enqueue(callback);
     }
 
     public static void upLoadImgsRequest(String address, HashMap<String,String> hashMap,List<String> imgUrls, Callback callback){
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(8,TimeUnit.SECONDS).build();
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (imgUrls!=null){
             for (int i = 0; i <imgUrls.size() ; i++) {
@@ -117,7 +129,8 @@ public class HttpUtil {
                 .url(address)//地址
                 .post(builder.build())//添加请求体
                 .build();
-        okHttpClient.newCall(request).enqueue(callback);
+        SingHolder.okHttpClient.newCall(request).enqueue(callback);
     }
+
 
 }

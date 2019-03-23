@@ -55,6 +55,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     implementation 'org.litepal.android:core:1.6.1'
     implementation 'com.squareup.okhttp3:okhttp:3.4.1'
+    implementation 'com.squareup.okio:okio:1.9.0'
     implementation 'com.google.code.gson:gson:2.7'
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
