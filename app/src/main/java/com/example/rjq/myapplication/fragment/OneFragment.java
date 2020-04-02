@@ -26,10 +26,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.rjq.myapplication.MyApplication;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.activity.AddressActivity;
 import com.example.rjq.myapplication.activity.ClassifyResActivity;
 import com.example.rjq.myapplication.activity.MainActivity;
+import com.example.rjq.myapplication.activity.OtherProcessActivity;
 import com.example.rjq.myapplication.activity.ResActivity;
 import com.example.rjq.myapplication.activity.SearchActivity;
 import com.example.rjq.myapplication.bean.AddressBean;
@@ -203,6 +205,11 @@ public class OneFragment extends Fragment implements View.OnClickListener{
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, SearchActivity.class);
                 startActivity(intent);
+                Log.d("process test","main process :"+android.os.Process.myPid());
+                Log.d("process test","main process current thread:"+android.os.Process.myTid());
+//                Intent intent = new Intent(MyApplication.getContext(), OtherProcessActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
             }
         });
 

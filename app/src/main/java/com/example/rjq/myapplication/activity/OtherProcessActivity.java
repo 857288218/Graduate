@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rjq.myapplication.MyApplication;
 import com.example.rjq.myapplication.R;
 
 public class OtherProcessActivity extends AppCompatActivity {
@@ -24,7 +25,6 @@ public class OtherProcessActivity extends AppCompatActivity {
         Log.d("process test","other process current thread:"+android.os.Process.myTid());
         final TextView tv = (TextView) findViewById(R.id.test);
         Button btn = (Button) findViewById(R.id.button);
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +38,7 @@ public class OtherProcessActivity extends AppCompatActivity {
 //                                tv.setText("asas");
 //                            }
 //                        });
+//                        Context context = MyApplication.getContext();
                         new Handler(getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
