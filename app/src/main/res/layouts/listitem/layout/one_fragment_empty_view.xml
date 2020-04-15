@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tv_text"
         android:gravity="center"
         android:layout_margin="@dimen/space_10px"
         android:textSize="25sp"

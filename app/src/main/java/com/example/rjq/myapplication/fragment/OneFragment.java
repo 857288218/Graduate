@@ -3,11 +3,14 @@ package com.example.rjq.myapplication.fragment;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,8 +30,10 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.rjq.myapplication.MyApplication;
+import com.example.rjq.myapplication.MyService;
 import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.activity.AddressActivity;
+import com.example.rjq.myapplication.activity.BaseActivity;
 import com.example.rjq.myapplication.activity.ClassifyResActivity;
 import com.example.rjq.myapplication.activity.MainActivity;
 import com.example.rjq.myapplication.activity.OtherProcessActivity;
@@ -43,6 +48,7 @@ import com.example.rjq.myapplication.bean.UserBean;
 import com.example.rjq.myapplication.bean.WelcomeBean;
 import com.example.rjq.myapplication.util.GlideUtil;
 import com.example.rjq.myapplication.util.HttpUtil;
+import com.example.rjq.myapplication.util.Sington;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -74,6 +80,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.BIND_AUTO_CREATE;
 import static com.example.rjq.myapplication.activity.AddressActivity.SELECTED_ADDRESS;
 
 /**
@@ -182,6 +189,18 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         imageLocal.add(R.mipmap.banner4);
     }
 
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d("MyService", service.toString());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d("MyService", "onServiceDisconnected");
+        }
+    };
+
     private void initView(){
         recycleHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.one_fragemnt_head_item,null);
         mBanner = (Banner) recycleHeadView.findViewById(R.id.banner);
@@ -203,29 +222,40 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         searchLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, SearchActivity.class);
-                startActivity(intent);
-                Log.d("process test","main process :"+android.os.Process.myPid());
-                Log.d("process test","main process current thread:"+android.os.Process.myTid());
+//                Intent intent = new Intent(mContext, SearchActivity.class);
+//                startActivity(intent);
+
+//                Log.d("process test","main process :"+android.os.Process.myPid());
+//                Log.d("process test","main process current thread:"+android.os.Process.myTid());
+//                Log.d("single", Sington.singles.toString());
 //                Intent intent = new Intent(MyApplication.getContext(), OtherProcessActivity.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                startActivity(intent);
+                Intent intent = new Intent(MyApplication.getContext(), MyService.class);
+                getActivity().startService(intent);
+                getActivity().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
             }
         });
 
-
-//        address.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        rootView.findViewById(R.id.tv_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyApplication.getContext(), MyService.class);
+                getActivity().stopService(intent);
+            }
+        });
+        address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 //                if (userId>0){
 //                    Intent intent = new Intent(mContext, AddressActivity.class);
 //                    startActivityForResult(intent,ADDRESS_REQUEST, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
 //                }else{
 //                    Toast.makeText(mContext, "登录后查看编辑收货地址", Toast.LENGTH_SHORT).show();
 //                }
-//
-//            }
-//        });
+                getActivity().unbindService(serviceConnection);
+            }
+        });
         initRecyclerView();
         initRefresh();
 //        Toast.makeText(mContext, "initView", Toast.LENGTH_SHORT).show();

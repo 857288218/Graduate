@@ -12,9 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <include layout="@layout/one_fragment_empty_view"
-            android:visibility="gone"
-            android:id="@+id/empty_view"/>
+
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             app:srlEnablePreviewInEditMode="true"
@@ -97,5 +95,9 @@
                     android:layout_height="60dp"/>
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <include layout="@layout/one_fragment_empty_view"
+            android:visibility="gone"
+            android:id="@+id/empty_view"/>
 
 </com.zhy.autolayout.AutoRelativeLayout>

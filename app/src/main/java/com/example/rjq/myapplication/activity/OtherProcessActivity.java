@@ -14,15 +14,19 @@ import android.widget.Toast;
 
 import com.example.rjq.myapplication.MyApplication;
 import com.example.rjq.myapplication.R;
+import com.example.rjq.myapplication.util.Sington;
 
 public class OtherProcessActivity extends AppCompatActivity {
-
+    String s = "s";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String s = "a";
+        Log.d("Application create", this.toString());
         setContentView(R.layout.activity_other_process);
         Log.d("process test","other process :"+android.os.Process.myPid());
         Log.d("process test","other process current thread:"+android.os.Process.myTid());
+        Log.d("single", Sington.singles.toString());
         final TextView tv = (TextView) findViewById(R.id.test);
         Button btn = (Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -31,6 +35,7 @@ public class OtherProcessActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
