@@ -10,6 +10,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -201,6 +202,8 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         }
     };
 
+    private String waitS = "waitS";
+
     private void initView(){
         recycleHeadView = LayoutInflater.from(getActivity()).inflate(R.layout.one_fragemnt_head_item,null);
         mBanner = (Banner) recycleHeadView.findViewById(R.id.banner);
@@ -225,15 +228,15 @@ public class OneFragment extends Fragment implements View.OnClickListener{
 //                Intent intent = new Intent(mContext, SearchActivity.class);
 //                startActivity(intent);
 
-//                Log.d("process test","main process :"+android.os.Process.myPid());
-//                Log.d("process test","main process current thread:"+android.os.Process.myTid());
-//                Log.d("single", Sington.singles.toString());
-//                Intent intent = new Intent(MyApplication.getContext(), OtherProcessActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-                Intent intent = new Intent(MyApplication.getContext(), MyService.class);
-                getActivity().startService(intent);
-                getActivity().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+                Log.d("process test","main process :"+android.os.Process.myPid());
+                Log.d("process test","main process current thread:"+android.os.Process.myTid());
+                Log.d("single", Sington.singles.toString());
+                Intent intent = new Intent(MyApplication.getContext(), OtherProcessActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+//                Intent intent = new Intent(MyApplication.getContext(), MyService.class);
+//                getActivity().startService(intent);
+//                getActivity().bindService(intent, serviceConnection, BIND_AUTO_CREATE);
             }
         });
 
@@ -258,7 +261,41 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         });
         initRecyclerView();
         initRefresh();
-//        Toast.makeText(mContext, "initView", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("handledelay", "3");
+            }
+        }, 3000);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("handledelay", "0");
+            }
+        });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (waitS) {
+                    try {
+                        waitS.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, 5000);
+        HandlerThread handlerThread = new HandlerThread("handle");
+        handlerThread.start();
+        new Handler(handlerThread.getLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (waitS) {
+                    waitS.notifyAll();
+                }
+            }
+        }, 8000);
     }
 
     private void initRecyclerView(){
@@ -597,6 +634,11 @@ public class OneFragment extends Fragment implements View.OnClickListener{
         }
         mBanner.startAutoPlay();
 
+    }
+
+    public static class Test {
+        Test t;
+        int a = 5;
     }
 
     class NotifyResBuyNumRunnable implements Runnable{

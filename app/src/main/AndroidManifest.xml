@@ -23,10 +23,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
+            android:name=".MyIntentService"
+            android:exported="false"></service>
+        <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="true"></service>
-        <!-- autoLayout -->
+            android:exported="true" /> <!-- autoLayout -->
         <meta-data
             android:name="design_width"
             android:value="720" />

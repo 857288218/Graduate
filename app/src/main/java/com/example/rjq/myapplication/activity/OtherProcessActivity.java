@@ -17,11 +17,10 @@ import com.example.rjq.myapplication.R;
 import com.example.rjq.myapplication.util.Sington;
 
 public class OtherProcessActivity extends AppCompatActivity {
-    String s = "s";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String s = "a";
         Log.d("Application create", this.toString());
         setContentView(R.layout.activity_other_process);
         Log.d("process test","other process :"+android.os.Process.myPid());
@@ -35,7 +34,6 @@ public class OtherProcessActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
@@ -70,6 +68,12 @@ public class OtherProcessActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //杀掉该进程
+//        Process.killProcess(android.os.Process.myPid());
     }
 }
