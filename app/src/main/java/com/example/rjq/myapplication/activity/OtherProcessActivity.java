@@ -3,6 +3,7 @@ package com.example.rjq.myapplication.activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,10 +23,13 @@ public class OtherProcessActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("Application create", this.toString());
+        Log.d("packname", MyApplication.getContext().getPackageName());
         setContentView(R.layout.activity_other_process);
         Log.d("process test","other process :"+android.os.Process.myPid());
         Log.d("process test","other process current thread:"+android.os.Process.myTid());
         Log.d("single", Sington.singles.toString());
+        //已经开启了该进程主线程中的looper，不同于主进程中主线程的looper;进程间内存不共享，每个进程都有自己的内存
+        Log.d("otherProcessMainLooper", Looper.getMainLooper().toString());
         final TextView tv = (TextView) findViewById(R.id.test);
         Button btn = (Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {

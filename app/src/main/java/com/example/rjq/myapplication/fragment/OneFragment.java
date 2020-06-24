@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -231,6 +232,8 @@ public class OneFragment extends Fragment implements View.OnClickListener{
                 Log.d("process test","main process :"+android.os.Process.myPid());
                 Log.d("process test","main process current thread:"+android.os.Process.myTid());
                 Log.d("single", Sington.singles.toString());
+                Log.d("packname", MyApplication.getContext().getPackageName());
+                Log.d("otherProcessMainLooper", Looper.getMainLooper().toString());
                 Intent intent = new Intent(MyApplication.getContext(), OtherProcessActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
