@@ -235,7 +235,7 @@ public class OneFragment extends Fragment implements View.OnClickListener{
                 Log.d("packname", MyApplication.getContext().getPackageName());
                 Log.d("otherProcessMainLooper", Looper.getMainLooper().toString());
                 Intent intent = new Intent(MyApplication.getContext(), OtherProcessActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 //                Intent intent = new Intent(MyApplication.getContext(), MyService.class);
 //                getActivity().startService(intent);

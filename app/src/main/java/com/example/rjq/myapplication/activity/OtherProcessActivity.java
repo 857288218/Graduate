@@ -2,6 +2,7 @@ package com.example.rjq.myapplication.activity;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
@@ -56,8 +57,13 @@ public class OtherProcessActivity extends AppCompatActivity {
                                 tv.setText(info.baseActivity.getClassName());
                             }
                         });
+
                     }
                 }).start();
+                Intent intent = new Intent(OtherProcessActivity.this, ConfigActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
         new Thread(new Runnable() {

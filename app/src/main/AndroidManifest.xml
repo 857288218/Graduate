@@ -75,11 +75,13 @@
         <activity android:name=".activity.SuccessBuyActivity" />
         <activity android:name=".activity.CouponActivity" />
         <activity android:name=".activity.AlterPhoneActivity" />
-        <activity android:name=".activity.ConfigActivity" />
+        <activity android:name=".activity.ConfigActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activity.OtherProcessActivity"
-            android:process=":test"
-            android:taskAffinity=".gll" />
+            android:launchMode="singleTask"
+            android:taskAffinity=":gll"
+             />
     </application>
 
 </manifest>

@@ -104,10 +104,10 @@ public class MainActivity extends BaseActivity {
     //对返回键进行监听
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            exit();
-            return true;
-        }
+//        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+//            exit();
+//            return true;
+//        }
         return super.onKeyDown(keyCode, event);
     }
 
